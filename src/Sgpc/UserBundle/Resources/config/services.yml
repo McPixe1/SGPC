@@ -1,0 +1,4 @@
+services:
+#    sgpc_user.example:
+#        class: Sgpc\UserBundle\Example
+#        arguments: ["@service_id", "plain_value", %parameter%]
