@@ -1,3 +1,19 @@
 sgpc_user_homepage:
-    path:     /
+    path:     /user/index
     defaults: { _controller: SgpcUserBundle:Default:index }
+    
+sgpc_user_add:
+    path:     /user/add
+    defaults: { _controller: SgpcUserBundle:Default:add }
+    
+sgpc_user_edit:
+    path:     /user/edit/{id}
+    defaults: { _controller: SgpcUserBundle:Default:edit }
+    
+sgpc_user_view:
+    path:     /user/view/{id}
+    defaults: { _controller: SgpcUserBundle:Default:view }
+    
+sgpc_user_delete:
+    path:     /user/delete/{id}
+    defaults: { _controller: SgpcUserBundle:Default:delete }
