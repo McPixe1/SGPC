@@ -47,7 +47,7 @@
 # Backup entities generated with doctrine:generate:entities command
 */Entity/*~
 
-#netbeans
+# netbeans
 nbproject/private/
 build/
 nbbuild/
