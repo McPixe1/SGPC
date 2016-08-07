@@ -3,11 +3,23 @@
 namespace Sgpc\UserBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
-class DefaultController extends Controller
+class UserController extends Controller
 {
     public function indexAction()
     {
-        return $this->render('SgpcUserBundle:Default:index.html.twig');
+        $em = $this->getDoctrine()->getManager();
+        
+        $users = $em->getRepository('SgpcUserBundle:User')->findAll();
+        
+        $res = 'Lista de usuarios: <br />';
+        
+        foreach($users as $user){
+            $res .= 'Usuario'. $user->getUsername() . '- Email:' . $user->getEmail() . '<br />';
+        }
+        
+        return new Response($res);
     }
+    
 }
