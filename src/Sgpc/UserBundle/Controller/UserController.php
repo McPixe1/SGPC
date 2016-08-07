@@ -13,13 +13,7 @@ class UserController extends Controller
         
         $users = $em->getRepository('SgpcUserBundle:User')->findAll();
         
-        $res = 'Lista de usuarios: <br />';
-        
-        foreach($users as $user){
-            $res .= 'Usuario'. $user->getUsername() . '- Email:' . $user->getEmail() . '<br />';
-        }
-        
-        return new Response($res);
+        return $this->render('SgpcUserBundle:User:index.html.twig', array('users'=> $users));
     }
     
 }
