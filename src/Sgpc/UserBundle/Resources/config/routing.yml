@@ -5,6 +5,11 @@ sgpc_user_homepage:
 sgpc_user_add:
     path:     /user/add
     defaults: { _controller: SgpcUserBundle:User:add }
+
+sgpc_user_create:
+    path:     /user/create
+    defaults: { _controller: SgpcUserBundle:User:create }
+    methods: POST
     
 sgpc_user_edit:
     path:     /user/edit/{id}
@@ -17,3 +22,10 @@ sgpc_user_view:
 sgpc_user_delete:
     path:     /user/delete/{id}
     defaults: { _controller: SgpcUserBundle:User:delete }
+
+sgpc_user_redirect_add:
+    path:     /user/create
+    defaults:
+        _controller: SgpcUserBundle:User:add
+        path: /user/add
+        permanent: true

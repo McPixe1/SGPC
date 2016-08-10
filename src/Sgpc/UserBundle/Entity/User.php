@@ -3,14 +3,19 @@
 namespace Sgpc\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert; /*para la validacion de los forms*/
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity; /* para validar que son campus unicos (no repetidos)*/
 /**
  * User
  *
  * @ORM\Table(name="users")
  * @ORM\Entity(repositoryClass="Sgpc\UserBundle\Repository\UserRepository")
+ * @ORM\HasLifecycleCallbacks()
+ * @UniqueEntity("username")
+ * @UniqueEntity("email")
  */
-class User
+class User implements UserInterface
 {
     /**
      * @var int
@@ -23,8 +28,9 @@ class User
 
     /**
      * @var string
-     *
+     * 
      * @ORM\Column(name="username", type="string", length=50, unique=true)
+     * @Assert\NotBlank()
      */
     private $username;
 
@@ -32,6 +38,7 @@ class User
      * @var string
      *
      * @ORM\Column(name="first_name", type="string", length=100)
+     * @Assert\NotBlank()
      */
     private $firstName;
 
@@ -39,6 +46,7 @@ class User
      * @var string
      *
      * @ORM\Column(name="last_name", type="string", length=100)
+     * @Assert\NotBlank()
      */
     private $lastName;
 
@@ -46,6 +54,8 @@ class User
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=100, unique=true)
+     * @Assert\NotBlank()
+     * @Assert\Email()
      */
     private $email;
 
@@ -53,6 +63,7 @@ class User
      * @var string
      *
      * @ORM\Column(name="password", type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $password;
 
@@ -60,6 +71,8 @@ class User
      * @var string
      *
      * @ORM\Column(name="role", type="string", columnDefinition="ENUM('ROLE_USER','ROLE_ADMIN')", length=50)
+     * @Assert\NotBlank()
+     * @Assert\Choice(choices = {"ROLE_USER", "ROLE_ADMIN"})
      */
     private $role;
 
@@ -301,4 +314,39 @@ class User
     {
         return $this->updatedAt;
     }
+    
+    /**
+     * @ORM\PrePersist 
+     */
+    public function setCreatedAtValue()
+    {
+        $this->createdAt = new \DateTime();
+    }
+    
+    /**
+     * @ORM\PrePersist 
+     * @ORM\PreUpdate
+     */
+    public function setUpdatedAtValue()
+    {
+        $this->updatedAt = new \DateTime();
+    }
+    
+    /** Metodos necesarios para implementar la seguridad de passwords **/
+    
+    public function getRoles() 
+    {
+        
+    }
+    
+     public function getSalt() 
+    {
+        
+    }
+    
+     public function eraseCredentials() 
+    {
+        
+    }
+    
 }
