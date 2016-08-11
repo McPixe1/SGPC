@@ -57,7 +57,7 @@ class UserController extends Controller
             $em->persist($user);
             $em->flush();
             
-            return $this->redirectToRoute('sgpc_user_homepage');
+            return $this->redirectToRoute('sgpc_user_index');
         }
         return $this->render('SgpcUserBundle:User:add.html.twig', array('form' => $form->createView()));
     }

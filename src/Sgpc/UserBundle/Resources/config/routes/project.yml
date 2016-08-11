@@ -1,0 +1,24 @@
+sgpc_project_index:
+    path:     /index
+    defaults: { _controller: SgpcUserBundle:Project:index }
+    
+sgpc_project_add:
+    path:     /add
+    defaults: { _controller: SgpcUserBundle:Project:add }
+
+sgpc_project_create:
+    path:     /create
+    defaults: { _controller: SgpcUserBundle:Project:create }
+    methods: POST
+    
+sgpc_project_edit:
+    path:     /edit/{id}
+    defaults: { _controller: SgpcUserBundle:Project:edit }
+    
+sgpc_project_view:
+    path:     /view/{id}
+    defaults: { _controller: SgpcUserBundle:Project:view }
+    
+sgpc_project_delete:
+    path:     /delete/{id}
+    defaults: { _controller: SgpcUserBundle:Project:delete }

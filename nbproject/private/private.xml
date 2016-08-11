@@ -4,17 +4,24 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/home/samu/SGPC/src/Sgpc/UserBundle/Resources/config/routing.yml</file>
-            <file>file:/home/samu/SGPC/src/Sgpc/UserBundle/Controller/UserController.php</file>
-            <file>file:/home/samu/SGPC/src/Sgpc/UserBundle/SgpcUserBundle.php</file>
-            <file>file:/home/samu/SGPC/src/Sgpc/UserBundle/Resources/views/User/index.html.twig</file>
+            <file>file:/home/samu/SGPC/src/Sgpc/UserBundle/Form/ProjectType.php</file>
+            <file>file:/home/samu/SGPC/src/Sgpc/UserBundle/Repository/ProjectRepository.php</file>
             <file>file:/home/samu/SGPC/web/public/css/styles.css</file>
             <file>file:/home/samu/SGPC/src/Sgpc/UserBundle/Resources/views/Default/index.html.twig</file>
             <file>file:/home/samu/SGPC/app/Resources/views/default/index.html.twig</file>
             <file>file:/home/samu/SGPC/src/Sgpc/UserBundle/Entity/User.php</file>
+            <file>file:/home/samu/SGPC/app/Resources/views/menu.html.twig</file>
+            <file>file:/home/samu/SGPC/src/Sgpc/UserBundle/Resources/config/routes/project.yml</file>
+            <file>file:/home/samu/SGPC/src/Sgpc/UserBundle/Controller/UserController.php</file>
+            <file>file:/home/samu/SGPC/app/config/security.yml</file>
+            <file>file:/home/samu/SGPC/src/Sgpc/UserBundle/SgpcUserBundle.php</file>
+            <file>file:/home/samu/SGPC/src/Sgpc/UserBundle/Resources/config/routes/user.yml</file>
+            <file>file:/home/samu/SGPC/src/Sgpc/UserBundle/Resources/views/User/index.html.twig</file>
+            <file>file:/home/samu/SGPC/app/config/config.yml</file>
             <file>file:/home/samu/SGPC/src/Sgpc/UserBundle/Form/UserType.php</file>
+            <file>file:/home/samu/SGPC/src/Sgpc/UserBundle/Entity/Project.php</file>
             <file>file:/home/samu/SGPC/src/Sgpc/UserBundle/Resources/views/User/add.html.twig</file>
             <file>file:/home/samu/SGPC/app/Resources/views/layout.html.twig</file>
-            <file>file:/home/samu/SGPC/app/Resources/views/menu.html.twig</file>
         </group>
     </open-files>
 </project-private>

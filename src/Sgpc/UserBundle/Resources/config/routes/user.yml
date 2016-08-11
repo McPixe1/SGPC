@@ -1,0 +1,31 @@
+sgpc_user_index:
+    path:     /index
+    defaults: { _controller: SgpcUserBundle:User:index }
+    
+sgpc_user_add:
+    path:     /add
+    defaults: { _controller: SgpcUserBundle:User:add }
+
+sgpc_user_create:
+    path:     /create
+    defaults: { _controller: SgpcUserBundle:User:create }
+    methods: POST
+    
+sgpc_user_edit:
+    path:     /edit/{id}
+    defaults: { _controller: SgpcUserBundle:User:edit }
+    
+sgpc_user_view:
+    path:     /view/{id}
+    defaults: { _controller: SgpcUserBundle:User:view }
+    
+sgpc_user_delete:
+    path:     /delete/{id}
+    defaults: { _controller: SgpcUserBundle:User:delete }
+
+sgpc_user_redirect_add:
+    path:     /create
+    defaults:
+        _controller: SgpcUserBundle:User:add
+        path: /user/add
+        permanent: true
