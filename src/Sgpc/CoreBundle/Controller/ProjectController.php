@@ -16,7 +16,6 @@ class ProjectController extends Controller
     {
         
         $currentUser = $this->get('security.context')->getToken()->getUser();
-        $em = $this->getDoctrine()->getManager();
         $projects = $currentUser->getProjects();
         
         return $this->render('SgpcCoreBundle:Project:index.html.twig', array(
@@ -24,45 +23,63 @@ class ProjectController extends Controller
         ));
     }
     
-    public function addAction()
-    {
-        $project = new Project();
-        $form = $this->createCreateForm($project);
-        
-        return $this->render('SgpcCoreBundle:Project:add.html.twig', array(
-            'project' => $project,
-            'form' => $form->createView()
-        ));
-    }
     
-    private function createCreateForm(Project $entity)
-    {
-        $form = $this->createForm(new ProjectType(), $entity, array(
-            'action' => $this->generateUrl('sgpc_project_add'),
-            'method' => 'POST'
-        ));
-        
-        return $form;
-    }
-    
+    /**
+     * Crea una nueva entidad Project
+     */
     public function createAction(Request $request)
     {
-        $project = new Project();
-        $form = $this->createCreateForm($project);
+        $entity = new Project();
+        $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
         
-        if ($form->isValid()) 
-        {
+        if ($form->isValid()) {
+            
             $em = $this->getDoctrine()->getManager();
-            $em->persist($project);
+           
+            $currentUser = $this->get('security.context')->getToken()->getUser();
+            $entity->addUser($currentUser);
+            $em->persist($entity);
             $em->flush();
             
             return $this->redirectToRoute('sgpc_core_homepage');
         }
         
         return $this->render('SgpcCoreBundle:Project:add.html.twig', array(
-            'form' => $form->createView()
+            'entity' => $entity,
+            'form'   => $form->createView(),
         ));
-
+    }
+    
+    
+    /**
+     * Creates a form to create a Project entity.
+     *
+     * @param Project $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createCreateForm(Project $entity)
+    {
+        $form = $this->createForm(new ProjectType(), $entity, array(
+            'action' => $this->generateUrl('sgpc_project_create'),
+            'method' => 'POST',
+        ));
+        $form->add('submit', 'submit', array('label' => 'Create'));
+        return $form;
+    }
+    
+    
+    /**
+     * Displays a form to create a new Project entity.
+     */
+    public function addAction()
+    {
+        $entity = new Project();
+        $form   = $this->createCreateForm($entity);
+        return $this->render('SgpcCoreBundle:Project:add.html.twig', array(
+            'entity' => $entity,
+            'form'   => $form->createView(),
+        ));
     }
 }
