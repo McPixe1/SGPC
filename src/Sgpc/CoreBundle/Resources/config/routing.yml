@@ -1,0 +1,3 @@
+sgpc_core_homepage:
+    path:     /
+    defaults: { _controller: SgpcCoreBundle:Default:index }
