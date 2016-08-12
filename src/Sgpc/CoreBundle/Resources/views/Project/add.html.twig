@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {{ parent() }}
+	<div class="main container">
+		<div class="row well">
+			<div class="col-md-6">
+				<div class="page-header">
+					<h2>Nuevo proyecto</h2>
+				</div>
+				{{ form_start(form, {'attr': {'role' : 'form'}}) }}
+				    <h4 class="text-danger">{{ form_errors(form) }}</h4>
+
+					<fieldset>
+					    <div class="form-group">
+					        {{ form_label(form.name) }}
+					        {{ form_widget(form.name, {'attr': {'class': 'form-control', 'placeholder' : 'Nombre del proyecto'}}) }}
+					        <span class="text-danger">{{ form_errors(form.name) }}</span>
+					    </div>
+
+					    <div class="form-group">
+					        {{ form_label(form.description) }}
+					        {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+					        <span class="text-danger">{{ form_errors(form.description) }}</span>
+					    </div>
+					</fieldset>
+
+				    <p>
+				        {{ form_widget(form.save, {'label' : 'Crear proyecto', 'attr': {'class': 'btn btn-success'}}) }}
+				    </p>
+
+				{{ form_end(form) }}
+			</div>
+		</div>
+	</div>
+{% endblock %}
