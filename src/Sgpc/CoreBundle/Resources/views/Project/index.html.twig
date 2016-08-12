@@ -2,5 +2,27 @@
 
 {% block body %}
     {{ parent() }}
-hola
+<div class="row well">
+  <div class="col-md-12">
+    <div class="panel with-nav-tabs panel-default">
+      <div class="panel-heading">
+        <h3>Mis proyectos</h3>
+      </div>
+      <div class="panel-body">
+        <div class="tab-content">
+          <div class="tab-pane fade in active" id="tabaccount">
+            <ul class="list-group account-list">
+              {% for project in projects %}
+              <li class="list-group-item">
+                <span class="account-name">#{{ project.id }} &nbsp;{{ project.name }}</span>
+              </li>
+              {% endfor %}
+            </ul>
+            <a class="btn btn-default btn-sm" href="{{ path('sgpc_project_add')}}">Nuevo</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

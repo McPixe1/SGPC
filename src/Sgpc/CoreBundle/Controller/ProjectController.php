@@ -9,9 +9,19 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ProjectController extends Controller
 {
+    /*
+     * Listado de proyectos del usuario que se encuentra logeado
+     */
     public function indexAction()
     {
-        return $this->render('SgpcCoreBundle:Project:index.html.twig');
+        
+        $currentUser = $this->get('security.context')->getToken()->getUser();
+        $em = $this->getDoctrine()->getManager();
+        $projects = $currentUser->getProjects();
+        
+        return $this->render('SgpcCoreBundle:Project:index.html.twig', array(
+          'projects' => $projects,
+        ));
     }
     
     public function addAction()
@@ -20,6 +30,7 @@ class ProjectController extends Controller
         $form = $this->createCreateForm($project);
         
         return $this->render('SgpcCoreBundle:Project:add.html.twig', array(
+            'project' => $project,
             'form' => $form->createView()
         ));
     }
@@ -49,7 +60,7 @@ class ProjectController extends Controller
             return $this->redirectToRoute('sgpc_core_homepage');
         }
         
-        return $this->render('SgpcCoreBundle:Project:index.html.twig', array(
+        return $this->render('SgpcCoreBundle:Project:add.html.twig', array(
             'form' => $form->createView()
         ));
 
