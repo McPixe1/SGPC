@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="projects")
  * @ORM\Entity(repositoryClass="Sgpc\UserBundle\Repository\ProjectRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Project
 {
@@ -62,6 +63,12 @@ class Project
      * @ORM\Column(name="lists", type="string", length=255)
      */
     private $lists;
+    
+    
+    public function __construct()
+    {
+        $this->lists = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
 
     /**
@@ -165,6 +172,23 @@ class Project
     {
         return $this->updatedAt;
     }
+    
+    /**
+     * @ORM\PrePersist 
+     */
+    public function setCreatedAtValue()
+    {
+        $this->createdAt = new \DateTime();
+    }
+    
+    /**
+     * @ORM\PrePersist 
+     * @ORM\PreUpdate
+     */
+    public function setUpdatedAtValue()
+    {
+        $this->updatedAt = new \DateTime();
+    }
 
     /**
      * Set lists
@@ -187,5 +211,27 @@ class Project
     public function getLists()
     {
         return $this->lists;
+    }
+    
+    /**
+     * Set user
+     *
+     * @param \EMM\UserBundle\Entity\User $user
+     * @return Task
+     */
+    public function setUser(\Sgpc\UserBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+        return $this;
+    }
+    
+    /**
+     * Get user
+     *
+     * @return \EMM\UserBundle\Entity\User 
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }

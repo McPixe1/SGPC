@@ -12,9 +12,19 @@ use Sgpc\UserBundle\Form\ProjectType;
 class ProjectController extends Controller
 {
     
+    public function indexAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        
+        $dql = "SELECT p FROM SgpcUserBUndle:Project p ORDER BY p.id DESC";
+        $projects = $em->createQuery($dql);
+        
+        return $this->render('SgpcUserBundle:Project:index.html.twig', array('projects'=> $projects));
+    }
+    
     public function addAction()
     {
-        $task = new Project();
+        $project = new Project();
         $form = $this->createCreateForm($project);
         
         return $this->render('SgpcUserBundle:Project:add.html.twig', array(
@@ -22,7 +32,7 @@ class ProjectController extends Controller
         ));
     }
     
-    private function createCreateForm() 
+    private function createCreateForm(Project $entity) 
     {
         $form = $this->createForm(new ProjectType(), $entity, array(
            'action' => $this->generateUrl('sgpc_project_create'),
@@ -30,6 +40,26 @@ class ProjectController extends Controller
         ));
         
         return $form;
+    }
+    
+    public function createAction(Request $request)
+    {
+        $project = new Project();
+        $form = $this->createCreateForm($project);
+        $form->handleRequest($request);
+        
+        if($form->isValid())
+        {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($project);
+            $em->flush();
+            
+            return $this->redirectToRoute('sgpc_project_index');
+        }
+        
+        return $this->render('SgpcUserBundle:Project:add.html.twig', array(
+            'form' => $form->createView()
+        ));
     }
     
 }
