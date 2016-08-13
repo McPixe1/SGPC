@@ -7,17 +7,18 @@ use Sgpc\CoreBundle\Entity\Project;
 use Sgpc\CoreBundle\Form\ProjectType;
 use Symfony\Component\HttpFoundation\Request;
 use Sgpc\CoreBundle\Entity\Listing;
+use Sgpc\CoreBundle\Form\ListingType;
 
 class ListingController extends Controller
 {
     /**
-     * Lists all Listing entities.
+     * Muestra todos los listados del proyecto
      */
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $entities = $em->getRepository('WacTechWebBundle:Listing')->findAll();
-        return $this->render('WacTechWebBundle:Listing:index.html.twig', array(
+        $entities = $em->getRepository('SgpcCoreBundle:Listing')->findAll();
+        return $this->render('SgpcCoreBundle:Listing:index.html.twig', array(
             'entities' => $entities,
         ));
     }
@@ -33,9 +34,9 @@ class ListingController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
-            return $this->redirect($this->generateUrl('project_show', array('id' => $entity->getProject()->getId())));
+            return $this->redirect($this->generateUrl('sgpc_project_view', array('id' => $entity->getProject()->getId())));
         }
-        return $this->render('WacTechWebBundle:Listing:new.html.twig', array(
+        return $this->render('SgpcCoreBundle:Listing:add.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView(),
         ));
@@ -50,7 +51,7 @@ class ListingController extends Controller
     private function createCreateForm(Listing $entity)
     {
         $form = $this->createForm(new ListingType(), $entity, array(
-            'action' => $this->generateUrl('listing_create'),
+            'action' => $this->generateUrl('sgpc_listing_create'),
             'method' => 'POST',
         ));
         $form->add('submit', 'submit', array('label' => 'Create'));
@@ -59,11 +60,11 @@ class ListingController extends Controller
     /**
      * Displays a form to create a new Listing entity.
      */
-    public function newAction()
+    public function addAction()
     {
         $entity = new Listing();
         $form   = $this->createCreateForm($entity);
-        return $this->render('WacTechWebBundle:Listing:new.html.twig', array(
+        return $this->render('SgpcCoreBundle:Listing:add.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView(),
         ));

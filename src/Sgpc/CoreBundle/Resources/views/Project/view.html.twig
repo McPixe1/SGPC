@@ -2,11 +2,29 @@
 
 {% block body %}
     {{ parent() }}
-    <div class="col-xs-9">
-    <h2>{{project.name}}</h2>
-    </div>
     
-    <div class="col-xs-3" style="background-color:lightblue">
+    
+    <div class="project-wrapper">
+        <div class="project-main-content">
+            <div class="project-canvas">
+                <h2>{{project.name}}</h2>
+        
+                <!--LISTADOS-->
+                {% for entity in entities %}
+                    <div class="list-wrapper">
+                        {{ entity.name }}
+                    </div>                       
+                {% endfor %}
+                        
+                <a class="btn btn-default btn-sm" href="{{ path('sgpc_listing_add') }}">New List</a> 
+ 
+            </div>
+        </div>
+    </div>
+                
+                
+    <!--SIDEBAR-->
+    <div class="project-sidebar" style="background-color:lightblue">
         <h4>Miembros del proyecto</h4>
         <ul>
             {% for member in members %}
@@ -15,8 +33,10 @@
             <li>Añadir miembro</li>
         </ul>
                 
-        <h4>Acciones</h4>
+        <h4>Editar proyecto</h4>
         {{form(delete_form)}}
+        
+         <h4>Muro de actividad</h4>
 
     </div>
 

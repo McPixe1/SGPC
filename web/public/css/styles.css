@@ -1,3 +1,62 @@
 body, html{
     background:#eee;
 }
+
+
+/*INTERIOR DE PROYECTO*/
+.project-wrapper{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 52px;
+    bottom: 0;
+}
+
+.project-main-content{
+    margin-right: 339px;
+    height: 100%;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+}
+
+.project-canvas{
+    white-space: nowrap;
+    margin-bottom: 10px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 10px;
+    position: absolute;
+    top: 0;
+    right: 339px;
+    bottom: 0;
+    left: 0;
+}
+
+.project-sidebar{
+    background-color: #edeff0;
+    bottom: 0;
+    position: absolute;
+    right: 0;
+    top: 52px;
+    padding:30px;
+    width: 339px;
+    z-index: 5;
+}
+
+
+/*LISTADOS*/
+.list-wrapper{
+    width: 270px;
+    margin: 0 5px;
+    height: 100%;
+    box-sizing: border-box;
+    display: inline-block;
+    vertical-align: top;
+    white-space: nowrap;
+    background:white;
+}

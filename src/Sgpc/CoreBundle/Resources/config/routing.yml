@@ -19,3 +19,23 @@ sgpc_project_delete:
 sgpc_project_view:
     path:   /project/{id}/view
     defaults: { _controller: SgpcCoreBundle:Project:view }
+
+
+
+
+sgpc_listing:
+    path:     /listing
+    defaults: { _controller: "SgpcCoreBundle:Listing:index" }
+
+sgpc_listing_view:
+    path:     /listing/{id}/view
+    defaults: { _controller: "SgpcCoreBundle:Listing:view" }
+
+sgpc_listing_add:
+    path:     /listing/add
+    defaults: { _controller: "SgpcCoreBundle:Listing:add" }
+
+sgpc_listing_create:
+    path:     /listing/create
+    defaults: { _controller: "SgpcCoreBundle:Listing:create" }
+    methods:  POST

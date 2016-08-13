@@ -6,7 +6,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sgpc\CoreBundle\Entity\Project;
 use Sgpc\CoreBundle\Form\ProjectType;
 use Sgpc\CoreBundle\Entity\Listing;
+use Sgpc\CoreBundle\Form\ListingType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ProjectController extends Controller
 {
@@ -100,13 +102,26 @@ class ProjectController extends Controller
     /**
      * Muestra una entidad proyecto
      */
-    public function viewAction($id)
+    public function viewAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
         $project = $em->getRepository('SgpcCoreBundle:Project')->find($id);
         
         $deleteForm = $this->createDeleteForm($id);
+        
         $members = $project->getUsers();
+        
+        
+        $query = $em->createQuery(
+                'SELECT l
+                FROM SgpcCoreBundle:Listing l
+                JOIN l.project p
+                WHERE p.id = :projectId
+                ORDER BY l.id ASC'
+        )->setParameter('projectId', $id);
+        
+        $entities = $query->getResult();
+        
         
         if (!$project) {
             throw $this->createNotFoundException('Unable to find Project entity.');
@@ -116,6 +131,7 @@ class ProjectController extends Controller
             'project'      => $project,
             'delete_form' => $deleteForm->createView(),
             'members'       => $members,
+            'entities' => $entities,
         ));
     }
     
