@@ -14,13 +14,25 @@ class ProjectController extends Controller
      */
     public function indexAction()
     {
+        $securityContext = $this->container->get('security.authorization_checker');
         
-        $currentUser = $this->get('security.context')->getToken()->getUser();
-        $projects = $currentUser->getProjects();
-        
-        return $this->render('SgpcCoreBundle:Project:index.html.twig', array(
-          'projects' => $projects,
-        ));
+        if ($securityContext->isGranted('IS_AUTHENTICATED_FULLY')) 
+        {
+            $currentUser = $this->get('security.context')->getToken()->getUser();
+
+            $projects = $currentUser->getProjects();
+
+            return $this->render('SgpcCoreBundle:Project:index.html.twig', array(
+              'projects' => $projects,
+            ));     
+        }
+        else
+        {
+            return $this->redirectToRoute('sgpc_project_add');
+        }
+    
+
+
     }
     
     
@@ -53,7 +65,7 @@ class ProjectController extends Controller
     
     
     /**
-     * Creates a form to create a Project entity.
+     * Crea el formulario para crear una entidad proyecto
      *
      * @param Project $entity The entity
      *
@@ -71,7 +83,7 @@ class ProjectController extends Controller
     
     
     /**
-     * Displays a form to create a new Project entity.
+     * Muestra el formulario
      */
     public function addAction()
     {
