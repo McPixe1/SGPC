@@ -10,7 +10,8 @@ use Symfony\Component\HttpFoundation\Request;
 class ProjectController extends Controller
 {
     /*
-     * Listado de proyectos del usuario que se encuentra logeado
+     * Muestra el listado de proyectos del usuario si esta logeado,
+     * en caso contrario lo redirige al registro
      */
     public function indexAction()
     {
