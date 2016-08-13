@@ -106,6 +106,7 @@ class ProjectController extends Controller
         $project = $em->getRepository('SgpcCoreBundle:Project')->find($id);
         
         $deleteForm = $this->createDeleteForm($id);
+        $members = $project->getUsers();
         
         if (!$project) {
             throw $this->createNotFoundException('Unable to find Project entity.');
@@ -114,6 +115,7 @@ class ProjectController extends Controller
         return $this->render('SgpcCoreBundle:Project:view.html.twig', array(
             'project'      => $project,
             'delete_form' => $deleteForm->createView(),
+            'members'       => $members,
         ));
     }
     

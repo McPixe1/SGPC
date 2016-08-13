@@ -2,8 +2,22 @@
 
 {% block body %}
     {{ parent() }}
+    <div class="col-xs-9">
+    <h2>{{project.name}}</h2>
+    </div>
+    
+    <div class="col-xs-3" style="background-color:lightblue">
+        <h4>Miembros del proyecto</h4>
+        <ul>
+            {% for member in members %}
+                <li>{{ member.username }}</li>
+            {% endfor %}
+            <li>Añadir miembro</li>
+        </ul>
+                
+        <h4>Acciones</h4>
+        {{form(delete_form)}}
 
-    <p>Interior del proyecto {{project.name}}</p>
-    {{form(delete_form)}}
+    </div>
 
 {% endblock %}
