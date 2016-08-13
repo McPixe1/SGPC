@@ -12,4 +12,16 @@ use Doctrine\ORM\EntityRepository;
  */
 class ListingRepository extends EntityRepository
 {
+    public function findListsByProject($id)
+    {
+        return $this->getEntityManager()->createQuery(
+            'SELECT l
+            FROM SgpcCoreBundle:Listing l
+            JOIN l.project p
+            WHERE p.id = :projectId
+            ORDER BY l.id ASC'
+        )->setParameter('projectId', $id)->getResult();
+    }
 }
+  
+ 

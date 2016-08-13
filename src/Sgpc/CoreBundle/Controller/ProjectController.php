@@ -111,16 +111,7 @@ class ProjectController extends Controller
         
         $members = $project->getUsers();
         
-        
-        $query = $em->createQuery(
-                'SELECT l
-                FROM SgpcCoreBundle:Listing l
-                JOIN l.project p
-                WHERE p.id = :projectId
-                ORDER BY l.id ASC'
-        )->setParameter('projectId', $id);
-        
-        $entities = $query->getResult();
+        $entities = $em->getRepository('SgpcCoreBundle:Listing')->findListsByProject($id);
         
         
         if (!$project) {
