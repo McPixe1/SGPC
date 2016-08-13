@@ -21,6 +21,12 @@ class Project
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Listing", mappedBy="project",  cascade={"remove"})
+     */
+    protected $listings;
+    
 
     /**
      * @ORM\ManyToMany(targetEntity="User", inversedBy="projects", cascade={"persist"})
@@ -135,7 +141,7 @@ class Project
      */
     public function __construct()
     {
-        $this->users = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->listings = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -159,5 +165,38 @@ class Project
     public function removeUser(\Sgpc\CoreBundle\Entity\User $users)
     {
         $this->users->removeElement($users);
+    }
+
+    /**
+     * Add listings
+     *
+     * @param \Sgpc\CoreBundle\Entity\Listing $listings
+     * @return Project
+     */
+    public function addListing(\Sgpc\CoreBundle\Entity\Listing $listings)
+    {
+        $this->listings[] = $listings;
+
+        return $this;
+    }
+
+    /**
+     * Remove listings
+     *
+     * @param \Sgpc\CoreBundle\Entity\Listing $listings
+     */
+    public function removeListing(\Sgpc\CoreBundle\Entity\Listing $listings)
+    {
+        $this->listings->removeElement($listings);
+    }
+
+    /**
+     * Get listings
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getListings()
+    {
+        return $this->listings;
     }
 }

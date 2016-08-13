@@ -10,3 +10,12 @@ sgpc_project_create:
     path:   /project/create
     defaults: { _controller: SgpcCoreBundle:Project:create }
     methods: POST
+
+sgpc_project_delete:
+    path:   /project/{id}/delete
+    defaults: { _controller: SgpcCoreBundle:Project:delete }
+    methods: [POST, DELETE]
+    
+sgpc_project_view:
+    path:   /project/{id}/view
+    defaults: { _controller: SgpcCoreBundle:Project:view }

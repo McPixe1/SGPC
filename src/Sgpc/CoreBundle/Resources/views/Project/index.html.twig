@@ -17,8 +17,7 @@
                         <p>{{ project.description}}</p>
                     </div>
                     <div class="panel-footer">
-                        <a href="#" class="btn btn-sm btn-default">Ver</a>
-                        <a href="#" class="btn btn-sm btn-default">Eliminar</a>
+                        <a href="{{ path('sgpc_project_view', { 'id': project.id }) }}" class="btn btn-sm btn-default">Ver</a>
                     </div>
                 </div>
             </div>

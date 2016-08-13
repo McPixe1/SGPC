@@ -5,6 +5,7 @@ namespace Sgpc\CoreBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sgpc\CoreBundle\Entity\Project;
 use Sgpc\CoreBundle\Form\ProjectType;
+use Sgpc\CoreBundle\Entity\Listing;
 use Symfony\Component\HttpFoundation\Request;
 
 class ProjectController extends Controller
@@ -42,8 +43,8 @@ class ProjectController extends Controller
      */
     public function createAction(Request $request)
     {
-        $entity = new Project();
-        $form = $this->createCreateForm($entity);
+        $project = new Project();
+        $form = $this->createCreateForm($project);
         $form->handleRequest($request);
         
         if ($form->isValid()) {
@@ -51,15 +52,15 @@ class ProjectController extends Controller
             $em = $this->getDoctrine()->getManager();
            
             $currentUser = $this->get('security.context')->getToken()->getUser();
-            $entity->addUser($currentUser);
-            $em->persist($entity);
+            $project->addUser($currentUser);
+            $em->persist($project);
             $em->flush();
             
-            return $this->redirectToRoute('sgpc_core_homepage');
+            return $this->redirectToRoute('sgpc_project_view', array('id' => $project->getId()));
         }
         
         return $this->render('SgpcCoreBundle:Project:add.html.twig', array(
-            'entity' => $entity,
+            'project' => $project,
             'form'   => $form->createView(),
         ));
     }
@@ -94,5 +95,61 @@ class ProjectController extends Controller
             'entity' => $entity,
             'form'   => $form->createView(),
         ));
+    }
+    
+    /**
+     * Muestra una entidad proyecto
+     */
+    public function viewAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $project = $em->getRepository('SgpcCoreBundle:Project')->find($id);
+        
+        $deleteForm = $this->createDeleteForm($id);
+        
+        if (!$project) {
+            throw $this->createNotFoundException('Unable to find Project entity.');
+        }
+        
+        return $this->render('SgpcCoreBundle:Project:view.html.twig', array(
+            'project'      => $project,
+            'delete_form' => $deleteForm->createView(),
+        ));
+    }
+    
+    /**
+     * Elimina la entidad proyecto
+     */
+    public function deleteAction(Request $request, $id)
+    {
+        $form = $this->createDeleteForm($id);
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $project = $em->getRepository('SgpcCoreBundle:Project')->find($id);
+            if (!$project) {
+                throw $this->createNotFoundException('Unable to find Project entity.');
+            }
+            $em->remove($project);
+            $em->flush();
+        }
+        return $this->redirectToRoute('sgpc_core_homepage');
+    }
+    
+    /**
+     * Crea el form necesario para eliminar una entidad project
+     *
+     * @param mixed $id The entity id
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createDeleteForm($id)
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl('sgpc_project_delete', array('id' => $id)))
+            ->setMethod('DELETE')
+            ->add('submit', 'submit', array('label' => 'Delete', 'attr' => ['class' => 'btn btn-default btn-sm']))
+            ->getForm()
+        ;
     }
 }

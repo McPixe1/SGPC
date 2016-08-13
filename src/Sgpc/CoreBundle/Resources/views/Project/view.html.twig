@@ -1,0 +1,9 @@
+{%  extends 'base.html.twig' %}
+
+{% block body %}
+    {{ parent() }}
+
+    <p>Interior del proyecto {{project.name}}</p>
+    {{form(delete_form)}}
+
+{% endblock %}
