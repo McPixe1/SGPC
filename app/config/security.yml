@@ -18,7 +18,7 @@ security:
                 csrf_provider: security.csrf.token_manager
             logout:       
                 path: /logout
-                target: /login
+                target: /register
             anonymous:    true
 
     access_control:

@@ -1,7 +1,7 @@
 sgpc_core_homepage:
     path:     /
     defaults: { _controller: SgpcCoreBundle:Project:index }
-    
+       
 sgpc_project_add:
     path:   /project/add
     defaults: { _controller: SgpcCoreBundle:Project:add }

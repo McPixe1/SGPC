@@ -28,7 +28,7 @@ class ProjectController extends Controller
         }
         else
         {
-            return $this->redirectToRoute('sgpc_project_add');
+            return $this->redirectToRoute('fos_user_registration_register');
         }
     
 
