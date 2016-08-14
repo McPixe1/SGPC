@@ -12,7 +12,15 @@
                 <!--LISTADOS-->
                 {% for entity in entities %}
                     <div class="list-wrapper">
-                        {{ entity.name }}
+                        <div class="list">
+                            <div class="list-header">
+                                {{ entity.name }}
+                            </div>
+                            <div class="list-body">
+                                <a class="" href="#">Añadir una tarea</a>
+                            </div>                           
+                        
+                        </div>
                     </div>                       
                 {% endfor %}
                         
@@ -24,7 +32,7 @@
                 
                 
     <!--SIDEBAR-->
-    <div class="project-sidebar" style="background-color:lightblue">
+    <div class="project-sidebar">
         <h4>Miembros del proyecto</h4>
         <ul>
             {% for member in members %}

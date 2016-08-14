@@ -115,7 +115,7 @@ class ProjectController extends Controller
         
         
         if (!$project) {
-            throw $this->createNotFoundException('Unable to find Project entity.');
+            throw $this->createNotFoundException('No se ha encontrado la entidad proyecto.');
         }
         
         return $this->render('SgpcCoreBundle:Project:view.html.twig', array(
@@ -137,7 +137,7 @@ class ProjectController extends Controller
             $em = $this->getDoctrine()->getManager();
             $project = $em->getRepository('SgpcCoreBundle:Project')->find($id);
             if (!$project) {
-                throw $this->createNotFoundException('Unable to find Project entity.');
+                throw $this->createNotFoundException('No se ha encontrado la entidad proyecto.');
             }
             $em->remove($project);
             $em->flush();
