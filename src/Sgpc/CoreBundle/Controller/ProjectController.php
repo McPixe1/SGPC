@@ -142,6 +142,7 @@ class ProjectController extends Controller
             $em->remove($project);
             $em->flush();
         }
+        
         return $this->redirectToRoute('sgpc_core_homepage');
     }
     
