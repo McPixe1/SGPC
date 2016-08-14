@@ -63,7 +63,7 @@ class ProjectController extends Controller
         
         return $this->render('SgpcCoreBundle:Project:add.html.twig', array(
             'project' => $project,
-            'form'   => $form->createView(),
+            'create_form'   => $form->createView(),
         ));
     }
     
@@ -81,13 +81,13 @@ class ProjectController extends Controller
             'action' => $this->generateUrl('sgpc_project_create'),
             'method' => 'POST',
         ));
-        $form->add('submit', 'submit', array('label' => 'Create'));
+        $form->add('submit', 'submit', array('label' => 'Crear', 'attr' => ['class' => 'btn btn-success btn-sm']));
         return $form;
     }
     
     
     /**
-     * Muestra el formulario
+     * Muestra el formulario de creacion de proyecto
      */
     public function addAction()
     {
@@ -95,7 +95,7 @@ class ProjectController extends Controller
         $form   = $this->createCreateForm($entity);
         return $this->render('SgpcCoreBundle:Project:add.html.twig', array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'create_form'   => $form->createView(),
         ));
     }
     

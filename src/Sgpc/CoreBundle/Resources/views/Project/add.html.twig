@@ -2,15 +2,25 @@
 
 {% block body %}
     {{ parent() }}
-	    <h1>Project creation</h1>
+    
 
-    {{ form(form) }}
+    
+    <div class="main container">
+        <div class="row">
+            <div class="col-md-6">
+                    <div class="page-header">
+                        <h2>Nuevo Proyecto</h2>
+                    </div>
 
-  <ul class="">
-    <li>
-        <a href="{{ path('sgpc_core_homepage')}}">
-            Volver a mis proyectos
-        </a>
-    </li>
-</ul>
+                        {{ include ('/forms/Project/create_form.html.twig') }}
+                    <div class="col-xs-12">
+                        <a href="{{ path('sgpc_core_homepage')}}">
+                            Volver a mis proyectos
+                        </a>
+                    </div>
+            </div>
+         
+        </div>
+    </div>
+                           
 {% endblock %}
