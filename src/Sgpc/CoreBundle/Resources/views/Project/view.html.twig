@@ -11,18 +11,21 @@
         
                 <!--LISTADOS-->
                 {% for list in lists %}
-                    <div class="list-wrapper">
+                    <div class="list-wrapper" data-id="{{ list.id }}">
                         <div class="list">
                             <div class="list-header">
                                 {{ list.name }}
                             </div>
                             <div class="list-body">
                                 {% for task in tasks %}
-                                    <div class="task">
-                                        <div class="task-title">
-                                            {{task.name}}
+                                    <a href="{{ path('sgpc_task_view', { 'id': task.id }) }}">
+                                        <div class="task">
+                                            <div class="task-title">
+                                                {{task.name}}
+                                            </div>
                                         </div>
-                                    </div>
+                                    </a>
+
 
                                 {% endfor %}
                                 <a class="" href="{{ path('sgpc_task_add') }}">Añadir una tarea</a>

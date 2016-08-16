@@ -58,7 +58,9 @@ class ProjectController extends Controller
             $em->persist($project);
             $em->flush();
             
-            return $this->redirectToRoute('sgpc_project_view', array('id' => $project->getId()));
+            return $this->redirectToRoute('sgpc_project_view', array(
+                'id' => $project->getId()
+            ));
         }
         
         return $this->render('SgpcCoreBundle:Project:add.html.twig', array(
@@ -113,7 +115,13 @@ class ProjectController extends Controller
         
         $lists = $em->getRepository('SgpcCoreBundle:Listing')->findListsByProject($id);
         
-        $tasks = $em->getRepository('SgpcCoreBundle:Task')->findAll();
+        $tasks = null;
+        
+        foreach($lists as $list)
+        {
+            $listId = $list->getId();
+            $tasks = $em->getRepository('SgpcCoreBundle:Task')->findTasksByList($listId);
+        }
         
         if (!$project) {
             throw $this->createNotFoundException('No se ha encontrado la entidad proyecto.');
