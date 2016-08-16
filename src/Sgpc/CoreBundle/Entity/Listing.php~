@@ -26,6 +26,11 @@ class Listing
      * @ORM\JoinColumn(name="project_id", referencedColumnName="id")
      */
     protected $project;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Task", mappedBy="listing",  cascade={"remove"})
+     */
+    protected $tasks;
 
     /**
      * @var string

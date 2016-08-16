@@ -10,14 +10,23 @@
                 <h2>{{project.name}}</h2>
         
                 <!--LISTADOS-->
-                {% for entity in entities %}
+                {% for list in lists %}
                     <div class="list-wrapper">
                         <div class="list">
                             <div class="list-header">
-                                {{ entity.name }}
+                                {{ list.name }}
                             </div>
                             <div class="list-body">
-                                <a class="" href="#">Añadir una tarea</a>
+                                {% for task in tasks %}
+                                    <div class="task">
+                                        <div class="task-title">
+                                            {{task.name}}
+                                        </div>
+                                    </div>
+
+                                {% endfor %}
+                                <a class="" href="{{ path('sgpc_task_add') }}">Añadir una tarea</a>
+
                             </div>                           
                         
                         </div>

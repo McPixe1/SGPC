@@ -26,6 +26,11 @@ class Listing
      * @ORM\JoinColumn(name="project_id", referencedColumnName="id")
      */
     protected $project;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Task", mappedBy="listing",  cascade={"remove"})
+     */
+    protected $tasks;
 
     /**
      * @var string
@@ -95,5 +100,45 @@ class Listing
     public function getName()
     {
         return $this->name;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->tasks = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add tasks
+     *
+     * @param \Sgpc\CoreBundle\Entity\Task $tasks
+     * @return Listing
+     */
+    public function addTask(\Sgpc\CoreBundle\Entity\Task $tasks)
+    {
+        $this->tasks[] = $tasks;
+
+        return $this;
+    }
+
+    /**
+     * Remove tasks
+     *
+     * @param \Sgpc\CoreBundle\Entity\Task $tasks
+     */
+    public function removeTask(\Sgpc\CoreBundle\Entity\Task $tasks)
+    {
+        $this->tasks->removeElement($tasks);
+    }
+
+    /**
+     * Get tasks
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTasks()
+    {
+        return $this->tasks;
     }
 }

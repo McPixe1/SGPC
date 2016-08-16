@@ -111,18 +111,20 @@ class ProjectController extends Controller
         
         $members = $project->getUsers();
         
-        $entities = $em->getRepository('SgpcCoreBundle:Listing')->findListsByProject($id);
+        $lists = $em->getRepository('SgpcCoreBundle:Listing')->findListsByProject($id);
         
+        $tasks = $em->getRepository('SgpcCoreBundle:Task')->findAll();
         
         if (!$project) {
             throw $this->createNotFoundException('No se ha encontrado la entidad proyecto.');
         }
         
         return $this->render('SgpcCoreBundle:Project:view.html.twig', array(
-            'project'      => $project,
-            'delete_form' => $deleteForm->createView(),
+            'project'       => $project,
+            'delete_form'   => $deleteForm->createView(),
             'members'       => $members,
-            'entities' => $entities,
+            'lists'         => $lists,
+            'tasks'         => $tasks,
         ));
     }
     

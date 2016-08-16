@@ -39,3 +39,22 @@ sgpc_listing_create:
     path:     /listing/create
     defaults: { _controller: "SgpcCoreBundle:Listing:create" }
     methods:  POST
+    
+    
+    
+sgpc_task:
+    path:     /task
+    defaults: { _controller: "SgpcCoreBundle:Task:index" }
+
+sgpc_task_view:
+    path:     /task/{id}/view
+    defaults: { _controller: "SgpcCoreBundle:Task:view" }
+
+sgpc_task_add:
+    path:     /task/add
+    defaults: { _controller: "SgpcCoreBundle:Task:add" }
+
+sgpc_task_create:
+    path:     /task/create
+    defaults: { _controller: "SgpcCoreBundle:Task:create" }
+    methods:  POST
