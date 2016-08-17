@@ -113,15 +113,15 @@ class ProjectController extends Controller
         
         $members = $project->getUsers();
         
-        $lists = $em->getRepository('SgpcCoreBundle:Listing')->findListsByProject($id);
+        //$lists = $em->getRepository('SgpcCoreBundle:Listing')->findListsByProject($id);
         
         $tasks = null;
         
-        foreach($lists as $list)
+        /*foreach($lists as $list)
         {
             $listId = $list->getId();
             $tasks = $em->getRepository('SgpcCoreBundle:Task')->findTasksByList($listId);
-        }
+        }*/
         
         if (!$project) {
             throw $this->createNotFoundException('No se ha encontrado la entidad proyecto.');
@@ -131,8 +131,8 @@ class ProjectController extends Controller
             'project'       => $project,
             'delete_form'   => $deleteForm->createView(),
             'members'       => $members,
-            'lists'         => $lists,
-            'tasks'         => $tasks,
+            //'lists'         => $lists,
+            //'tasks'         => $tasks,
         ));
     }
     

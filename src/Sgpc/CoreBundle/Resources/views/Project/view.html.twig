@@ -8,7 +8,8 @@
         <div class="project-main-content">
             <div class="project-canvas">
                 <h2>{{project.name}}</h2>
-        
+                
+                {% set lists = project.listings %}
                 <!--LISTADOS-->
                 {% for list in lists %}
                     <div class="list-wrapper" data-id="{{ list.id }}">
@@ -17,6 +18,7 @@
                                 {{ list.name }}
                             </div>
                             <div class="list-body">
+                                {% set tasks = list.tasks%}
                                 {% for task in tasks %}
                                     <a href="{{ path('sgpc_task_view', { 'id': task.id }) }}">
                                         <div class="task">
@@ -24,9 +26,7 @@
                                                 {{task.name}}
                                             </div>
                                         </div>
-                                    </a>
-
-
+                                    </a-->
                                 {% endfor %}
                                 <a class="" href="{{ path('sgpc_task_add') }}">Añadir una tarea</a>
 
