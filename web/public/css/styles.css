@@ -188,6 +188,6 @@ body, html{
     display:none;
 }
 
-.task-form.open{
-    display:block;
+.list-form{
+    display:none;
 }

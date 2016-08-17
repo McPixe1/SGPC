@@ -1,15 +1,1 @@
-{% extends 'base.html.twig' %}
-
-{% block body -%}
-    <h1>Listing creation</h1>
-
-    {{ form(form) }}
-
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('sgpc_listing') }}">
-            Back to the list
-        </a>
-    </li>
-</ul>
-{% endblock %}
+{{ include ('/forms/Listing/create_form.html.twig') }}

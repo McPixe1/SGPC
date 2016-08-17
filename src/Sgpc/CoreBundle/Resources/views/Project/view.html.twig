@@ -37,8 +37,18 @@
                         </div>
                     </div>                       
                 {% endfor %}
-                        
-                <a class="btn btn-default btn-sm" href="{{ path('sgpc_listing_add') }}">New List</a>  
+                                        
+                <div class="list-wrapper">                  
+                    <div class="list">    
+                        <div class="list-header">
+                            <a class="js-toggle-list-form" href="javascript:void(0);">Nueva lista</a>
+                        </div>                        
+                        <div class="list-body">
+                            {{ render(controller('SgpcCoreBundle:Listing:add', {'projectId': project.id})) }}
+                        </div>                                
+                    </div>                            
+                </div>
+                            
             </div>
         </div>
     </div>
@@ -67,8 +77,11 @@
     {{ parent() }}
     <script>
         $('document').ready(function(){
-           $('.js-toggle-task-form').click(function(){
-              $(this).parent('.list-body').find('.task-form').toggle();
+            $('.js-toggle-task-form').click(function(){
+               $(this).parent('.list-body').find('.task-form').toggle();
+            });
+            $('.js-toggle-list-form').click(function(){
+              $(this).parents('.list').find('.list-form').toggle();
            }); 
         });
     </script>

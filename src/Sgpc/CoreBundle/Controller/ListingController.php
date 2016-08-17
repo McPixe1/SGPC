@@ -66,7 +66,7 @@ class ListingController extends Controller
         $form   = $this->createCreateForm($entity);
         return $this->render('SgpcCoreBundle:Listing:add.html.twig', array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'create_form'   => $form->createView(),
         ));
     }
 }
