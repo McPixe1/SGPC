@@ -1,5 +1,7 @@
 {%  extends 'base.html.twig' %}
 
+{% set list = task.listing %}
+{% set project = list.project %}
 {% block body %}
     {{ parent() }}
     
@@ -7,7 +9,8 @@
     {{task.name}}
     
     {{task.description}} 
-                
+    
+    <a href="{{ path('sgpc_project_view', { 'id': project.id })  }}">Volver al proyecto</a>
 
 
 {% endblock %}

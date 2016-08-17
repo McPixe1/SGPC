@@ -28,7 +28,9 @@
                                         </div>
                                     </a-->
                                 {% endfor %}
-                                <a class="" href="{{ path('sgpc_task_add') }}">Añadir una tarea</a>
+                                <a class="js-toggle-task-form" href="javascript:void(0);">Añadir una tarea</a>
+                                    
+                                {{ render(controller('SgpcCoreBundle:Task:add', {'listId': list.id})) }}
 
                             </div>                           
                         
@@ -59,4 +61,15 @@
 
     </div>
 
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $('document').ready(function(){
+           $('.js-toggle-task-form').click(function(){
+              $(this).parent('.list-body').find('.task-form').toggle();
+           }); 
+        });
+    </script>
 {% endblock %}

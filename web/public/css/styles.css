@@ -179,3 +179,15 @@ body, html{
     color: rgba(0,0,0,0.87);
     
 }
+
+
+
+/*forms*/
+
+.task-form{
+    display:none;
+}
+
+.task-form.open{
+    display:block;
+}
