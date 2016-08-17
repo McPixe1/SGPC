@@ -1,0 +1,16 @@
+{{ form_start(create_form, {'attr': {'novalidate': 'novalidate', 'role' : 'form', 'class' : 'task-form' }}) }}
+    <h4 class="text-danger">{{ form_errors(create_form) }}</h4>
+
+    <fieldset>
+        <div class="form-group">
+            {{ form_widget(create_form.name, {'attr': {'class': 'form-control', 'placeholder' : 'Introduce el nombre...'}}) }}
+            <span class="text-danger">{{ form_errors(create_form.name) }}</span>
+        </div>
+
+        <div class="form-group">
+            {{ form_widget(create_form.description, {'attr': {'class': 'form-control', 'placeholder' : 'Introduce la descripción...'}}) }}
+            <span class="text-danger">{{ form_errors(create_form.description) }}</span>
+        </div>
+    </fieldset>
+
+{{ form_end(create_form) }}

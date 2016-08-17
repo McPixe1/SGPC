@@ -55,7 +55,10 @@ class TaskController extends Controller
             'action' => $this->generateUrl('sgpc_task_create'),
             'method' => 'POST',
         ));
-        $form->add('submit', 'submit', array('label' => 'Create'));
+        $form->add('submit', 'submit', array(
+            'label' => 'Crear tarea',
+            'attr' => array('class' => 'btn btn-sm btn-success')
+        ));
         return $form;
     }
     /**
@@ -67,7 +70,7 @@ class TaskController extends Controller
         $form   = $this->createCreateForm($entity);
         return $this->render('SgpcCoreBundle:Task:add.html.twig', array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'create_form'   => $form->createView(),
         ));
     }
     /**
