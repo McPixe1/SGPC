@@ -155,7 +155,7 @@ class ProjectController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('sgpc_project_delete', array('id' => $id)))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete', 'attr' => ['class' => 'btn btn-default btn-sm']))
+            ->add('submit', 'submit', array('label' => 'Eliminar', 'attr' => ['class' => 'btn btn-danger btn-sm']))
             ->getForm()
         ;
     }
