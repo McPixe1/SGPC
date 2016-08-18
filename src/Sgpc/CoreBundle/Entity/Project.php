@@ -38,6 +38,11 @@ class Project
      * @var ArrayCollection
      */
     protected $users;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="User")
+     */
+    protected $owner;
 
     /**
      * @var string
@@ -198,5 +203,28 @@ class Project
     public function getListings()
     {
         return $this->listings;
+    }
+
+    /**
+     * Set owner
+     *
+     * @param \Sgpc\CoreBundle\Entity\User $owner
+     * @return Project
+     */
+    public function setOwner(\Sgpc\CoreBundle\Entity\User $owner = null)
+    {
+        $this->owner = $owner;
+
+        return $this;
+    }
+
+    /**
+     * Get owner
+     *
+     * @return \Sgpc\CoreBundle\Entity\User 
+     */
+    public function getOwner()
+    {
+        return $this->owner;
     }
 }

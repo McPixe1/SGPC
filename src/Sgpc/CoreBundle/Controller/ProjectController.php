@@ -55,6 +55,7 @@ class ProjectController extends Controller
            
             $currentUser = $this->get('security.context')->getToken()->getUser();
             $project->addUser($currentUser);
+            $project->setOwner($currentUser);
             $em->persist($project);
             $em->flush();
             
@@ -111,8 +112,6 @@ class ProjectController extends Controller
         
         $deleteForm = $this->createDeleteForm($id);
         
-        $members = $project->getUsers();
-
         if (!$project) {
             throw $this->createNotFoundException('No se ha encontrado la entidad proyecto.');
         }
@@ -120,7 +119,6 @@ class ProjectController extends Controller
         return $this->render('SgpcCoreBundle:Project:view.html.twig', array(
             'project'       => $project,
             'delete_form'   => $deleteForm->createView(),
-            'members'       => $members,
 
         ));
     }

@@ -53,13 +53,18 @@
         </div>
     </div>
                 
-                
+    {% set owner = project.getOwner %}
+    {% set members = project.getUsers %}           
     <!--SIDEBAR-->
     <div class="project-sidebar">
         <h4>Miembros del proyecto</h4>
         <ul>
             {% for member in members %}
-                <li>{{ member.username }}</li>
+                {% if owner == member %}
+                    <li><strong>{{member.username}}</strong></li>
+                {% else %}
+                    <li>{{ member.username }}</li>
+                {% endif %}
             {% endfor %}
             <li>Añadir miembro</li>
         </ul>
