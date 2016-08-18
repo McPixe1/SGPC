@@ -20,11 +20,7 @@ class TaskController extends Controller
         ));
     }
     /**
-     * Creates a new Task entity.
-     *
-     * @param Request $request
-     *
-     * @return resource view
+     * Crea una nueva entidad Task
      */
     public function createAction(Request $request)
     {
@@ -43,11 +39,7 @@ class TaskController extends Controller
         ));
     }
     /**
-     * Creates a form to create a Task entity.
-     *
-     * @param Task $entity The entity
-     *
-     * @return \Symfony\Component\Form\Form The form
+     * Crea el form para crear una nueva entidad Task
      */
     private function createCreateForm(Task $entity)
     {
@@ -62,7 +54,7 @@ class TaskController extends Controller
         return $form;
     }
     /**
-     * Displays a form to create a new Task entity.
+     * Display del form para crear una nueva entidad Task
      */
     public function addAction()
     {
@@ -74,9 +66,7 @@ class TaskController extends Controller
         ));
     }
     /**
-     * Finds and displays a Task entity.
-     *
-     * @param int $id The Task entity
+     * Muestra la entidad Task
      */
     public function viewAction($id)
     {
@@ -85,10 +75,8 @@ class TaskController extends Controller
         if (!$task) {
             throw $this->createNotFoundException('Unable to find Task entity.');
         }
-//        $deleteForm = $this->createDeleteForm($id);
         return $this->render('SgpcCoreBundle:Task:view.html.twig', array(
             'task'      => $task,
-//            'delete_form' => $deleteForm->createView(),
         ));
     }
 }

@@ -23,7 +23,7 @@ class ListingController extends Controller
         ));
     }
     /**
-     * Creates a new Listing entity.
+     * Crea una nueva entidad Listing
      */
     public function createAction(Request $request)
     {
@@ -42,11 +42,7 @@ class ListingController extends Controller
         ));
     }
     /**
-     * Creates a form to create a Listing entity.
-     *
-     * @param Listing $entity The entity
-     *
-     * @return \Symfony\Component\Form\Form The form
+     * Crea el formulario para crear una entidad Listing
      */
     private function createCreateForm(Listing $entity)
     {
@@ -58,7 +54,7 @@ class ListingController extends Controller
         return $form;
     }
     /**
-     * Displays a form to create a new Listing entity.
+     * Display del form para crear una nueva entidad Listing
      */
     public function addAction()
     {
