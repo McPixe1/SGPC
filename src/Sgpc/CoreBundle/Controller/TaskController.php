@@ -22,12 +22,16 @@ class TaskController extends Controller
     /**
      * Crea una nueva entidad Task
      */
-    public function createAction(Request $request)
+    public function createAction(Request $request, $id)
     {
         $entity = new Task();
+
+        $parent = $this->getDoctrine()->getRepository('SgpcCoreBundle:Listing')->findOneById($id);
+        
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
         if ($form->isValid()) {
+            $entity->setListing($parent);
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
@@ -38,13 +42,9 @@ class TaskController extends Controller
             'form'   => $form->createView(),
         ));
     }
-    /**
-     * Crea el form para crear una nueva entidad Task
-     */
-    private function createCreateForm(Task $entity)
-    {
+    
+    public function createCreateForm(Task $entity){
         $form = $this->createForm(new TaskType(), $entity, array(
-            'action' => $this->generateUrl('sgpc_task_create'),
             'method' => 'POST',
         ));
         $form->add('submit', 'submit', array(
@@ -53,13 +53,22 @@ class TaskController extends Controller
         ));
         return $form;
     }
+
     /**
      * Display del form para crear una nueva entidad Task
      */
-    public function addAction()
+    public function addAction($id)
     {
         $entity = new Task();
-        $form   = $this->createCreateForm($entity);
+          $form = $this->createForm(new TaskType(), $entity, array(
+            'action' => $this->generateUrl('sgpc_task_create', array('id' => $id)),
+            'method' => 'POST',
+        ));
+        $form->add('submit', 'submit', array(
+            'label' => 'Crear tarea',
+            'attr' => array('class' => 'btn btn-sm btn-success')
+        ));    
+        
         return $this->render('SgpcCoreBundle:Task:add.html.twig', array(
             'entity' => $entity,
             'create_form'   => $form->createView(),

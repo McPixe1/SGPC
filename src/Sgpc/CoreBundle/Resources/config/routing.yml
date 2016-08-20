@@ -55,6 +55,6 @@ sgpc_task_add:
     defaults: { _controller: "SgpcCoreBundle:Task:add" }
 
 sgpc_task_create:
-    path:     /task/create
+    path:     /task/create/{id}
     defaults: { _controller: "SgpcCoreBundle:Task:create" }
     methods:  POST
