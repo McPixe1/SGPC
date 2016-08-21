@@ -111,6 +111,7 @@ class ProjectController extends Controller
         $project = $em->getRepository('SgpcCoreBundle:Project')->find($id);
         
         $deleteForm = $this->createDeleteForm($id);
+        $addmemberForm = $this->createAddMemberForm($id);
         
         if (!$project) {
             throw $this->createNotFoundException('No se ha encontrado la entidad proyecto.');
@@ -119,6 +120,7 @@ class ProjectController extends Controller
         return $this->render('SgpcCoreBundle:Project:view.html.twig', array(
             'project'       => $project,
             'delete_form'   => $deleteForm->createView(),
+            'addmember_form'   => $addmemberForm->createView(),
 
         ));
     }
@@ -158,5 +160,57 @@ class ProjectController extends Controller
             ->add('submit', 'submit', array('label' => 'Eliminar', 'attr' => ['class' => 'btn btn-danger btn-sm']))
             ->getForm()
         ;
+    }
+    
+    /*
+     * Crea el formulario para añadir un miembro al proyecto
+     */
+    private function createAddMemberForm($id)
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl('sgpc_project_addmember', array('id' => $id)))
+            ->setMethod('POST')
+            ->add('user', 'entity', array(
+                'mapped'   => false, 
+                'class'    => 'SgpcCoreBundle:User',
+            ))
+            ->add('submit', 'submit', array('label' => 'Añadir usuario'))
+            ->getForm();
+    }
+    
+    
+    /**
+     *Add member to project.
+     */
+    public function addMemberAction(Request $request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $form = $this->createAddMemberForm($id);
+        $form->handleRequest($request);
+        
+        $project = $em->getRepository('SgpcCoreBundle:Project')->findOneById($id);
+        
+        if ($form->isValid()) {
+            
+            $em = $this->getDoctrine()->getManager();
+            
+            $formuser = $form->getData('user');
+                  
+            $user = $em->getRepository('SgpcCoreBundle:User')->findOneBy(array('username' => $formuser));
+                    
+            $project->addUser($user);
+            $em->persist($project);
+            $em->persist($user);
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('sgpc_project_view', array('id' => $project->getId())));
+        }       
+        
+         return $this->render('SgpcCoreBundle:Project:addmember.html.twig', array(
+            'project' => $project,
+            'addmember_form'   => $form->createView(),
+        ));
+        
+        
     }
 }

@@ -20,6 +20,9 @@ sgpc_project_view:
     path:   /project/{id}/view
     defaults: { _controller: SgpcCoreBundle:Project:view }
 
+sgpc_project_addmember:
+    path:     /project/{id}/addMember/
+    defaults: { _controller: SgpcCoreBundle:Project:addmember }
 
 
 

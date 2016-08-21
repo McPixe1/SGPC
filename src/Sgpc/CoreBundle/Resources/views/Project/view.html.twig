@@ -1,5 +1,9 @@
 {%  extends 'base.html.twig' %}
 
+{% set owner = project.getOwner %}
+{% set members = project.getUsers %}
+{% set lists = project.listings %}
+
 {% block body %}
     {{ parent() }}
     
@@ -9,7 +13,7 @@
             <div class="project-canvas">
                 <h2>{{project.name}}</h2>
                 
-                {% set lists = project.listings %}
+               
                 <!--LISTADOS-->
                 {% for list in lists %}
                     <div class="list-wrapper" data-id="{{ list.id }}">
@@ -53,8 +57,7 @@
         </div>
     </div>
                 
-    {% set owner = project.getOwner %}
-    {% set members = project.getUsers %}           
+         
     <!--SIDEBAR-->
     <div class="project-sidebar">
         <h4>Miembros del proyecto</h4>
@@ -66,11 +69,17 @@
                     <li>{{ member.username }}</li>
                 {% endif %}
             {% endfor %}
-            <li>Añadir miembro</li>
+            
+            {% if app.user == owner %}
+                <a class="js-toggle-addmember-form" href="javascript:void(0);">Añadir miembro</a>
+                {{ render(controller('SgpcCoreBundle:Project:addmember', {'id': project.id})) }}
+            {% endif %}
+            
         </ul>
-                
-        <h4>Editar proyecto</h4>
-        {{form(delete_form)}}
+        {% if app.user == owner %}        
+            <h4>Editar proyecto</h4>
+            {{form(delete_form)}}
+        {% endif %}
         
          <h4>Muro de actividad</h4>
 
@@ -86,6 +95,9 @@
                $(this).parent('.list-body').find('.task-form').toggle();
             });
             $('.js-toggle-list-form').click(function(){
+              $(this).parents('.list').find('.list-form').toggle();
+           });
+            $('.js-toggle-addmember-form').click(function(){
               $(this).parents('.list').find('.list-form').toggle();
            }); 
         });
