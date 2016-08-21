@@ -17,8 +17,10 @@ class TaskType extends AbstractType
         $builder
             ->add('name')
             ->add('description')
-            //->add('listing')
-        ;
+            ->add('submit', 'submit', array(
+                'label' => 'Crear tarea',
+                'attr' => array('class' => 'btn btn-sm btn-success')
+            ));        
     }
     
     /**

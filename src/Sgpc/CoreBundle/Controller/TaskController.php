@@ -11,25 +11,17 @@ use Sgpc\CoreBundle\Form\TaskType;
 
 class TaskController extends Controller
 {
-  public function indexAction()
-    {
-        $em = $this->getDoctrine()->getManager();
-        $entities = $em->getRepository('SgpcCoreBundle:Task')->findAll();
-        return $this->render('SgpcCoreBundle:Task:index.html.twig', array(
-            'entities' => $entities,
-        ));
-    }
+
     /**
      * Crea una nueva entidad Task
      */
     public function createAction(Request $request, $id)
     {
         $entity = new Task();
-
-        $parent = $this->getDoctrine()->getRepository('SgpcCoreBundle:Listing')->findOneById($id);
-        
-        $form = $this->createCreateForm($entity);
+        $parent = $this->getDoctrine()->getRepository('SgpcCoreBundle:Listing')->findOneById($id);        
+        $form = $this->createForm(new TaskType(), $entity);
         $form->handleRequest($request);
+        
         if ($form->isValid()) {
             $entity->setListing($parent);
             $em = $this->getDoctrine()->getManager();
@@ -37,37 +29,24 @@ class TaskController extends Controller
             $em->flush();
             return $this->redirect($this->generateUrl('sgpc_task_view', array('id' => $entity->getId())));
         }
+        
         return $this->render('SgpcCoreBundle:Task:new.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView(),
         ));
     }
     
-    public function createCreateForm(Task $entity){
-        $form = $this->createForm(new TaskType(), $entity, array(
-            'method' => 'POST',
-        ));
-        $form->add('submit', 'submit', array(
-            'label' => 'Crear tarea',
-            'attr' => array('class' => 'btn btn-sm btn-success')
-        ));
-        return $form;
-    }
-
+        
     /**
      * Display del form para crear una nueva entidad Task
      */
     public function addAction($id)
     {
         $entity = new Task();
-          $form = $this->createForm(new TaskType(), $entity, array(
+        
+        $form = $this->createForm(new TaskType(), $entity, array(
             'action' => $this->generateUrl('sgpc_task_create', array('id' => $id)),
-            'method' => 'POST',
-        ));
-        $form->add('submit', 'submit', array(
-            'label' => 'Crear tarea',
-            'attr' => array('class' => 'btn btn-sm btn-success')
-        ));    
+        ));  
         
         return $this->render('SgpcCoreBundle:Task:add.html.twig', array(
             'entity' => $entity,
