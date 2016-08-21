@@ -16,8 +16,10 @@ class ListingType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('project')
-        ;
+            ->add('submit', 'submit', array(
+                'label' => 'Crear listado',
+                'attr' => array('class' => 'btn btn-sm btn-success')
+            ));  
     }
     
     /**

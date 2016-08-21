@@ -36,7 +36,7 @@ sgpc_listing_add:
     defaults: { _controller: "SgpcCoreBundle:Listing:add" }
 
 sgpc_listing_create:
-    path:     /listing/create
+    path:     /listing/create/{id}
     defaults: { _controller: "SgpcCoreBundle:Listing:create" }
     methods:  POST
     

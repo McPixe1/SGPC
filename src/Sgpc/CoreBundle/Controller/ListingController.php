@@ -11,26 +11,19 @@ use Sgpc\CoreBundle\Form\ListingType;
 
 class ListingController extends Controller
 {
-    /**
-     * Muestra todos los listados del proyecto
-     */
-    public function indexAction()
-    {
-        $em = $this->getDoctrine()->getManager();
-        $entities = $em->getRepository('SgpcCoreBundle:Listing')->findAll();
-        return $this->render('SgpcCoreBundle:Listing:index.html.twig', array(
-            'entities' => $entities,
-        ));
-    }
+
     /**
      * Crea una nueva entidad Listing
      */
-    public function createAction(Request $request)
+    public function createAction(Request $request, $id)
     {
         $entity = new Listing();
-        $form = $this->createCreateForm($entity);
+        $parent = $this->getDoctrine()->getRepository('SgpcCoreBundle:Project')->findOneById($id);        
+        $form = $this->createForm(new ListingType(), $entity);
         $form->handleRequest($request);
+        
         if ($form->isValid()) {
+            $entity->setProject($parent);
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
@@ -41,25 +34,18 @@ class ListingController extends Controller
             'form'   => $form->createView(),
         ));
     }
-    /**
-     * Crea el formulario para crear una entidad Listing
-     */
-    private function createCreateForm(Listing $entity)
-    {
-        $form = $this->createForm(new ListingType(), $entity, array(
-            'action' => $this->generateUrl('sgpc_listing_create'),
-            'method' => 'POST',
-        ));
-        $form->add('submit', 'submit', array('label' => 'Create'));
-        return $form;
-    }
+
     /**
      * Display del form para crear una nueva entidad Listing
      */
-    public function addAction()
+    public function addAction($id)
     {
         $entity = new Listing();
-        $form   = $this->createCreateForm($entity);
+          
+        $form = $this->createForm(new ListingType(), $entity, array(
+            'action' => $this->generateUrl('sgpc_listing_create', array('id' => $id)),
+        ));  
+        
         return $this->render('SgpcCoreBundle:Listing:add.html.twig', array(
             'entity' => $entity,
             'create_form'   => $form->createView(),
