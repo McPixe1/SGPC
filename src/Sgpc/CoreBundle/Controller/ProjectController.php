@@ -170,10 +170,7 @@ class ProjectController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('sgpc_project_addmember', array('id' => $id)))
             ->setMethod('POST')
-            ->add('user', 'entity', array(
-                'mapped'   => false, 
-                'class'    => 'SgpcCoreBundle:User',
-            ))
+            ->add('user')
             ->add('submit', 'submit', array('label' => 'Añadir usuario'))
             ->getForm();
     }
@@ -197,7 +194,9 @@ class ProjectController extends Controller
             $formuser = $form->getData('user');
                   
             $user = $em->getRepository('SgpcCoreBundle:User')->findOneBy(array('username' => $formuser));
-                    
+            if(!$user){
+                throw $this->createNotFoundException('No se ha encontrado el usuario.');
+            } 
             $project->addUser($user);
             $em->persist($project);
             $em->persist($user);
