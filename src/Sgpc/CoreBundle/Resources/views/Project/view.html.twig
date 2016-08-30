@@ -84,7 +84,7 @@
          <h4>Muro de actividad</h4>
 
     </div>
-{{ include('SgpcCoreBundle:Task:modals/taskModal.html.twig') }}
+    {{ include('SgpcCoreBundle:Task:modals/taskModal.html.twig') }}
 {% endblock %}
 
 {% block javascripts %}
@@ -99,7 +99,11 @@
            });
             $('.js-toggle-addmember-form').click(function(){
               $(this).parents('.list').find('.list-form').toggle();
-           }); 
+           });
+           
+           
+           
+           
         });
     </script>
 {% endblock %}
