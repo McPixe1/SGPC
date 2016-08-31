@@ -26,8 +26,9 @@
                                 {% for task in tasks %}
                                     <a href="{{ path('sgpc_task_view', { 'id': task.id }) }}">
                                         <div class="task">
+                                            <div class="priority-label" data-priority="{{task.priority}}"></div>
                                             <div class="task-title">
-                                                {{task.name}}
+                                                {{task.name}}                                                
                                             </div>
                                         </div>
                                     </a>

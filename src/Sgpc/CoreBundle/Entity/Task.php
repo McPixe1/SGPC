@@ -41,7 +41,13 @@ class Task
      */
     private $description;
 
-
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="priority", type="integer")
+     */
+    private $priority;
+    
     /**
      * Get id
      *
@@ -119,5 +125,28 @@ class Task
     public function getListing()
     {
         return $this->listing;
+    }
+
+    /**
+     * Set priority
+     *
+     * @param integer $priority
+     * @return Task
+     */
+    public function setPriority($priority)
+    {
+        $this->priority = $priority;
+
+        return $this;
+    }
+
+    /**
+     * Get priority
+     *
+     * @return integer 
+     */
+    public function getPriority()
+    {
+        return $this->priority;
     }
 }

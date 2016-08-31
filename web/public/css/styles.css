@@ -167,6 +167,23 @@ body, html{
     margin-bottom: 10px;
 }
 
+.task .priority-label{
+    position: absolute;
+    width: 3px;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+}
+.task .priority-label[data-priority='1']{
+    background:red;
+}
+.task .priority-label[data-priority='2']{
+    background:orange;
+}
+.task .priority-label[data-priority='3']{
+    background:green;
+}
+
 .task .task-title{
  
     clear: both;

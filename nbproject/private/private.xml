@@ -8,7 +8,7 @@
             <file>file:/home/samu/SGPC/src/Sgpc/CoreBundle/Resources/views/Task/modals/taskModal.html.twig</file>
             <file>file:/home/samu/SGPC/src/Sgpc/CoreBundle/Resources/views/Project/view.html.twig</file>
             <file>file:/home/samu/SGPC/src/Sgpc/CoreBundle/Resources/config/routing.yml</file>
-            <file>file:/home/samu/SGPC/src/Sgpc/CoreBundle/Resources/views/Project/addmember.html.twig</file>
+            <file>file:/home/samu/SGPC/src/Sgpc/CoreBundle/Controller/TaskController.php</file>
             <file>file:/home/samu/SGPC/src/Sgpc/CoreBundle/Controller/ProjectController.php</file>
         </group>
     </open-files>

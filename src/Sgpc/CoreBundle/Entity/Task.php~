@@ -41,7 +41,13 @@ class Task
      */
     private $description;
 
-
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="priority", type="integer")
+     */
+    private $priority;
+    
     /**
      * Get id
      *
@@ -96,5 +102,51 @@ class Task
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Set listing
+     *
+     * @param \Sgpc\CoreBundle\Entity\Listing $listing
+     * @return Task
+     */
+    public function setListing(\Sgpc\CoreBundle\Entity\Listing $listing = null)
+    {
+        $this->listing = $listing;
+
+        return $this;
+    }
+
+    /**
+     * Get listing
+     *
+     * @return \Sgpc\CoreBundle\Entity\Listing 
+     */
+    public function getListing()
+    {
+        return $this->listing;
+    }
+
+    /**
+     * Set priority
+     *
+     * @param integer $priority
+     * @return Task
+     */
+    public function setPriority($priority)
+    {
+        $this->priority = $priority;
+
+        return $this;
+    }
+
+    /**
+     * Get priority
+     *
+     * @return integer 
+     */
+    public function getPriority()
+    {
+        return $this->priority;
     }
 }
