@@ -199,6 +199,17 @@ body, html{
     
 }
 
+.task-sidebar{
+    background-color: white;
+    bottom: 0;
+    position: absolute;
+    right: 0;
+    top: 52px;
+    padding:30px;
+    width: 339px;
+    z-index: 5;
+}
+
 
 
 /*forms*/
