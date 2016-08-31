@@ -99,10 +99,8 @@
               $(this).parents('.list').find('.list-form').toggle();
            });
             $('.js-toggle-addmember-form').click(function(){
-              $(this).parents('.list').find('.list-form').toggle();
-           });
-           
-           
+              $(this).parent().find('.project-members-form').toggle();
+           });           
            
            
         });

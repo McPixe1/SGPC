@@ -157,6 +157,8 @@ body, html{
     background-color: #fff;
     border-bottom: 1px solid #ccc;
     border-radius: 3px;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
     cursor: pointer;
     margin-bottom: 6px;
     max-width: 300px;
@@ -206,5 +208,9 @@ body, html{
 }
 
 .list-form{
+    display:none;
+}
+
+.project-members-form{
     display:none;
 }
