@@ -226,3 +226,17 @@ body, html{
 .project-members-form{
     display:none;
 }
+
+
+/*listado de miembros en casillas de colores*/
+.icon-member-list{
+    padding:0;
+    list-style: none;
+}
+.icon-member-list li{
+    display:inline-block;
+    padding: 3px 8px;
+    background: grey;
+    color: white;
+    font-size: 12px;
+}

@@ -73,9 +73,7 @@ class TaskController extends Controller
       * se puedan seleccionar los miembros del proyecto del cual depende la tarea
      */
     private function createAddMemberForm($id)
-    {
-        $em = $this->getDoctrine()->getManager();
-        
+    {        
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('sgpc_task_addmember', array('id' => $id)))
             ->setMethod('POST')

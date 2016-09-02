@@ -13,7 +13,6 @@
     {{task.description}} 
     <br>
 
-    {{task.priority}}
     <br>
 
     <a href="{{ path('sgpc_project_view', { 'id': project.id })  }}" class="">Volver al proyecto</a>
@@ -23,9 +22,9 @@
     <!--SIDEBAR-->
     <div class="task-sidebar">
         <h4>Miembros de la tarea</h4>
-            <ul>
+            <ul class="icon-member-list">
             {% for member in members %}
-                    <li>{{ member.username }}</li>
+                <li data-toggle="tooltip" data-placement="top" title="{{ member.username}}">{{ member.username|first|upper}}</li>
             {% endfor %}
             
             
@@ -33,7 +32,7 @@
             <a class="js-toggle-addmember-form" href="javascript:void(0);">Añadir miembro</a>
             {{ render(controller('SgpcCoreBundle:Task:addmember', {'id': task.id})) }}
         <h4>Prioridad</h4>
-
+        {{task.priority}}
     </div>
 
 {% endblock %}
