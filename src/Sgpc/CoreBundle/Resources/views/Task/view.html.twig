@@ -2,10 +2,12 @@
 
 {% set list = task.listing %}
 {% set project = list.project %}
+{% set members = task.getUsers %}
+
 {% block body %}
     {{ parent() }}    
-
-    {{task.name}}
+    <div class="container-fluid">
+            {{task.name}}
     <br>
     
     {{task.description}} 
@@ -15,12 +17,22 @@
     <br>
 
     <a href="{{ path('sgpc_project_view', { 'id': project.id })  }}" class="">Volver al proyecto</a>
+    </div>
+
 
     <!--SIDEBAR-->
     <div class="task-sidebar">
         <h4>Miembros de la tarea</h4>
-
-         <h4>Prioridad</h4>
+            <ul>
+            {% for member in members %}
+                    <li>{{ member.username }}</li>
+            {% endfor %}
+            
+            
+        </ul>
+            <a class="js-toggle-addmember-form" href="javascript:void(0);">Añadir miembro</a>
+            {{ render(controller('SgpcCoreBundle:Task:addmember', {'id': task.id})) }}
+        <h4>Prioridad</h4>
 
     </div>
 

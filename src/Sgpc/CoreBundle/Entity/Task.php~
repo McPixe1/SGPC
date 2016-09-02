@@ -49,6 +49,17 @@ class Task
     private $priority;
     
     /**
+     * @ORM\ManyToMany(targetEntity="User", inversedBy="tasks", cascade={"persist"})
+     * @ORM\JoinTable(name="task_user",
+     *     joinColumns={@ORM\JoinColumn(name="task_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")}
+     * )
+     *
+     * @var ArrayCollection
+     */
+    protected $users;
+    
+    /**
      * Get id
      *
      * @return integer 

@@ -49,6 +49,17 @@ class Task
     private $priority;
     
     /**
+     * @ORM\ManyToMany(targetEntity="User", inversedBy="tasks", cascade={"persist"})
+     * @ORM\JoinTable(name="task_user",
+     *     joinColumns={@ORM\JoinColumn(name="task_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")}
+     * )
+     *
+     * @var ArrayCollection
+     */
+    protected $users;
+    
+    /**
      * Get id
      *
      * @return integer 
@@ -148,5 +159,45 @@ class Task
     public function getPriority()
     {
         return $this->priority;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->users = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add users
+     *
+     * @param \Sgpc\CoreBundle\Entity\User $users
+     * @return Task
+     */
+    public function addUser(\Sgpc\CoreBundle\Entity\User $users)
+    {
+        $this->users[] = $users;
+
+        return $this;
+    }
+
+    /**
+     * Remove users
+     *
+     * @param \Sgpc\CoreBundle\Entity\User $users
+     */
+    public function removeUser(\Sgpc\CoreBundle\Entity\User $users)
+    {
+        $this->users->removeElement($users);
+    }
+
+    /**
+     * Get users
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getUsers()
+    {
+        return $this->users;
     }
 }

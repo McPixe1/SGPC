@@ -26,7 +26,11 @@ class User extends BaseUser
      * @ORM\ManyToMany(targetEntity="Project", mappedBy="users")
      */
     protected $projects;
-
+    
+    /**
+     * @ORM\ManyToMany(targetEntity="Task", mappedBy="users")
+     */
+    protected $tasks;
 
     /**
      * Get id
@@ -75,5 +79,38 @@ class User extends BaseUser
     public function getProjects()
     {
         return $this->projects;
+    }
+
+    /**
+     * Add tasks
+     *
+     * @param \Sgpc\CoreBundle\Entity\Task $tasks
+     * @return User
+     */
+    public function addTask(\Sgpc\CoreBundle\Entity\Task $tasks)
+    {
+        $this->tasks[] = $tasks;
+
+        return $this;
+    }
+
+    /**
+     * Remove tasks
+     *
+     * @param \Sgpc\CoreBundle\Entity\Task $tasks
+     */
+    public function removeTask(\Sgpc\CoreBundle\Entity\Task $tasks)
+    {
+        $this->tasks->removeElement($tasks);
+    }
+
+    /**
+     * Get tasks
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTasks()
+    {
+        return $this->tasks;
     }
 }

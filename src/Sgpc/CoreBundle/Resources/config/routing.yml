@@ -1,3 +1,5 @@
+#PROYECTOS
+
 sgpc_core_homepage:
     path:     /
     defaults: { _controller: SgpcCoreBundle:Project:index }
@@ -25,6 +27,7 @@ sgpc_project_addmember:
     defaults: { _controller: SgpcCoreBundle:Project:addmember }
 
 
+#LISTADOS
 
 sgpc_listing:
     path:     /listing
@@ -44,6 +47,7 @@ sgpc_listing_create:
     methods:  POST
     
     
+#TAREAS    
     
 sgpc_task:
     path:     /task
@@ -61,3 +65,7 @@ sgpc_task_create:
     path:     /task/create/{id}
     defaults: { _controller: "SgpcCoreBundle:Task:create" }
     methods:  POST
+    
+sgpc_task_addmember:
+    path:     /task/{id}/addmember/
+    defaults: { _controller: SgpcCoreBundle:Task:addmember }
