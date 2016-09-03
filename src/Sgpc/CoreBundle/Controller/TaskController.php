@@ -109,6 +109,9 @@ class TaskController extends Controller
         foreach($projectMembers as $projectMember){         
             $choices[$projectMember->getId()] = $projectMember->getUsername();
         }
+        if (empty($choices)) {
+            return array('Todos son miembros');
+        }
         return $choices;
     }
     
