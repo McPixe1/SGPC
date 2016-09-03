@@ -94,9 +94,19 @@ class TaskController extends Controller
         $task = $em->getRepository('SgpcCoreBundle:Task')->find($id);
         $list = $task->getListing();
         $project = $list->getProject();
-        $projectMembers = $project->getUsers();
-                    
-        foreach($projectMembers as $projectMember){
+        $projectMembers = $project->getUsers()->toArray();
+        $taskMembers = $task->getUsers()->toArray();
+        
+        /**
+         * Si el miembro del proyecto ya es miembro de la tarea no lo metemos
+        dentro de las choices del desplegable del formulario
+        */
+        foreach($projectMembers as $i => $projectMember){
+            if(in_array($projectMember, $taskMembers)){
+                unset($projectMembers[$i]);
+            }
+        }     
+        foreach($projectMembers as $projectMember){         
             $choices[$projectMember->getId()] = $projectMember->getUsername();
         }
         return $choices;
