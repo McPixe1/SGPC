@@ -27,12 +27,24 @@
                 <li data-toggle="tooltip" data-placement="top" title="{{ member.username}}">{{ member.username|first|upper}}</li>
             {% endfor %}
             
-            
-        </ul>
-            <a class="js-toggle-addmember-form" href="javascript:void(0);">Añadir miembro</a>
+            <a class="js-toggle-addmember-form" href="javascript:void(0);">+</a>
             {{ render(controller('SgpcCoreBundle:Task:addmember', {'id': task.id})) }}
+
+        </ul>
+            
         <h4>Prioridad</h4>
         {{task.priority}}
     </div>
 
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $('document').ready(function(){            
+            $('.js-toggle-addmember-form').click(function(){
+              $(this).parent().find('.task-members-form').toggle();
+           });                    
+        });
+    </script>
 {% endblock %}

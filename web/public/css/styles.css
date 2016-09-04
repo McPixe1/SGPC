@@ -223,7 +223,7 @@ body, html{
     display:none;
 }
 
-.project-members-form{
+.project-members-form, .task-members-form{
     display:none;
 }
 
