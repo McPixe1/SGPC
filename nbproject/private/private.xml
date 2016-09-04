@@ -5,8 +5,11 @@
         <group>
             <file>file:/home/samu/SGPC/src/Sgpc/CoreBundle/Resources/views/Task/view.html.twig</file>
             <file>file:/home/samu/SGPC/web/public/css/styles.css</file>
+            <file>file:/home/samu/SGPC/src/Sgpc/CoreBundle/Resources/views/Project/view.html.twig</file>
+            <file>file:/home/samu/SGPC/src/Sgpc/CoreBundle/Entity/Task.php</file>
             <file>file:/home/samu/SGPC/src/Sgpc/CoreBundle/Resources/views/Project/addmember.html.twig</file>
             <file>file:/home/samu/SGPC/src/Sgpc/CoreBundle/Controller/TaskController.php</file>
+            <file>file:/home/samu/SGPC/src/Sgpc/CoreBundle/Controller/ProjectController.php</file>
         </group>
     </open-files>
 </project-private>

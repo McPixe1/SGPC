@@ -12,14 +12,5 @@ use Doctrine\ORM\EntityRepository;
  */
 class TaskRepository extends EntityRepository
 {
-    public function findTasksByList($id)
-    {
-        return $this->getEntityManager()->createQuery(
-            'SELECT t
-            FROM SgpcCoreBundle:Task t
-            JOIN t.listing l
-            WHERE l.id = :listId
-            ORDER BY t.id ASC'
-        )->setParameter('listId', $id)->getResult();
-    }
+
 }

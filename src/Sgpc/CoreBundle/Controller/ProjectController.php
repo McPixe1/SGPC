@@ -35,13 +35,7 @@ class ProjectController extends Controller
             return $this->redirectToRoute('fos_user_registration_register');
         }
     }
-    
-    public function getFirstCharacterOfArrayOfStrings($array){
-        for($i=0; $i < count($array); $i++){
-            $first_char = substr($array[$i],0,1);
-        }
-        return $first_char;
-    }
+
     
     /**
      * Crea una nueva entidad Project
