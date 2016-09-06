@@ -4,6 +4,7 @@ namespace Sgpc\CoreBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response; 
 use Sgpc\CoreBundle\Entity\Task;
 use Sgpc\CoreBundle\Form\TaskType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -58,7 +59,8 @@ class TaskController extends Controller
     public function viewAction($id)
     {
         $em = $this->getDoctrine()->getManager();
-        $task = $em->getRepository('SgpcCoreBundle:Task')->find($id);
+        $task = $em->getRepository('SgpcCoreBundle:Task')->find($id);      
+        
         if (!$task) {
             throw $this->createNotFoundException('Unable to find Task entity.');
         }
@@ -93,19 +95,20 @@ class TaskController extends Controller
         $em = $this->getDoctrine()->getManager();
         $task = $em->getRepository('SgpcCoreBundle:Task')->find($id);
         $list = $task->getListing();
-        $project = $list->getProject();
-        $projectMembers = $project->getUsers()->toArray();
-        $taskMembers = $task->getUsers()->toArray();
+        $project = $list->getProject();      
         
-        /**
-         * Si el miembro del proyecto ya es miembro de la tarea no lo metemos
-         * dentro de las choices del desplegable del formulario
+        /*
+         * ToDo: poner en repository. Seleccionamos los usuarios que son miembros
+         * del proyecto y no son miembros de esta tarea para pasarlos al form como choices
          */
-        foreach($projectMembers as $i => $projectMember){
-            if(in_array($projectMember, $taskMembers)){
-                unset($projectMembers[$i]);
-            }
-        }     
+
+        $query = $em->createQuery('SELECT u FROM SgpcCoreBundle:User u JOIN u.projects p WHERE  p.id = :idProject AND u.id NOT IN(SELECT u2 FROM SgpcCoreBundle:User u2 JOIN u2.tasks t WHERE t.id= :idTask)');
+        $query->setParameters(array(
+            'idTask' => $id,
+            'idProject' => $project,
+        ));
+        $projectMembers = $query->getResult();    
+    
         foreach($projectMembers as $projectMember){         
             $choices[$projectMember->getId()] = $projectMember->getUsername();
         }
