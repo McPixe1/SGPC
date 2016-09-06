@@ -99,8 +99,8 @@ class TaskController extends Controller
         
         /**
          * Si el miembro del proyecto ya es miembro de la tarea no lo metemos
-        dentro de las choices del desplegable del formulario
-        */
+         * dentro de las choices del desplegable del formulario
+         */
         foreach($projectMembers as $i => $projectMember){
             if(in_array($projectMember, $taskMembers)){
                 unset($projectMembers[$i]);
