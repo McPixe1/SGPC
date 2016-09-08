@@ -95,7 +95,7 @@ class TaskController extends Controller
         $em = $this->getDoctrine()->getManager();
         $task = $em->getRepository('SgpcCoreBundle:Task')->find($id);
         $list = $task->getListing();
-        $project = $list->getProject();      
+        $project = $list->getProject()->getId();      
         
         /*
          * ToDo: poner en repository. Seleccionamos los usuarios que son miembros
@@ -108,7 +108,7 @@ class TaskController extends Controller
             'idProject' => $project,
         ));
         $projectMembers = $query->getResult();    
-    
+
         foreach($projectMembers as $projectMember){         
             $choices[$projectMember->getId()] = $projectMember->getUsername();
         }
