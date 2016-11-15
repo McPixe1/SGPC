@@ -72,7 +72,13 @@ class Task {
      */
     protected $updatedAt;
 
-      /**
+    /**
+     * @var \DateTime
+     * @ORM\Column(name="due_date", type="datetime")
+     */
+    protected $dueDate;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -202,15 +208,13 @@ class Task {
         return $this->users;
     }
 
-
     /**
      * Set createdAt
      *
      * @param \DateTime $createdAt
      * @ORM\PrePersist
      */
-    public function setCreatedAt()
-    {
+    public function setCreatedAt() {
         $this->createdAt = new \DateTime();
         $this->updatedAt = new \DateTime();
     }
@@ -220,8 +224,7 @@ class Task {
      *
      * @return \DateTime
      */
-    public function getCreatedAt()
-    {
+    public function getCreatedAt() {
         return $this->createdAt;
     }
 
@@ -231,8 +234,7 @@ class Task {
      * @param \DateTime $updatedAt
      * @ORM\PreUpdate
      */
-    public function setUpdatedAt()
-    {
+    public function setUpdatedAt() {
         $this->updatedAt = new \DateTime();
     }
 
@@ -241,8 +243,32 @@ class Task {
      *
      * @return \DateTime
      */
-    public function getUpdatedAt()
-    {
+    public function getUpdatedAt() {
         return $this->updatedAt;
+    }
+
+
+    /**
+     * Set dueDate
+     *
+     * @param \DateTime $dueDate
+     *
+     * @return Task
+     */
+    public function setDueDate(\DateTime $dueDate)
+    {
+        $this->dueDate = $dueDate;
+
+        return $this;
+    }
+
+    /**
+     * Get dueDate
+     *
+     * @return \DateTime
+     */
+    public function getDueDate()
+    {
+        return $this->dueDate;
     }
 }

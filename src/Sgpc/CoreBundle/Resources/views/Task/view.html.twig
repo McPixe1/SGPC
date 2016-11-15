@@ -3,18 +3,28 @@
 {% set list = task.listing %}
 {% set project = list.project %}
 {% set members = task.getUsers %}
-
+{#% set duration =  diff(task.dueDate|date("Y-m-d") - task.createdAt|date("Y-m-d")) %#}
 {% block body %}
     {{ parent() }}    
     <div class="container-fluid">
-            {{task.name}}
+           Nombre: {{task.name}}
     <br>
     
-    {{task.description}} 
+    Descripción: {{task.description}} 
     <br>
-
+    Fecha de inicio:
+     {{task.createdAt|date("d/m/Y") }}
+                                                
     <br>
-
+    Fecha estimada de finalización
+    {{task.dueDate|date("d/m/Y") }}
+    
+    <br>
+    
+    {# Duración: {{duration}} #}
+    
+    
+    <br>
     <a href="{{ path('sgpc_project_view', { 'id': project.id })  }}" class="">Volver al proyecto</a>
     </div>
 
