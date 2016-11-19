@@ -31,7 +31,7 @@
                                                 {#{task.createdAt|date("d/m/Y") }}
                                                 {{task.dueDate|date("d/m/Y") }#}
                                             </div>
-                                            {% if date(task.createdAt) > date(task.dueDate) %}
+                                            {% if date('now') > date(task.dueDate) %}
                                                 <div class="task-timer" data-toggle="tooltip" data-placement="top" title="La tarea está fuera de tiempo">
                                                     <i class="mdi mdi-clock"></i>
                                                 </div>

@@ -3,45 +3,49 @@
 {% set list = task.listing %}
 {% set project = list.project %}
 {% set members = task.getUsers %}
-{#% set duration =  diff(task.dueDate|date("Y-m-d") - task.createdAt|date("Y-m-d")) %#}
+{% set duration =  date(task.createdAt|date("Y-m-d")).diff(date(task.dueDate|date("Y-m-d"))) %}
+{% set duration_days = duration|date('%r%a') %}
+
 {% block body %}
     {{ parent() }}    
     <div class="container-fluid">
-           Nombre: {{task.name}}
-    <br>
-    
-    Descripción: {{task.description}} 
-    <br>
-    Fecha de inicio:
-     {{task.createdAt|date("d/m/Y") }}
-                                                
-    <br>
-    Fecha estimada de finalización
-    {{task.dueDate|date("d/m/Y") }}
-    
-    <br>
-    
-    {# Duración: {{duration}} #}
-    
-    
-    <br>
-    <a href="{{ path('sgpc_project_view', { 'id': project.id })  }}" class="">Volver al proyecto</a>
+        Nombre: {{task.name}}
+        <br>
+
+        Descripción: {{task.description}} 
+        <br>
+        Fecha de inicio:
+        {{task.createdAt|date("d/m/Y") }}
+
+        <br>
+        Fecha estimada de finalización
+        {{task.dueDate|date("d/m/Y") }}
+
+        <br>
+        {%if duration_days == 1 %}
+            Duración: {{duration_days}} dia
+        {%else%}
+            Duración: {{duration_days}} dias 
+        {%endif%}
+
+        <br>
+        <a href="{{ path('sgpc_project_view', { 'id': project.id })  }}" class="">Volver al proyecto</a>
     </div>
 
 
     <!--SIDEBAR-->
     <div class="task-sidebar">
         <h4>Miembros de la tarea</h4>
-            <ul class="icon-member-list">
+        <ul class="icon-member-list">
             {% for member in members %}
                 <li data-toggle="tooltip" data-placement="top" title="{{ member.username}}">{{ member.username|first|upper}}</li>
-            {% endfor %}
-            
+                {% endfor %}
+
             <a class="js-toggle-addmember-form" href="javascript:void(0);">+</a>
             {{ render(controller('SgpcCoreBundle:Task:addmember', {'id': task.id})) }}
 
         </ul>
-            
+
         <h4>Prioridad</h4>
         {{task.priority}}
     </div>
@@ -51,10 +55,10 @@
 {% block javascripts %}
     {{ parent() }}
     <script>
-        $('document').ready(function(){            
-            $('.js-toggle-addmember-form').click(function(){
-              $(this).parent().find('.task-members-form').toggle();
-           });                    
+        $('document').ready(function () {
+            $('.js-toggle-addmember-form').click(function () {
+                $(this).parent().find('.task-members-form').toggle();
+            });
         });
     </script>
 {% endblock %}
