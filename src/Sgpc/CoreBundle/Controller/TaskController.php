@@ -64,8 +64,13 @@ class TaskController extends Controller
         if (!$task) {
             throw $this->createNotFoundException('Unable to find Task entity.');
         }
+        
+        $comments = $em->getRepository('SgpcCoreBundle:Comment')
+                   ->getCommentsForTask($task->getId());
+        
         return $this->render('SgpcCoreBundle:Task:view.html.twig', array(
             'task'      => $task,
+            'comments' => $comments
         ));
     }
     

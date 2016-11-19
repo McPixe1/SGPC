@@ -9,6 +9,7 @@
 {% block body %}
     {{ parent() }}    
     <div class="container-fluid">
+        <!--DATOS-->
         Nombre: {{task.name}}
         <br>
 
@@ -28,6 +29,18 @@
             Duración: {{duration_days}} dias 
         {%endif%}
 
+        <!--COMENTARIOS-->
+        <section class="comments" id="comments">
+            <section class="previous-comments">
+                <h3>Comentarios</h3>
+                {% include 'SgpcCoreBundle:Comment:view.html.twig' with { 'comments': comments } %}
+            </section>
+        </section>
+
+
+
+        <br>
+        <br>
         <br>
         <a href="{{ path('sgpc_project_view', { 'id': project.id })  }}" class="">Volver al proyecto</a>
     </div>

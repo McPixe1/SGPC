@@ -222,6 +222,13 @@ body, html{
     z-index: 5;
 }
 
+.comments { clear: both; }
+.comments .odd { background: #ddd; }
+.comments .comment { padding: 15px; max-width: 600px; }
+.comments .comment p { margin-bottom: 0; }
+.comments .comment .highlight{font-weight: bold;}
+.comments h3 { padding: 10px 0px; font-size: 20px; margin-bottom: 20px; clear: both; }
+.comments .previous-comments { margin-bottom: 20px; }
 
 
 /*forms*/
