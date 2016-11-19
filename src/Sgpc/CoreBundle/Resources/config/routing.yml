@@ -69,3 +69,11 @@ sgpc_task_create:
 sgpc_task_addmember:
     path:     /task/{id}/addmember/
     defaults: { _controller: SgpcCoreBundle:Task:addmember }
+    
+    
+#COMENTARIOS
+
+sgpc_comment_create:
+    path:     /comment/create/{id}
+    defaults: { _controller: "SgpcCoreBundle:Comment:create" }
+    methods:  POST

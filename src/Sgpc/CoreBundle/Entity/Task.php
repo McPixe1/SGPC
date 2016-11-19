@@ -59,7 +59,7 @@ class Task {
      * @var ArrayCollection
      */
     protected $users;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="Comment", mappedBy="task")
      */
@@ -253,7 +253,6 @@ class Task {
         return $this->updatedAt;
     }
 
-
     /**
      * Set dueDate
      *
@@ -261,8 +260,7 @@ class Task {
      *
      * @return Task
      */
-    public function setDueDate(\DateTime $dueDate)
-    {
+    public function setDueDate(\DateTime $dueDate) {
         $this->dueDate = $dueDate;
 
         return $this;
@@ -273,8 +271,7 @@ class Task {
      *
      * @return \DateTime
      */
-    public function getDueDate()
-    {
+    public function getDueDate() {
         return $this->dueDate;
     }
 
@@ -285,8 +282,7 @@ class Task {
      *
      * @return Task
      */
-    public function addComment(\Sgpc\CoreBundle\Entity\Comment $comment)
-    {
+    public function addComment(\Sgpc\CoreBundle\Entity\Comment $comment) {
         $this->comments[] = $comment;
 
         return $this;
@@ -297,8 +293,7 @@ class Task {
      *
      * @param \Sgpc\CoreBundle\Entity\Comment $comment
      */
-    public function removeComment(\Sgpc\CoreBundle\Entity\Comment $comment)
-    {
+    public function removeComment(\Sgpc\CoreBundle\Entity\Comment $comment) {
         $this->comments->removeElement($comment);
     }
 
@@ -307,8 +302,11 @@ class Task {
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getComments()
-    {
+    public function getComments() {
         return $this->comments;
     }
+
+    public function __toString() {
+    return $this->name;
+}
 }

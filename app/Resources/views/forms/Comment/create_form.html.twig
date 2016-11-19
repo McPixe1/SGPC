@@ -1,0 +1,6 @@
+<form action="{{ path('sgpc_comment_create', { 'id' : comment.task.id } ) }}" method="post" {{ form_enctype(form) }} class="tasker">
+    {{ form_widget(form) }}
+    <p>
+        <input type="submit" value="Submit">
+    </p>
+</form>

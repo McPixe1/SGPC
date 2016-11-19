@@ -30,6 +30,7 @@
         {%endif%}
 
         <!--COMENTARIOS-->
+        {{ render(controller('SgpcCoreBundle:Comment:add', {'id': task.id})) }}
         <section class="comments" id="comments">
             <section class="previous-comments">
                 <h3>Comentarios</h3>
