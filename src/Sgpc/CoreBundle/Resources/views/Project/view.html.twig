@@ -3,7 +3,6 @@
 {% set owner = project.getOwner %}
 {% set members = project.getUsers %}
 {% set lists = project.listings %}
-
 {% block body %}
     {{ parent() }}
 
@@ -97,6 +96,8 @@
             {{form(delete_form)}}
         {% endif %}
 
+        <h4>Resumen de tareas</h4>
+    
         <h4>Muro de actividad</h4>
 
     </div>
