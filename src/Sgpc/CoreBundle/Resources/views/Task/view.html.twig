@@ -30,7 +30,17 @@
         {%endif%}
 
         <!--COMENTARIOS-->
-        {{ render(controller('SgpcCoreBundle:Comment:add', {'id': task.id})) }}
+
+        {% if app.user == project.owner %}
+            {{ render(controller('SgpcCoreBundle:Comment:add', {'id': task.id})) }}
+        {% else %}
+            {% for member in members %}
+                {% if app.user == member%}
+                    {{ render(controller('SgpcCoreBundle:Comment:add', {'id': task.id})) }}
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+
         <section class="comments" id="comments">
             <section class="previous-comments">
                 <h3>Comentarios</h3>
