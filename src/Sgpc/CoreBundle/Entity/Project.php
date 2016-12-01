@@ -28,6 +28,11 @@ class Project
     protected $listings;
     
 
+     /**
+     * @ORM\OneToMany(targetEntity="Task", mappedBy="project",  cascade={"remove"})
+     */
+    protected $tasks;
+    
     /**
      * @ORM\ManyToMany(targetEntity="User", inversedBy="projects", cascade={"persist"})
      * @ORM\JoinTable(name="project_user",
@@ -226,5 +231,39 @@ class Project
     public function getOwner()
     {
         return $this->owner;
+    }
+
+    /**
+     * Add task
+     *
+     * @param \Sgpc\CoreBundle\Entity\Task $task
+     *
+     * @return Project
+     */
+    public function addTask(\Sgpc\CoreBundle\Entity\Task $task)
+    {
+        $this->tasks[] = $task;
+
+        return $this;
+    }
+
+    /**
+     * Remove task
+     *
+     * @param \Sgpc\CoreBundle\Entity\Task $task
+     */
+    public function removeTask(\Sgpc\CoreBundle\Entity\Task $task)
+    {
+        $this->tasks->removeElement($task);
+    }
+
+    /**
+     * Get tasks
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTasks()
+    {
+        return $this->tasks;
     }
 }
