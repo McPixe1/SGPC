@@ -11,7 +11,6 @@
             <div class="project-canvas">
                 <h2>{{project.name}}</h2>
 
-
                 <!--LISTADOS-->
                 {% for list in lists %}
                     <div class="list-wrapper" data-id="{{ list.id }}">
@@ -97,7 +96,12 @@
         {% endif %}
 
         <h4>Resumen de tareas</h4>
-    
+
+        Total de tareas: {{taskList|length}}
+       {# {% for task in taskList %}
+            {{ task.name}}
+        {% endfor %} #}
+
         <h4>Muro de actividad</h4>
 
     </div>

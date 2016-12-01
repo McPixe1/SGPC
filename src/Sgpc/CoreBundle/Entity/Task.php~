@@ -27,6 +27,14 @@ class Task {
      * @ORM\JoinColumn(name="listing_id", referencedColumnName="id")
      */
     protected $listing;
+    
+    
+    
+     /**
+     * @ORM\ManyToOne(targetEntity="Project", inversedBy="tasks")
+     * @ORM\JoinColumn(name="project_id", referencedColumnName="id")
+     */
+    protected $project;
 
     /**
      * @var string
@@ -59,7 +67,7 @@ class Task {
      * @var ArrayCollection
      */
     protected $users;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="Comment", mappedBy="task")
      */
@@ -253,7 +261,6 @@ class Task {
         return $this->updatedAt;
     }
 
-
     /**
      * Set dueDate
      *
@@ -261,8 +268,7 @@ class Task {
      *
      * @return Task
      */
-    public function setDueDate(\DateTime $dueDate)
-    {
+    public function setDueDate(\DateTime $dueDate) {
         $this->dueDate = $dueDate;
 
         return $this;
@@ -273,8 +279,42 @@ class Task {
      *
      * @return \DateTime
      */
-    public function getDueDate()
-    {
+    public function getDueDate() {
         return $this->dueDate;
     }
+
+    /**
+     * Add comment
+     *
+     * @param \Sgpc\CoreBundle\Entity\Comment $comment
+     *
+     * @return Task
+     */
+    public function addComment(\Sgpc\CoreBundle\Entity\Comment $comment) {
+        $this->comments[] = $comment;
+
+        return $this;
+    }
+
+    /**
+     * Remove comment
+     *
+     * @param \Sgpc\CoreBundle\Entity\Comment $comment
+     */
+    public function removeComment(\Sgpc\CoreBundle\Entity\Comment $comment) {
+        $this->comments->removeElement($comment);
+    }
+
+    /**
+     * Get comments
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getComments() {
+        return $this->comments;
+    }
+
+    public function __toString() {
+    return $this->name;
+}
 }

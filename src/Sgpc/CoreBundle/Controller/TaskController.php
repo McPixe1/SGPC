@@ -18,12 +18,14 @@ class TaskController extends Controller
     public function createAction(Request $request, $id)
     {
         $entity = new Task();
-        $parent = $this->getDoctrine()->getRepository('SgpcCoreBundle:Listing')->findOneById($id);        
+        $parent = $this->getDoctrine()->getRepository('SgpcCoreBundle:Listing')->findOneById($id);  
+        $project = $parent->getProject();
         $form = $this->createForm(new TaskType(), $entity);
         $form->handleRequest($request);
         
         if ($form->isValid()) {
             $entity->setListing($parent);
+            $entity->setProject($project);
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();

@@ -12,5 +12,15 @@ use Doctrine\ORM\EntityRepository;
  */
 class TaskRepository extends EntityRepository
 {
+      public function getTasksForList($listId) {
+        $qb = $this->createQueryBuilder('t')
+                ->select('t')
+                ->where('t.listing = :list_id')
+                ->addOrderBy('t.name')
+                ->setParameter('list_id', $listId);
+
+        return $qb->getQuery()
+                        ->getResult();
+    }
 
 }

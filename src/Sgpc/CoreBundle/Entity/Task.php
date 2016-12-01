@@ -27,6 +27,14 @@ class Task {
      * @ORM\JoinColumn(name="listing_id", referencedColumnName="id")
      */
     protected $listing;
+    
+    
+    
+     /**
+     * @ORM\ManyToOne(targetEntity="Project", inversedBy="tasks")
+     * @ORM\JoinColumn(name="project_id", referencedColumnName="id")
+     */
+    protected $project;
 
     /**
      * @var string
@@ -61,7 +69,7 @@ class Task {
     protected $users;
 
     /**
-     * @ORM\OneToMany(targetEntity="Comment", mappedBy="task")
+     * @ORM\OneToMany(targetEntity="Comment", mappedBy="task", cascade={"remove"})
      */
     protected $comments;
 
@@ -309,4 +317,28 @@ class Task {
     public function __toString() {
     return $this->name;
 }
+
+    /**
+     * Set project
+     *
+     * @param \Sgpc\CoreBundle\Entity\Project $project
+     *
+     * @return Task
+     */
+    public function setProject(\Sgpc\CoreBundle\Entity\Project $project = null)
+    {
+        $this->project = $project;
+
+        return $this;
+    }
+
+    /**
+     * Get project
+     *
+     * @return \Sgpc\CoreBundle\Entity\Project
+     */
+    public function getProject()
+    {
+        return $this->project;
+    }
 }
