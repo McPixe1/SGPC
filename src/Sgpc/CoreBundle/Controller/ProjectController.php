@@ -110,7 +110,7 @@ class ProjectController extends Controller {
         $project = $em->getRepository('SgpcCoreBundle:Project')->find($id);
 
         $lists = $project->getListings();
-        $taskList = $project->getTasks();
+        $projectTasks = $project->getTasks();
 
         $deleteForm = $this->createDeleteForm($id);
         $addmemberForm = $this->createAddMemberForm($id);
@@ -121,7 +121,7 @@ class ProjectController extends Controller {
 
         return $this->render('SgpcCoreBundle:Project:view.html.twig', array(
                     'lists' => $lists,
-                    'taskList' => $taskList,
+                    'projectTasks' => $projectTasks,
                     'project' => $project,
                     'delete_form' => $deleteForm->createView(),
                     'addmember_form' => $addmemberForm->createView(),

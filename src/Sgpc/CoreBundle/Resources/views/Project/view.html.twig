@@ -97,11 +97,56 @@
 
         <h4>Resumen de tareas</h4>
 
-        Total de tareas: {{taskList|length}}
-       {# {% for task in taskList %}
-            {{ task.name}}
-        {% endfor %} #}
-
+        Tareas activas: {{projectTasks|length}}
+        {% if lists|length > 0 %}
+            {% set firstList = lists[0] %}
+        {% endif %}
+        
+        {% if lists|length > 1 %}
+            {% set secondList = lists[1] %}
+        {% endif %}
+        
+        {% if lists|length > 2 %}
+            {% set thirdList = lists[2] %}
+        {% endif %}
+        
+        {% if firstList is defined%}
+            <p>{{ firstList.name }}: <span class="badge firstlist">{{ firstList.getTasks|length }} </span> <p>
+        {% endif %}
+        {% if secondList is defined%}
+            <p>{{ secondList.name }}: <span class="badge secondlist">{{ secondList.getTasks|length }} </span> <p>
+        {% endif %}
+        {% if thirdList is defined%}
+            <p>{{ thirdList.name }}: <span class="badge thirdlist">{{ thirdList.getTasks|length }} </span> <p>
+        {% endif %}
+        {% set others = 0 %}
+        {% if lists|length > 3 %}            
+            {% for list in lists|slice(3, lists|length) %}
+                {% set others = others + list.getTasks|length %}
+            {% endfor%}
+            <p> Otras: <span class="badge">{{ others }} </span></p>
+        {%endif%}
+                   
+        {% if projectTasks|length > 0%}
+        <div class="progress">         
+            {% if firstList is defined %}
+            <div class="progress-bar firstlist" role="progressbar" style="width:{{ firstList.getTasks|length  * 100 / (projectTasks|length - others) }}%">
+                {{ firstList.name }}
+            </div>
+            {% endif %}
+            {% if secondList is defined %}
+            <div class="progress-bar secondlist" role="progressbar" style="width:{{ secondList.getTasks|length  * 100 / (projectTasks|length - others) }}%">
+                {{ secondList.name }}
+            </div>
+            {% endif %}
+            {% if thirdList is defined %}
+            <div class="progress-bar thirdlist" role="progressbar" style="width:{{ thirdList.getTasks|length  * 100 / (projectTasks|length - others)}}%">
+                {{ thirdList.name }}
+            </div>
+            {% endif %}
+        </div> 
+        {% endif %}
+  
         <h4>Muro de actividad</h4>
 
     </div>

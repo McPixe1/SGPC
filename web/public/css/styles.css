@@ -51,6 +51,19 @@ body, html{
 
 
 /*LISTADOS*/
+
+/*colores de listados*/
+
+.firstlist{
+    background:#263644;
+}
+.secondlist{
+    background: #700CCE;
+}
+.thirdlist{
+    background:#0C7BCE;
+}
+
 .list-wrapper{
     width: 270px;
     margin: 0 5px;
@@ -182,7 +195,7 @@ body, html{
     background:red;
 }
 .task .priority-label[data-priority='2']{
-    background:orange;
+    background:#e09108;
 }
 .task .priority-label[data-priority='3']{
     background:green;
