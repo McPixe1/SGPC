@@ -13,47 +13,7 @@
 
                 <!--LISTADOS-->
                 {% for list in lists %}
-                    <div class="list-wrapper" data-id="{{ list.id }}">
-                        <div class="list">
-                            <div class="list-header">
-                                {{ list.name }}
-                            </div>
-                            <div class="list-body">
-                                {% set tasks = list.tasks%}
-                                {% for task in tasks %}
-                                    <a href="{{ path('sgpc_task_view', { 'id': task.id }) }}">
-                                        <div class="task">
-                                            <div class="priority-label" data-priority="{{task.priority}}"></div>
-                                            <div class="task-title">
-                                                {{task.name}}
-                                                {#{task.createdAt|date("d/m/Y") }}
-                                                {{task.dueDate|date("d/m/Y") }#}
-                                            </div>
-                                            {% if date('now') > date(task.dueDate) %}
-                                                <div class="task-timer" data-toggle="tooltip" data-placement="top" title="La tarea está fuera de tiempo">
-                                                    <i class="mdi mdi-clock"></i>
-                                                </div>
-
-                                            {% endif %}
-                                            <div class="task-body">
-                                                <ul class="icon-member-list">
-                                                    {% set taskmembers = task.getUsers %}
-                                                    {% for taskmember in taskmembers %}
-                                                        <li data-toggle="tooltip" data-placement="top" title="{{ taskmember.username}}">{{ taskmember.username|first|upper}}</li>
-                                                        {% endfor%}
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </a>
-                                {% endfor %}
-                                <a class="js-toggle-task-form" href="javascript:void(0);">Añadir una tarea</a>
-
-                                {{ render(controller('SgpcCoreBundle:Task:add', {'id': list.id})) }}
-
-                            </div>                           
-
-                        </div>
-                    </div>                       
+                    {{ include('SgpcCoreBundle:Listing:partials/listItem.html.twig') }}
                 {% endfor %}
 
                 <div class="list-wrapper">                  
@@ -73,83 +33,9 @@
 
 
     <!--SIDEBAR-->
-    <div class="project-sidebar">
-        <h4>Miembros del proyecto</h4>
-        <ul class="icon-member-list">
-            {% for member in members %}
-                {% if owner == member %}
-                    <li data-toggle="tooltip" data-placement="top" title="{{ member.username}}"><strong>{{member.username|first|upper}}</strong></li>
-                        {% else %}
-                    <li data-toggle="tooltip" data-placement="top" title="{{ member.username}}">{{ member.username|first|upper}}</li>
-                    {% endif %}
-                {% endfor %}
+    {{ include('SgpcCoreBundle:Project:partials/sidebar.html.twig') }}
 
-            {% if app.user == owner %}
-                <a class="js-toggle-addmember-form" href="javascript:void(0);">+</a>
-                {{ render(controller('SgpcCoreBundle:Project:addmember', {'id': project.id})) }}
-            {% endif %}
 
-        </ul>
-        {% if app.user == owner %}        
-            <h4>Editar proyecto</h4>
-            {{form(delete_form)}}
-        {% endif %}
-
-        <h4>Resumen de tareas</h4>
-
-        Tareas activas: {{projectTasks|length}}
-        {% if lists|length > 0 %}
-            {% set firstList = lists[0] %}
-        {% endif %}
-        
-        {% if lists|length > 1 %}
-            {% set secondList = lists[1] %}
-        {% endif %}
-        
-        {% if lists|length > 2 %}
-            {% set thirdList = lists[2] %}
-        {% endif %}
-        
-        {% if firstList is defined%}
-            <p>{{ firstList.name }}: <span class="badge firstlist">{{ firstList.getTasks|length }} </span> <p>
-        {% endif %}
-        {% if secondList is defined%}
-            <p>{{ secondList.name }}: <span class="badge secondlist">{{ secondList.getTasks|length }} </span> <p>
-        {% endif %}
-        {% if thirdList is defined%}
-            <p>{{ thirdList.name }}: <span class="badge thirdlist">{{ thirdList.getTasks|length }} </span> <p>
-        {% endif %}
-        {% set others = 0 %}
-        {% if lists|length > 3 %}            
-            {% for list in lists|slice(3, lists|length) %}
-                {% set others = others + list.getTasks|length %}
-            {% endfor%}
-            <p> Otras: <span class="badge">{{ others }} </span></p>
-        {%endif%}
-                   
-        {% if projectTasks|length > 0%}
-        <div class="progress">         
-            {% if firstList is defined %}
-            <div class="progress-bar firstlist" role="progressbar" style="width:{{ firstList.getTasks|length  * 100 / (projectTasks|length - others) }}%">
-                {{ firstList.name }}
-            </div>
-            {% endif %}
-            {% if secondList is defined %}
-            <div class="progress-bar secondlist" role="progressbar" style="width:{{ secondList.getTasks|length  * 100 / (projectTasks|length - others) }}%">
-                {{ secondList.name }}
-            </div>
-            {% endif %}
-            {% if thirdList is defined %}
-            <div class="progress-bar thirdlist" role="progressbar" style="width:{{ thirdList.getTasks|length  * 100 / (projectTasks|length - others)}}%">
-                {{ thirdList.name }}
-            </div>
-            {% endif %}
-        </div> 
-        {% endif %}
-  
-        <h4>Muro de actividad</h4>
-
-    </div>
     {{ include('SgpcCoreBundle:Task:modals/taskModal.html.twig') }}
 {% endblock %}
 

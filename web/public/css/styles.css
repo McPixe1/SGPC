@@ -64,6 +64,7 @@ body, html{
     background:#0C7BCE;
 }
 
+
 .list-wrapper{
     width: 270px;
     margin: 0 5px;
@@ -174,7 +175,6 @@ body, html{
     border-radius: 3px;
     border-bottom-left-radius: 0;
     border-top-left-radius: 0;
-    cursor: pointer;
     margin-bottom: 6px;
     max-width: 300px;
     min-height: 70px;
@@ -182,6 +182,23 @@ body, html{
     z-index: 0;
     padding: 8px 15px;
     margin-bottom: 10px;
+}
+
+.task .dropdown{
+    position:Absolute;
+    right:4px;
+    top:11px;
+}
+.task .dropdown:hover{
+    cursor:pointer;
+}
+.task .dropdown .dropdown-toggle{
+    color: #555
+}
+.task .dropdown .dropdown-menu{
+    left:auto;
+    right: 2px;
+    top: -7px;
 }
 
 .task .priority-label{
@@ -202,7 +219,7 @@ body, html{
 }
 
 .task .task-title{
- 
+
     clear: both;
     display: block;
     font-weight: 400;
@@ -211,7 +228,7 @@ body, html{
     text-decoration: none;
     word-wrap: break-word;
     color: rgba(0,0,0,0.87);
-    
+
 }
 
 .task .task-timer{

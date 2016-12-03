@@ -1,0 +1,34 @@
+<div class="task">
+    <!--dropdown de la tarea-->
+    <div class="dropdown">
+        <a class="dropdown-toggle" type="button" data-toggle="dropdown">
+            <span class="mdi mdi-dots-vertical"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li><a href="{{ path('sgpc_task_view', { 'id': task.id }) }}">Editar tarea</a></li>
+            <li><a href="#">Archivar tarea</a></li>                           
+        </ul>
+    </div> 
+    <a href="{{ path('sgpc_task_view', { 'id': task.id }) }}">
+
+        <div class="priority-label" data-priority="{{task.priority}}"></div>
+        <div class="task-title">
+            {{task.name}}                                 
+        </div>
+        {% if date('now') > date(task.dueDate) %}
+            <div class="task-timer" data-toggle="tooltip" data-placement="top" title="La tarea está fuera de tiempo">
+                <i class="mdi mdi-clock"></i>
+            </div>
+
+        {% endif %}
+        <div class="task-body">
+            <ul class="icon-member-list">
+                {% set taskmembers = task.getUsers %}
+                {% for taskmember in taskmembers %}
+                    <li data-toggle="tooltip" data-placement="top" title="{{ taskmember.username}}">{{ taskmember.username|first|upper}}</li>
+                    {% endfor%}
+            </ul>
+        </div>  
+    </a>
+
+</div>
