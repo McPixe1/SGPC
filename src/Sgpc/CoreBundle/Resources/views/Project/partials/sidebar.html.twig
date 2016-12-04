@@ -22,55 +22,50 @@
 
     <h4>Resumen de tareas</h4>
 
-    Tareas activas: {{projectTasks|length}}
+
+ <p class="underlined-stats">Tareas activas: <span class="badge firstlist">{{activeTasks|length}} </span> </p>  
+    
     {% if lists|length > 0 %}
-        {% set firstList = lists[0] %}
+        {% for list in lists|slice(0,3) %}
+            {% set tasks = list.tasks %}
+            {% set actives = '0' %}
+            {% for task in tasks if task.isActive%}
+                {% set actives = actives + 1 %}
+            {% endfor %}
+            <p class="underlined-stats">{{ list.name }}: <span class="badge firstlist">{{ actives }} </span> </p>          
+        {% endfor %}
     {% endif %}
 
-    {% if lists|length > 1 %}
-        {% set secondList = lists[1] %}
-    {% endif %}
-
-    {% if lists|length > 2 %}
-        {% set thirdList = lists[2] %}
-    {% endif %}
-
-    {% if firstList is defined%}
-        <p>{{ firstList.name }}: <span class="badge firstlist">{{ firstList.getTasks|length }} </span> <p>
-        {% endif %}
-        {% if secondList is defined%}
-        <p>{{ secondList.name }}: <span class="badge secondlist">{{ secondList.getTasks|length }} </span> <p>
-        {% endif %}
-        {% if thirdList is defined%}
-        <p>{{ thirdList.name }}: <span class="badge thirdlist">{{ thirdList.getTasks|length }} </span> <p>
-        {% endif %}
+    {% if lists|length > 3 %}
         {% set others = 0 %}
-        {% if lists|length > 3 %}            
-            {% for list in lists|slice(3, lists|length) %}
-                {% set others = others + list.getTasks|length %}
-            {% endfor%}
-        <p> Otras: <span class="badge">{{ others }} </span></p>
+        {% for list in lists|slice(3, lists|length) %}
+            {% set tasks = list.tasks %}
+            {% set others = '0' %}
+            {% for task in tasks if task.isActive%}
+                {% set others = others + 1 %}
+            {% endfor %}
+        {% endfor%}
+        <p class="underlined-stats"> Otras: <span class="badge">{{ others }} </span></p>
     {%endif%}
 
-    {% if projectTasks|length > 0%}
-        <div class="progress">         
-            {% if firstList is defined %}
-                <div class="progress-bar firstlist" role="progressbar" style="width:{{ firstList.getTasks|length  * 100 / (projectTasks|length - others) }}%">
-                    {{ firstList.name }}
-                </div>
-            {% endif %}
-            {% if secondList is defined %}
-                <div class="progress-bar secondlist" role="progressbar" style="width:{{ secondList.getTasks|length  * 100 / (projectTasks|length - others) }}%">
-                    {{ secondList.name }}
-                </div>
-            {% endif %}
-            {% if thirdList is defined %}
-                <div class="progress-bar thirdlist" role="progressbar" style="width:{{ thirdList.getTasks|length  * 100 / (projectTasks|length - others)}}%">
-                    {{ thirdList.name }}
-                </div>
-            {% endif %}
-        </div> 
+
+    {% if lists|length > 0 %}
+        <div class="progress">       
+            {% for list in lists|slice(0,3) %}
+                {% set tasks = list.tasks %}
+                {% set actives = '0' %}
+                {% for task in tasks if task.isActive%}
+                    {% set actives = actives + 1 %}
+                {% endfor %}
+                {% if activeTasks|length > 0 %}
+                    <div class="progress-bar" role="progressbar" style="width:{{ actives  * 100 / (activeTasks|length) }}%">
+                        {{ list.name }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
     {% endif %}
+
 
     <h4>Muro de actividad</h4>
 

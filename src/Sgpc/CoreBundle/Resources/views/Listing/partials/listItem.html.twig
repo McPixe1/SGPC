@@ -4,9 +4,10 @@
             {{ list.name }}
         </div>
         <div class="list-body">
+            <!--TAREAS-->
             {% set tasks = list.tasks%}
-            {% for task in tasks %}
-                <!--TAREAS-->
+            {# DE MOMENTO DEJAMOS EL ISACTIVE DE PRUEBA#}
+            {% for task in tasks if task.isActive%}
                 {{ include('SgpcCoreBundle:Task:partials/taskItem.html.twig') }}
             {% endfor %}
             <a class="js-toggle-task-form" href="javascript:void(0);">Añadir una tarea</a>

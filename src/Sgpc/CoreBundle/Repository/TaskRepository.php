@@ -22,5 +22,17 @@ class TaskRepository extends EntityRepository
         return $qb->getQuery()
                         ->getResult();
     }
+    
+      public function getActiveTasksForProject($projectId) {
+        $qb = $this->createQueryBuilder('t')
+                ->select('t')
+                ->where('t.project = :project_id')
+                ->andWhere('t.isActive = true')
+                ->addOrderBy('t.name')
+                ->setParameter('project_id', $projectId);
 
+        return $qb->getQuery()
+                        ->getResult();
+    }
+    
 }

@@ -56,6 +56,13 @@ class Task {
      * @ORM\Column(name="priority", type="integer")
      */
     private $priority;
+    
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="isactive", type="boolean")
+     */
+    private $isActive;
 
     /**
      * @ORM\ManyToMany(targetEntity="User", inversedBy="tasks", cascade={"persist"})
@@ -69,7 +76,7 @@ class Task {
     protected $users;
 
     /**
-     * @ORM\OneToMany(targetEntity="Comment", mappedBy="task")
+     * @ORM\OneToMany(targetEntity="Comment", mappedBy="task", cascade={"remove"})
      */
     protected $comments;
 
@@ -190,6 +197,7 @@ class Task {
     public function __construct() {
         $this->users = new \Doctrine\Common\Collections\ArrayCollection();
         $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->isActive = true;
     }
 
     /**
@@ -317,4 +325,28 @@ class Task {
     public function __toString() {
     return $this->name;
 }
+
+    /**
+     * Set project
+     *
+     * @param \Sgpc\CoreBundle\Entity\Project $project
+     *
+     * @return Task
+     */
+    public function setProject(\Sgpc\CoreBundle\Entity\Project $project = null)
+    {
+        $this->project = $project;
+
+        return $this;
+    }
+
+    /**
+     * Get project
+     *
+     * @return \Sgpc\CoreBundle\Entity\Project
+     */
+    public function getProject()
+    {
+        return $this->project;
+    }
 }

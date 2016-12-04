@@ -13,7 +13,7 @@ body, html{
 }
 
 .project-main-content{
-    margin-right: 339px;
+    margin-right: 300px;
     height: 100%;
     display: -webkit-box;
     display: -webkit-flex;
@@ -26,13 +26,13 @@ body, html{
 
 .project-canvas{
     white-space: nowrap;
-    margin-bottom: 10px;
+    margin-bottom: 0;
     overflow-x: auto;
     overflow-y: hidden;
     padding-bottom: 10px;
     position: absolute;
     top: 0;
-    right: 339px;
+    right: 300px;
     bottom: 0;
     left: 0;
     padding:0px 30px;
@@ -44,25 +44,51 @@ body, html{
     position: absolute;
     right: 0;
     top: 52px;
-    padding:30px;
-    width: 339px;
+    padding:20px;
+    width: 300px;
     z-index: 5;
+}
+
+/* SIDEBAR DE PROYECTO */
+
+.project-sidebar .underlined-stats{
+    border-bottom: 1px solid lightgrey;
+    margin-bottom:5px;
+    padding-bottom:5px;
+}
+.project-sidebar .underlined-stats:last-of-type{
+    border:none;
+}
+.project-sidebar .underlined-stats .badge{
+    float:right;
+}
+
+
+.project-sidebar .underlined-stats:first-of-type .badge{
+    background:#111;
+}
+.project-sidebar .underlined-stats:nth-of-type(2) .badge{
+    background: #263644;
+}
+.project-sidebar .underlined-stats:nth-of-type(3) .badge{
+    background: #700CCE;
+}
+.project-sidebar .underlined-stats:nth-of-type(4)  .badge{
+    background:#0C7BCE;
+}
+
+.project-sidebar .progress .progress-bar:first-of-type{
+    background: #263644;
+}
+.project-sidebar .progress .progress-bar:nth-of-type(2){
+    background: #700CCE;
+}
+.project-sidebar .progress .progress-bar:nth-of-type(3){
+    background: #0C7BCE;
 }
 
 
 /*LISTADOS*/
-
-/*colores de listados*/
-
-.firstlist{
-    background:#263644;
-}
-.secondlist{
-    background: #700CCE;
-}
-.thirdlist{
-    background:#0C7BCE;
-}
 
 
 .list-wrapper{
@@ -233,8 +259,8 @@ body, html{
 
 .task .task-timer{
     position:absolute;
-    right:10px;
-    top:12px;
+    right:5px;
+    bottom:3px;
 }
 .task .task-timer .mdi{
     color:red;

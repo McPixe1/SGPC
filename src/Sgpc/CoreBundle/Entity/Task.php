@@ -56,6 +56,13 @@ class Task {
      * @ORM\Column(name="priority", type="integer")
      */
     private $priority;
+    
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="isactive", type="boolean")
+     */
+    private $isActive;
 
     /**
      * @ORM\ManyToMany(targetEntity="User", inversedBy="tasks", cascade={"persist"})
@@ -190,6 +197,7 @@ class Task {
     public function __construct() {
         $this->users = new \Doctrine\Common\Collections\ArrayCollection();
         $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->isActive = true;
     }
 
     /**
@@ -340,5 +348,29 @@ class Task {
     public function getProject()
     {
         return $this->project;
+    }
+
+    /**
+     * Set isActive
+     *
+     * @param boolean $isActive
+     *
+     * @return Task
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * Get isActive
+     *
+     * @return boolean
+     */
+    public function getIsActive()
+    {
+        return $this->isActive;
     }
 }
