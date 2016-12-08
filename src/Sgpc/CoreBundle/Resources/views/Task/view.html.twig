@@ -15,6 +15,12 @@
 
         Descripción: {{task.description}} 
         <br>
+        
+        Categoría: {{task.listing}}
+        <br>
+
+        Estado: {% if task.isActive %} Activa {% else %} Archivada {% endif %}
+        <br>
         Fecha de inicio:
         {{task.createdAt|date("d/m/Y") }}
 
@@ -28,6 +34,11 @@
         {%else%}
             Duración: {{duration_days}} dias 
         {%endif%}
+
+        {% if task.Isactive and app.user == project.owner %}
+            {{form(store_form)}}
+        {% endif %}
+
 
         <!--COMENTARIOS-->
 

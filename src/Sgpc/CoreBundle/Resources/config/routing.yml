@@ -70,6 +70,10 @@ sgpc_task_addmember:
     path:     /task/{id}/addmember/
     defaults: { _controller: SgpcCoreBundle:Task:addmember }
     
+sgpc_task_store:
+    path:     /task/{id}/store/
+    defaults: { _controller: SgpcCoreBundle:Task:store }
+    
     
 #COMENTARIOS
 
