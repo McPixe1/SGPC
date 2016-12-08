@@ -75,6 +75,8 @@ class TaskController extends Controller {
                     'store_form' => $storeForm->createView()
         ));
     }
+    
+    
 
     /*
      * Crea el formulario para añadir un miembro a la tarea, comprobando que solo
@@ -162,7 +164,10 @@ class TaskController extends Controller {
         return $this->createFormBuilder()
                         ->setAction($this->generateUrl('sgpc_task_store', array('id' => $id)))
                         ->setMethod('POST')
-                        ->add('submit', 'submit', array('label' => 'Archivar tarea'))
+                        ->add('submit', 'submit', array('label' => 'Archivar tarea', 'attr' => array(
+                                'class' => 'btn btn-danger btn-sm',
+                                'onclick' => 'return confirm("Estás seguro que quieres archivar la tarea?")'
+                    )))
                         ->getForm();
     }
 

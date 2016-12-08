@@ -15,7 +15,7 @@
 
         Descripción: {{task.description}} 
         <br>
-        
+
         Categoría: {{task.listing}}
         <br>
 
@@ -35,9 +35,6 @@
             Duración: {{duration_days}} dias 
         {%endif%}
 
-        {% if task.Isactive and app.user == project.owner %}
-            {{form(store_form)}}
-        {% endif %}
 
 
         <!--COMENTARIOS-->
@@ -82,7 +79,12 @@
         </ul>
 
         <h4>Prioridad</h4>
-        {{task.priority}}
+        {% if task.priority == 1 %} Baja {% elseif task.priority == 2 %} Media {% else %} Alta {% endif %}
+   
+
+        {% if task.Isactive and app.user == project.owner %}
+            {{form(store_form)}}
+        {% endif %}
     </div>
 
 {% endblock %}
