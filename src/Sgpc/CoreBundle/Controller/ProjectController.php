@@ -89,7 +89,6 @@ class ProjectController extends Controller {
         ));
     }
 
-
     /**
      * Muestra una entidad proyecto
      */
@@ -98,9 +97,9 @@ class ProjectController extends Controller {
         $project = $em->getRepository('SgpcCoreBundle:Project')->find($id);
 
         $lists = $project->getListings();
-                
+
         $activeTasks = $em->getRepository('SgpcCoreBundle:Task')
-                   ->getActiveTasksForProject($id);
+                ->getActiveTasksForProject($id);
 
         $deleteForm = $this->createDeleteForm($id);
         $addmemberForm = $this->createAddMemberForm($id);
@@ -204,5 +203,19 @@ class ProjectController extends Controller {
                     'addmember_form' => $form->createView(),
         ));
     }
+
+    public function editAction($id) {
+        $em = $this->getDoctrine()->getManager();
+
+        $task = $em->getRepository('SgpcCoreBundle:Task')->find($id);
+
+        if (!$task) {
+            throw $this->createNotFoundException('Task not found');
+        }
+
+        $form = $this->createEditForm($task);
+
+        return $this->render('SgpcCoreBundle:Task:edit.html.twig', array('task' => $task, 'form' => $form->createView()));
+    }   
 
 }

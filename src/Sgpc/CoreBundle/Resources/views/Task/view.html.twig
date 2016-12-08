@@ -79,12 +79,18 @@
         </ul>
 
         <h4>Prioridad</h4>
-        {% if task.priority == 1 %} Baja {% elseif task.priority == 2 %} Media {% else %} Alta {% endif %}
-   
+        {% if task.priority == 3 %} Baja {% elseif task.priority == 2 %} Media {% else %} Alta {% endif %}
+
 
         {% if task.Isactive and app.user == project.owner %}
             {{form(store_form)}}
         {% endif %}
+        <br>
+        {% for member in members %}
+        {% if app.user == member or app.user == project.owner%}
+            <a href="{{ path('sgpc_task_edit', {id: task.id}) }}" class="btn btn-primary">Editar tarea</a>
+        {% endif %}
+        {% endfor %}
     </div>
 
 {% endblock %}

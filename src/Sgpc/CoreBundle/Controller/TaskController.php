@@ -75,8 +75,6 @@ class TaskController extends Controller {
                     'store_form' => $storeForm->createView()
         ));
     }
-    
-    
 
     /*
      * Crea el formulario para añadir un miembro a la tarea, comprobando que solo
@@ -190,6 +188,52 @@ class TaskController extends Controller {
 
             return $this->redirect($this->generateUrl('sgpc_task_view', array('id' => $task->getId())));
         }
+    }
+
+    public function editAction($id) {
+        $em = $this->getDoctrine()->getManager();
+
+        $task = $em->getRepository('SgpcCoreBundle:Task')->find($id);
+
+        if (!$task) {
+            throw $this->createNotFoundException('task not found');
+        }
+
+        $form = $this->createEditForm($task);
+
+        return $this->render('SgpcCoreBundle:Task:edit.html.twig', array('task' => $task, 'edit_form' => $form->createView()));
+    }
+
+    private function createEditForm(Task $entity) {
+        $form = $this->createForm(new TaskType(), $entity, array(
+            'action' => $this->generateUrl('sgpc_task_update', array('id' => $entity->getId())),
+            'method' => 'PUT'
+        ));
+        $form   ->add('listing') //FALTA HACER QUE SOLO PUEDA SELECCIONAR LOS DE SU PROYECTO
+                ->add('submit', 'submit', array('label' => 'Actualizar tarea', 'attr' => ['class' => 'btn btn-success btn-sm']));
+
+        return $form;
+    }
+
+    public function updateAction($id, Request $request) {
+        $em = $this->getDoctrine()->getManager();
+
+        $task = $em->getRepository('SgpcCoreBundle:Task')->find($id);
+
+        if (!$task) {
+            throw $this->createNotFoundException('task not found');
+        }
+
+        $form = $this->createEditForm($task);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() and $form->isValid()) {
+            $em->flush();
+
+            return $this->redirectToRoute('sgpc_task_view', array('id' => $task->getId()));
+        }
+
+        return $this->render('SgpcCoreBundle:Task:edit.html.twig', array('task' => $task, 'edit_form' => $form->createView()));
     }
 
 }
