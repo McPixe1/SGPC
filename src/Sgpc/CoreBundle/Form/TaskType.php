@@ -29,9 +29,10 @@ class TaskType extends AbstractType {
                 ->add('dueDate', 'date', array(
                     'input' => 'datetime',
                     'widget' => 'choice',
-                    'format' => 'yyyy-MM-dd'
-                    ))
-                
+                    'format' => 'yyyy-MM-dd',
+                    'years' => range(date('Y'), date('Y') + 1)
+                ))
+                ->add('listing', null, array('attr' => array('style' => 'display:none;'), 'label' => false))
                 ->add('submit', 'submit', array(
                     'label' => 'Crear tarea',
                     'attr' => array('class' => 'btn btn-sm btn-success')

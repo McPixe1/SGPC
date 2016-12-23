@@ -103,11 +103,6 @@ class TaskController extends Controller {
         $list = $task->getListing();
         $project = $list->getProject()->getId();
 
-        /*
-         * ToDo: poner en repository. Seleccionamos los usuarios que son miembros
-         * del proyecto y no son miembros de esta tarea para pasarlos al form como choices
-         */
-
         $query = $em->createQuery('SELECT u FROM SgpcCoreBundle:User u JOIN u.projects p WHERE  p.id = :idProject AND u.id NOT IN(SELECT u2 FROM SgpcCoreBundle:User u2 JOIN u2.tasks t WHERE t.id= :idTask)');
         $query->setParameters(array(
             'idTask' => $id,
@@ -209,7 +204,11 @@ class TaskController extends Controller {
             'action' => $this->generateUrl('sgpc_task_update', array('id' => $entity->getId())),
             'method' => 'PUT'
         ));
-        $form   ->add('listing') //FALTA HACER QUE SOLO PUEDA SELECCIONAR LOS DE SU PROYECTO
+        $form
+                ->add('listing', 'choice', array(
+                    'choices' => $this->listingToChoices($entity->getId()),
+                    'choices_as_values' => true,
+                ))
                 ->add('submit', 'submit', array('label' => 'Actualizar tarea', 'attr' => ['class' => 'btn btn-success btn-sm']));
 
         return $form;
@@ -234,6 +233,25 @@ class TaskController extends Controller {
         }
 
         return $this->render('SgpcCoreBundle:Task:edit.html.twig', array('task' => $task, 'edit_form' => $form->createView()));
+    }
+
+    /**
+     * Función para pasar los listados de un proyecto como array 
+     * al formulario de edicion de tareas
+     */
+    protected function listingToChoices($id) {
+
+        $em = $this->getDoctrine()->getManager();
+        $task = $em->getRepository('SgpcCoreBundle:Task')->find($id);
+
+        $project = $task->getProject();
+        $listings = $project->getListings();
+
+        $choices = array();
+        foreach ($listings as $availableList) {
+            $choices[$availableList->getName()] = $availableList;
+        }
+        return $choices;
     }
 
 }
