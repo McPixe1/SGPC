@@ -127,6 +127,12 @@
             $('.js-toggle-addmember-form').click(function () {
                 $(this).parent().find('.task-members-form').toggle();
             });
+            
+              $('.sidebar-toggle').click(function () {
+                $(this).toggleClass('in');
+                $('.task-sidebar').toggleClass('in');                
+            });
+            
         });
     </script>
 {% endblock %}

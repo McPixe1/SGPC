@@ -31,6 +31,8 @@
         </div>
     </div>
 
+    <div class="sidebar-toggle"></div>
+
 
     <!--SIDEBAR-->
     {{ include('SgpcCoreBundle:Project:partials/sidebar.html.twig') }}
@@ -53,14 +55,17 @@
                 $(this).parent().find('.project-members-form').toggle();
             });
 
+            $('.sidebar-toggle').click(function () {
+                $(this).toggleClass('in');
+                $('.project-sidebar').toggleClass('in');                
+            });
 
+
+            $('.datepicker').datepicker();
         });
     </script>
 
     <script>
-        jQuery(document).ready(function () {
-            $('.datepicker').datepicker({
-            });
-        });
+
     </script>
 {% endblock %}

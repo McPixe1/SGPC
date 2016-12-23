@@ -10,7 +10,7 @@
             {% for task in tasks if task.isActive%}
                 {{ include('SgpcCoreBundle:Task:partials/taskItem.html.twig') }}
             {% endfor %}
-            <a class="js-toggle-task-form" href="javascript:void(0);">Añadir una tarea</a>
+            <a class="js-toggle-task-form" href="javascript:void(0);">+</a>
 
             {{ render(controller('SgpcCoreBundle:Task:add', {'id': list.id})) }}
 

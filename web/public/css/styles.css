@@ -1,7 +1,36 @@
 body, html{
-    background: #74AFAD;
+    background: rgb(3, 89, 143);
+    font-family: 'Roboto', sans-serif;
+    overflow:hidden;
 }
 
+
+.navbar.navbar-inverse{
+    background:#05314A;
+    border-color:#05314A;
+    border-radius:0px;
+    margin-bottom: 0;
+}
+.navbar .container-fluid{
+    padding-left:30px;
+    padding-right:30px;
+}
+
+/* DASHBOARD*/
+
+.dashboard-title{
+    background: rgb(0, 129, 194) none repeat scroll 0% 0%;
+    margin: 0px;
+    color: white;
+    padding: 30px 45px 80px;
+    font-size: 22px;
+    font-weight: 400;
+    margin-left: -30px;
+    margin-right: -30px;
+}
+.project-list{
+    margin-top:-50px;
+}
 
 /*INTERIOR DE PROYECTO*/
 .project-wrapper{
@@ -13,7 +42,6 @@ body, html{
 }
 
 .project-main-content{
-    margin-right: 300px;
     height: 100%;
     display: -webkit-box;
     display: -webkit-flex;
@@ -31,23 +59,64 @@ body, html{
     overflow-y: hidden;
     padding-bottom: 10px;
     position: absolute;
-    top: 0;
-    right: 300px;
+    top: 84px;
+    right: 0;
     bottom: 0;
     left: 0;
-    padding:0px 30px;
+    padding: 0px;
+    padding-top: 50px;
+}
+
+.project-canvas > h2{
+    background: rgb(0, 129, 194) none repeat scroll 0% 0%;
+    margin: 0px;
+    color: white;
+    padding: 30px 30px 80px;
+    font-size: 22px;
+    font-weight: 400;
+    position:fixed;
+    left:0;
+    right:0;
+    top:52px;
 }
 
 .project-sidebar{
-    background-color: white;
+    background-color: RGBA(5, 49, 74, 0.95);
+    color:white;
     bottom: 0;
     position: absolute;
-    right: 0;
+    right: -350px;
     top: 52px;
-    padding:20px;
-    width: 300px;
+    padding:20px 40px 20px 40px;
+    width: 350px;
     z-index: 5;
+    transition: all 0.3s ease;
 }
+.project-sidebar.in{
+    right:0;
+}
+
+
+.sidebar-toggle{
+    position: fixed;
+    top: 70px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    background: white;
+    border-radius: 50%;
+    z-index: 100;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    color: #5A6B77;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.16),0 2px 10px 0 rgba(0,0,0,.12);
+
+}
+.sidebar-toggle.in{
+    right: 325px;
+
+}
+
 
 /* SIDEBAR DE PROYECTO */
 
@@ -94,6 +163,7 @@ body, html{
 .list-wrapper{
     width: 270px;
     margin: 0 5px;
+    margin-top: -50px;
     height: 100%;
     box-sizing: border-box;
     display: inline-block;
@@ -102,8 +172,16 @@ body, html{
     background:transparent;
 }
 
+.list-wrapper:first-of-type{
+    margin-left:30px;
+}
+.list-wrapper:last-of-type{
+    margin-right:30px;
+}
+
 .list-wrapper .list{
-    background: #ddd;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.16),0 2px 10px 0 rgba(0,0,0,.12);
+    background: #D4D8D8;
     border-radius: 3px;
     padding:15px;
     box-sizing: border-box;
@@ -114,18 +192,53 @@ body, html{
     -webkit-flex-direction: column;
     -ms-flex-direction: column;
     flex-direction: column;
-    max-height: 100%;
+    max-height: calc(100% - 52px);
+    max-height: -moz-calc(100% -52px);
     position: relative;
     white-space: normal;
-    overflow-y:scroll;
+    overflow-y:auto;
 }
 
 .list .list-header{
-    margin-bottom: 20px;
     font-size: 16px;
-    font-weight: bold;
+    font-weight: 500;
+    color:#5A6B77;
+    position: absolute;
+    width: 100%;
+    border-bottom: 1px solid rgba(90, 107, 119, 0.26);
+    left: 0px;
+    top: 0px;
+    right: 0px;
+    height: 51px;
+    margin: 0px;
+    padding: 15px;
+    text-transform: uppercase;
 }
 
+.js-toggle-task-form{
+    position: absolute;
+    top: 30px;
+    right: 15px;
+    padding: 0;
+    font-size: 24px;
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+    line-height: 40px;
+    text-align: center;
+    color: white;
+    background: #3e80bd;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
+}
+.js-toggle-task-form:hover, .js-toggle-task-form:focus, .js-toggle-task-form:visited{
+    color:white;
+    text-decoration:none;
+}
+
+.list .list-body{
+    margin-top:51px;
+    min-height:15px;
+}
 
 .mdi::before {
     font-size: 24px;
@@ -208,12 +321,23 @@ body, html{
     z-index: 0;
     padding: 8px 15px;
     margin-bottom: 10px;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,.1), 3px 2px 4px 0 rgba(0,0,0,.1);
+}
+.task:first-of-type{
+    margin-top:15px;
+}
+.task:last-of-type{
+    margin-bottom:0px;
 }
 
 .task .dropdown{
-    position:Absolute;
-    right:4px;
-    top:11px;
+    position: Absolute;
+    right: 10px;
+    top: 5px;
+    font-size: 20px;
+}
+.task .dropdown .mdi{
+    color:grey;
 }
 .task .dropdown:hover{
     cursor:pointer;
@@ -248,27 +372,27 @@ body, html{
 
     clear: both;
     display: block;
-    font-weight: 400;
+    font-weight: 500;
     margin: 0 0 4px;
     overflow: hidden;
     text-decoration: none;
     word-wrap: break-word;
-    color: rgba(0,0,0,0.87);
+    color: #576671;
 
 }
 
 .task .task-timer{
-    position:absolute;
-    right:5px;
-    bottom:3px;
-}
-.task .task-timer .mdi{
-    color:red;
-    font-size:8px;
+    position: absolute;
+    right: 10px;
+    bottom: 3px;
+    color: red;
+    font-size: 20px;
 }
 
+
 .task-sidebar{
-    background-color: white;
+    background-color: RGBA(5, 49, 74, 0.95);
+    color:white;
     bottom: 0;
     position: absolute;
     right: 0;
