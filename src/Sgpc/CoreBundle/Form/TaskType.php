@@ -26,12 +26,15 @@ class TaskType extends AbstractType {
                     ),
                         )
                 )
-                ->add('dueDate', 'date', array(
-                    'input' => 'datetime',
-                    'widget' => 'choice',
-                    'format' => 'yyyy-MM-dd',
-                    'years' => range(date('Y'), date('Y') + 1)
-                ))
+                ->add('dueDate', 'date', [
+                    'widget' => 'single_text',
+                    'format' => 'dd-MM-yyyy',
+                    'attr' => [
+                        'class' => 'form-control input-inline datepicker',
+                        'data-provide' => 'datepicker',
+                        'data-date-format' => 'dd-mm-yyyy'
+                    ]
+                ])
                 ->add('listing', null, array('attr' => array('style' => 'display:none;'), 'label' => false))
                 ->add('submit', 'submit', array(
                     'label' => 'Crear tarea',
