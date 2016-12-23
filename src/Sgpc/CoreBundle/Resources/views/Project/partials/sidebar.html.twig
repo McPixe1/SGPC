@@ -15,16 +15,12 @@
         {% endif %}
 
     </ul>
-    {% if app.user == owner %}        
-        <h4>Editar proyecto</h4>
-        {{form(delete_form)}}
-    {% endif %}
 
     <h4>Resumen de tareas</h4>
 
 
- <p class="underlined-stats">Tareas activas: <span class="badge firstlist">{{activeTasks|length}} </span> </p>  
-    
+    <p class="underlined-stats">Tareas activas: <span class="badge firstlist">{{activeTasks|length}} </span> </p>  
+
     {% if lists|length > 0 %}
         {% for list in lists|slice(0,3) %}
             {% set tasks = list.tasks %}
@@ -67,6 +63,26 @@
     {% endif %}
 
 
-    <h4>Muro de actividad</h4>
+    <div>
+
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Muro de actividad</a></li>
+            <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Opciones</a></li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="home">ToDo</div>
+            <div role="tabpanel" class="tab-pane" id="profile">
+                {% if app.user == owner %}        
+                    <h4>Editar proyecto</h4>
+                    {{form(delete_form)}}
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+
 
 </div>

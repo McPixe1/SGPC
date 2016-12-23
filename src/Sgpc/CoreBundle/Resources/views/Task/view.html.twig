@@ -82,20 +82,38 @@
         {% if task.priority == 3 %} Baja {% elseif task.priority == 2 %} Media {% else %} Alta {% endif %}
 
 
-        {% if task.Isactive and app.user == project.owner %}
-            {{form(store_form)}}
-        {% endif %}
-        <br>
+        <div>
 
-        {% if app.user == project.owner%}
-            <a href="{{ path('sgpc_task_edit', {id: task.id}) }}" class="btn btn-primary">Editar tarea</a>
-        {% else %}
-            {% for member in members %}
-                {% if app.user == member %}
-                    <a href="{{ path('sgpc_task_edit', {id: task.id}) }}" class="btn btn-primary">Editar tarea</a>
-                {% endif %}
-            {% endfor %}
-        {%endif%}
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Muro de actividad</a></li>
+                <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Opciones</a></li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="home">ToDo</div>
+                <div role="tabpanel" class="tab-pane" id="profile">
+                    {% if task.Isactive and app.user == project.owner %}
+                        {{form(store_form)}}
+                    {% endif %}
+                    <br>
+
+                    {% if app.user == project.owner%}
+                        <a href="{{ path('sgpc_task_edit', {id: task.id}) }}" class="btn btn-primary">Editar tarea</a>
+                    {% else %}
+                        {% for member in members %}
+                            {% if app.user == member %}
+                                <a href="{{ path('sgpc_task_edit', {id: task.id}) }}" class="btn btn-primary">Editar tarea</a>
+                            {% endif %}
+                        {% endfor %}
+                    {%endif%}
+
+                </div>
+            </div>
+
+        </div>
+
 
 
     </div>
