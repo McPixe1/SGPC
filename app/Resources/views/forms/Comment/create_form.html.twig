@@ -1,6 +1,9 @@
+ <ul class="icon-member-list">
+                <li data-toggle="tooltip" data-placement="top" title="{{ app.user }}">{{ app.user |first|upper}}</li>
+            </ul>
 <form action="{{ path('sgpc_comment_create', { 'id' : comment.task.id } ) }}" method="post" {{ form_enctype(form) }} class="tasker">
     {{ form_widget(form) }}
     <p>
-        <input type="submit" value="Submit">
+        <input type="submit" value="Enviar comentario" class="btn btn-sm btn-success">
     </p>
 </form>

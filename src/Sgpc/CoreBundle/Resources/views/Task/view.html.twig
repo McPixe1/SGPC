@@ -47,18 +47,17 @@
                     {% include 'SgpcCoreBundle:Comment:view.html.twig' with { 'comments': comments } %}
                 </section>
             </section>
-            {% if app.user == project.owner %}
-                {{ render(controller('SgpcCoreBundle:Comment:add', {'id': task.id})) }}
-            {% else %}
-                {% for member in members %}
-                    {% if app.user == member%}
-                        {{ render(controller('SgpcCoreBundle:Comment:add', {'id': task.id})) }}
-                    {% endif %}
-                {% endfor %}
-            {% endif %}
-
-
-
+            <div class="new-comment">
+                {% if app.user == project.owner %}                
+                    {{ render(controller('SgpcCoreBundle:Comment:add', {'id': task.id})) }}
+                {% else %}
+                    {% for member in members %}
+                        {% if app.user == member%}
+                            {{ render(controller('SgpcCoreBundle:Comment:add', {'id': task.id})) }}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </div>
 
         </div>
 

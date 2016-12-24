@@ -1,9 +1,12 @@
 {% for comment in comments %}
     <article class="comment {{ cycle(['odd', 'even'], loop.index0) }}" id="comment-{{ comment.id }}">
-        <header>
-            <p class="highlight"><span>{{ comment.user }}</span> ha comentado el <time datetime="{{ comment.createdAt|date('c') }}">{{ comment.createdAt|date('l, F j, Y') }}</time></p>
-        </header>
         <p>{{ comment.comment }}</p>
+        <header>
+            <ul class="icon-member-list">
+                <li data-toggle="tooltip" data-placement="top" title="{{ comment.user }}">{{ comment.user |first|upper}}</li>
+            </ul>
+            <time datetime="{{ comment.createdAt|date('c') }}">{{ comment.createdAt|date('d/m/Y') }}</time>
+        </header>
     </article>
 {% else %}
     <p>Esta tarea todavía no tiene comentarios.</p>
