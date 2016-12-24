@@ -1,26 +1,13 @@
-{% extends 'base.html.twig' %}
+{%  extends 'base.html.twig' %}
+
 
 {% block body %}
-    {{ parent() }}
-    
+    {{ parent() }}    
+    <div class="container-fluid">
+        <h3 class="dashboard-title"><a class="back-button" href="{{ path('sgpc_core_homepage')}}"><i class="mdi mdi-arrow-left"></i></a>Nuevo proyecto</h3>
 
-    
-    <div class="main container">
-        <div class="row">
-            <div class="col-md-6">
-                    <div class="page-header">
-                        <h2>Nuevo Proyecto</h2>
-                    </div>
-
-                        {{ include ('/forms/Project/create_form.html.twig') }}
-                    <div class="col-xs-12">
-                        <a href="{{ path('sgpc_core_homepage')}}">
-                            Volver a mis proyectos
-                        </a>
-                    </div>
-            </div>
-         
+        <div class="form-content">
+            {{ include ('/forms/Project/create_form.html.twig') }}
         </div>
-    </div>
-                           
+
 {% endblock %}

@@ -1,2 +1,14 @@
-{{ include ('/forms/Task/edit_form.html.twig') }}
+{%  extends 'base.html.twig' %}
 
+
+{% block body %}
+    {{ parent() }}    
+    <div class="container-fluid">
+        <h3 class="dashboard-title"><a class="back-button" href="{{ path('sgpc_task_view', { 'id': task.id }) }}"><i class="mdi mdi-arrow-left"></i></a>Editar {{task.name}}</h3>
+
+        <div class="form-content">
+            {{ include ('/forms/Task/edit_form.html.twig') }}
+
+        </div>
+
+{% endblock %}
