@@ -12,23 +12,28 @@
         <div class="task-title">
             {{task.name}}                                 
         </div>
-        {% if date('now') > date(task.dueDate) %}
-            <div class="task-timer" data-toggle="tooltip" data-placement="top" title="La tarea está fuera de tiempo">
-                <i class="mdi mdi-clock"></i>
-            </div>
 
-        {% endif %}
         <div class="task-body">
-            {% set taskmembers = task.getUsers %}
-            {% if taskmembers |length > 0 %}
-                <i class="mdi mdi-account"></i><span>{{taskmembers |length }}</span>
-            {% endif %}
-            
-            {% set comments = task.getComments %}
-            {% if comments |length > 0 %}
-                <i class="mdi mdi-message-text-outline"></i><span>{{comments |length }}</span>
-            {% endif %}
+            <ul>
+                {% if date('now') > date(task.dueDate) %}
+                    <li class="task-timer" data-toggle="tooltip" data-placement="top" title="La tarea está fuera de tiempo">
+                        <i class="mdi mdi-clock"></i>
+                    </li>
+                {% endif %}
+                {% set taskmembers = task.getUsers %}
+                {% if taskmembers |length > 0 %}
+                    <li>
+                        <i class="mdi mdi-account"></i><span>{{taskmembers |length }}</span>
+                    </li>
+                {% endif %}
 
+                {% set comments = task.getComments %}
+                {% if comments |length > 0 %}
+                    <li>
+                        <i class="mdi mdi-message-text-outline"></i><span>{{comments |length }}</span>
+                    </li>
+                {% endif %}
+            </ul>
         </div>  
     </a>
 

@@ -437,10 +437,16 @@ form label{
     right: 10px;
     top: 5px;
     font-size: 20px;
+    display:none;
+}
+
+.task:hover .dropdown{
+    display:block;
 }
 
 .task a{
     display:block;
+    text-decoration: none;
 }
 .task .dropdown .mdi{
     color:grey;
@@ -487,12 +493,29 @@ form label{
 
 }
 
-.task .task-timer{
-    position: absolute;
-    right: 10px;
-    bottom: 3px;
+.task-body ul{
+    padding:0;
+    margin:0;
+    list-style: none;
+}
+.task-body ul li{
+    display:inline-block;
+    color: #7d7d7d;
+    font-size: 16px;
+}
+.task-body ul li span{
+    font-size: 14px;
+    margin-left: 1px;
+    font-weight: 500;
+    position: relative;
+    top: -1px;
+}
+.task-body ul li+li{
+    margin-left:5px;
+}
+
+.task .task-timer{ 
     color: red;
-    font-size: 20px;
 }
 
 
