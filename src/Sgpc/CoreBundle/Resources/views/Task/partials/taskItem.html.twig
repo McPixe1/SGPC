@@ -19,12 +19,16 @@
 
         {% endif %}
         <div class="task-body">
-            <ul class="icon-member-list">
-                {% set taskmembers = task.getUsers %}
-                {% for taskmember in taskmembers %}
-                    <li data-toggle="tooltip" data-placement="top" title="{{ taskmember.username}}">{{ taskmember.username|first|upper}}</li>
-                    {% endfor%}
-            </ul>
+            {% set taskmembers = task.getUsers %}
+            {% if taskmembers |length > 0 %}
+                <i class="mdi mdi-account"></i><span>{{taskmembers |length }}</span>
+            {% endif %}
+            
+            {% set comments = task.getComments %}
+            {% if comments |length > 0 %}
+                <i class="mdi mdi-message-text-outline"></i><span>{{comments |length }}</span>
+            {% endif %}
+
         </div>  
     </a>
 

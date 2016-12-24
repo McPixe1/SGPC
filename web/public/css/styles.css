@@ -1,6 +1,8 @@
 body, html{
     background: rgb(3, 89, 143);
     font-family: 'Roboto', sans-serif;
+}
+body{
     overflow:hidden;
 }
 
@@ -33,6 +35,17 @@ body, html{
 }
 
 /*INTERIOR DE PROYECTO*/
+
+.back-button{
+    color: white;
+    position: relative;
+    top: 2px;
+    margin-right: 15px; 
+}
+.back-button:hover, .back-button:focus{
+    color:white;
+}
+
 .project-wrapper{
     position: absolute;
     left: 0;
@@ -94,6 +107,8 @@ body, html{
 }
 .project-sidebar.in{
     right:0;
+    box-shadow: -2px 2px 4px 0 rgba(0,0,0,.1), -2px 2px 4px 0 rgba(0,0,0,.1);
+
 }
 
 
@@ -235,6 +250,32 @@ body, html{
     text-decoration:none;
 }
 
+.js-toggle-task-form .mdi-plus:before{
+    transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    transform-origin: center;
+    display:block;
+    line-height: 40px;
+}
+
+.js-toggle-task-form.in .mdi-plus:before{
+    transform: rotate(135deg);
+    -moz-transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+    transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+}
+
+.task-form{
+    padding-bottom: 30px;
+}
+.task-form + .task{
+
+}
+
 .list .list-body{
     margin-top:51px;
     min-height:15px;
@@ -304,7 +345,26 @@ body, html{
 }
 
 
+select#task_priority{
+    width: 100%;
+    margin: 0px 0px 15px;
+    padding: 7px;
+}
 
+#task_dueDate{
+    margin-bottom:15px;
+}
+
+form h2{
+    font-size:16px;
+    margin-top:15px;
+    font-weight:500;
+    color:#5A6B77;
+}
+form label{
+    font-weight:500;
+    color:#5A6B77;
+}
 
 /*--------------------TASKS*---------------------*/
 
@@ -327,7 +387,7 @@ body, html{
     margin-top:15px;
 }
 .task:last-of-type{
-    margin-bottom:0px;
+    margin-bottom:20px;
 }
 
 .task .dropdown{
@@ -335,6 +395,10 @@ body, html{
     right: 10px;
     top: 5px;
     font-size: 20px;
+}
+
+.task a{
+    display:block;
 }
 .task .dropdown .mdi{
     color:grey;
@@ -395,15 +459,30 @@ body, html{
     color:white;
     bottom: 0;
     position: absolute;
-    right: 0;
+    right: -350px;
     top: 52px;
-    padding:30px;
-    width: 339px;
+    padding:20px 40px 20px 40px;
+    width: 350px;
     z-index: 5;
+    transition: all 0.3s ease;
+}
+.task-sidebar.in{
+    right:0;
+    box-shadow: -2px 2px 4px 0 rgba(0,0,0,.1), -2px 2px 4px 0 rgba(0,0,0,.1);
+
+}
+
+.task-content{
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
+    background: #D4D8D8;
+    border-radius: 3px;
+    padding: 30px;
+    margin-top: -50px;
+    margin: -50px 15px 0px;
 }
 
 .comments { clear: both; }
-.comments .odd { background: #ddd; }
+.comments .odd { background: white; }
 .comments .comment { padding: 15px; max-width: 600px; }
 .comments .comment p { margin-bottom: 0; }
 .comments .comment .highlight{font-weight: bold;}

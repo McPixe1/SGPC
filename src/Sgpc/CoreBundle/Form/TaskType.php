@@ -19,6 +19,7 @@ class TaskType extends AbstractType {
                 ->add('name')
                 ->add('description')
                 ->add('priority', 'choice', array(
+                    'label' => 'Prioridad',
                     'choices' => array(
                         3 => 'Baja',
                         2 => 'Media',
@@ -32,7 +33,7 @@ class TaskType extends AbstractType {
                     'attr' => [
                         'class' => 'form-control input-inline datepicker',
                         'data-provide' => 'datepicker',
-                        'data-date-format' => 'dd-mm-yyyy'
+                        'data-date-format' => 'dd-mm-yyyy',
                     ]
                 ])
                 ->add('listing', null, array('attr' => array('style' => 'display:none;'), 'label' => false))

@@ -9,114 +9,67 @@
 {% block body %}
     {{ parent() }}    
     <div class="container-fluid">
+        <h3 class="dashboard-title"><a class="back-button" href="{{ path('sgpc_project_view', { 'id': project.id })  }}"><i class="mdi mdi-arrow-left"></i></a>Tarea {{task.name}}</h3>
+
+
         <!--DATOS-->
-        Nombre: {{task.name}}
-        <br>
 
-        Descripción: {{task.description}} 
-        <br>
+        <div class="task-content">
 
-        Categoría: {{task.listing}}
-        <br>
+            Descripción: {{task.description}} 
+            <br>
 
-        Estado: {% if task.isActive %} Activa {% else %} Archivada {% endif %}
-        <br>
-        Fecha de inicio:
-        {{task.createdAt|date("d/m/Y") }}
+            Categoría: {{task.listing}}
+            <br>
 
-        <br>
-        Fecha estimada de finalización
-        {{task.dueDate|date("d/m/Y") }}
+            Estado: {% if task.isActive %} Activa {% else %} Archivada {% endif %}
+            <br>
+            Fecha de inicio:
+            {{task.createdAt|date("d/m/Y") }}
 
-        <br>
-        {%if duration_days == 1 %}
-            Duración: {{duration_days}} dia
-        {%else%}
-            Duración: {{duration_days}} dias 
-        {%endif%}
+            <br>
+            Fecha estimada de finalización
+            {{task.dueDate|date("d/m/Y") }}
+
+            <br>
+            {%if duration_days == 1 %}
+                Duración: {{duration_days}} dia
+            {%else%}
+                Duración: {{duration_days}} dias 
+            {%endif%}
 
 
 
-        <!--COMENTARIOS-->
-
-        {% if app.user == project.owner %}
-            {{ render(controller('SgpcCoreBundle:Comment:add', {'id': task.id})) }}
-        {% else %}
-            {% for member in members %}
-                {% if app.user == member%}
-                    {{ render(controller('SgpcCoreBundle:Comment:add', {'id': task.id})) }}
-                {% endif %}
-            {% endfor %}
-        {% endif %}
-
-        <section class="comments" id="comments">
-            <section class="previous-comments">
-                <h3>Comentarios</h3>
-                {% include 'SgpcCoreBundle:Comment:view.html.twig' with { 'comments': comments } %}
+            <!--COMENTARIOS-->
+            <section class="comments" id="comments">
+                <section class="previous-comments">
+                    <h3>Comentarios</h3>
+                    {% include 'SgpcCoreBundle:Comment:view.html.twig' with { 'comments': comments } %}
+                </section>
             </section>
-        </section>
-
-
-
-        <br>
-        <br>
-        <br>
-        <a href="{{ path('sgpc_project_view', { 'id': project.id })  }}" class="">Volver al proyecto</a>
-    </div>
-
-
-    <!--SIDEBAR-->
-    <div class="task-sidebar">
-        <h4>Miembros de la tarea</h4>
-        <ul class="icon-member-list">
-            {% for member in members %}
-                <li data-toggle="tooltip" data-placement="top" title="{{ member.username}}">{{ member.username|first|upper}}</li>
-                {% endfor %}
-
-            <a class="js-toggle-addmember-form" href="javascript:void(0);">+</a>
-            {{ render(controller('SgpcCoreBundle:Task:addmember', {'id': task.id})) }}
-
-        </ul>
-
-        <h4>Prioridad</h4>
-        {% if task.priority == 3 %} Baja {% elseif task.priority == 2 %} Media {% else %} Alta {% endif %}
-
-
-        <div>
-
-            <!-- Nav tabs -->
-            <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Muro de actividad</a></li>
-                <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Opciones</a></li>
-            </ul>
-
-            <!-- Tab panes -->
-            <div class="tab-content">
-                <div role="tabpanel" class="tab-pane active" id="home">ToDo</div>
-                <div role="tabpanel" class="tab-pane" id="profile">
-                    {% if task.Isactive and app.user == project.owner %}
-                        {{form(store_form)}}
+            {% if app.user == project.owner %}
+                {{ render(controller('SgpcCoreBundle:Comment:add', {'id': task.id})) }}
+            {% else %}
+                {% for member in members %}
+                    {% if app.user == member%}
+                        {{ render(controller('SgpcCoreBundle:Comment:add', {'id': task.id})) }}
                     {% endif %}
-                    <br>
+                {% endfor %}
+            {% endif %}
 
-                    {% if app.user == project.owner%}
-                        <a href="{{ path('sgpc_task_edit', {id: task.id}) }}" class="btn btn-primary">Editar tarea</a>
-                    {% else %}
-                        {% for member in members %}
-                            {% if app.user == member %}
-                                <a href="{{ path('sgpc_task_edit', {id: task.id}) }}" class="btn btn-primary">Editar tarea</a>
-                            {% endif %}
-                        {% endfor %}
-                    {%endif%}
 
-                </div>
-            </div>
+
 
         </div>
 
-
-
     </div>
+
+    <div class="sidebar-toggle"></div>
+
+    <!--SIDEBAR-->
+    {{ include('SgpcCoreBundle:Task:partials/sidebar.html.twig') }}
+
+
 
 {% endblock %}
 
@@ -127,12 +80,12 @@
             $('.js-toggle-addmember-form').click(function () {
                 $(this).parent().find('.task-members-form').toggle();
             });
-            
-              $('.sidebar-toggle').click(function () {
+
+            $('.sidebar-toggle').click(function () {
                 $(this).toggleClass('in');
-                $('.task-sidebar').toggleClass('in');                
+                $('.task-sidebar').toggleClass('in');
             });
-            
+
         });
     </script>
 {% endblock %}

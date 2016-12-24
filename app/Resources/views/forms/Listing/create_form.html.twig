@@ -3,7 +3,6 @@
 
     <fieldset>
         <div class="form-group">
-            {{ form_label(create_form.name) }}
             {{ form_widget(create_form.name, {'attr': {'class': 'form-control', 'placeholder' : 'Introduce el nombre...'}}) }}
             <span class="text-danger">{{ form_errors(create_form.name) }}</span>
         </div>

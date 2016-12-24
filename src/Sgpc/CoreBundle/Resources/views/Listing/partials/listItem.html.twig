@@ -1,18 +1,25 @@
+{% set tasks = list.tasks%}
+{% set activeCount = 0 %}
+
+{% for task in tasks if task.isActive%}
+    {% set activeCount = activeCount + 1 %}
+{% endfor %}
+
 <div class="list-wrapper" data-id="{{ list.id }}">
     <div class="list">
         <div class="list-header">
-            {{ list.name }}
+            {{ list.name }} {% if activeCount > 0 %}({{ activeCount }}){% endif %}
         </div>
         <div class="list-body">
+             <a class="js-toggle-task-form" href="javascript:void(0);"><i class="mdi mdi-plus"></i></a>
+
+            {{ render(controller('SgpcCoreBundle:Task:add', {'id': list.id})) }}
             <!--TAREAS-->
-            {% set tasks = list.tasks%}
             {# DE MOMENTO DEJAMOS EL ISACTIVE DE PRUEBA#}
             {% for task in tasks if task.isActive%}
                 {{ include('SgpcCoreBundle:Task:partials/taskItem.html.twig') }}
             {% endfor %}
-            <a class="js-toggle-task-form" href="javascript:void(0);">+</a>
-
-            {{ render(controller('SgpcCoreBundle:Task:add', {'id': list.id})) }}
+           
 
         </div>                           
 

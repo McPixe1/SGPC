@@ -9,7 +9,7 @@
     <div class="project-wrapper">
         <div class="project-main-content">
             <div class="project-canvas">
-                <h2>{{project.name}}</h2>
+                <h2><a class="back-button" href="/"><i class="mdi mdi-arrow-left"></i></a>{{project.name}}</h2>
 
                 <!--LISTADOS-->
                 {% for list in lists %}
@@ -19,7 +19,7 @@
                 <div class="list-wrapper">                  
                     <div class="list">    
                         <div class="list-header">
-                            <a class="js-toggle-list-form" href="javascript:void(0);">Nueva lista</a>
+                            <a class="js-toggle-list-form" href="javascript:void(0);">Nueva categoría</a>
                         </div>                        
                         <div class="list-body">
                             {{ render(controller('SgpcCoreBundle:Listing:add', {'id': project.id})) }}
@@ -46,7 +46,8 @@
     <script>
         $('document').ready(function () {
             $('.js-toggle-task-form').click(function () {
-                $(this).parent('.list-body').find('.task-form').toggle();
+                $(this).parent('.list-body').find('.task-form').slideToggle();
+                $(this).toggleClass('in');
             });
             $('.js-toggle-list-form').click(function () {
                 $(this).parents('.list').find('.list-form').toggle();
@@ -65,7 +66,4 @@
         });
     </script>
 
-    <script>
-
-    </script>
 {% endblock %}
