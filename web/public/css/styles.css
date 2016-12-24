@@ -125,11 +125,27 @@ body{
     cursor: pointer;
     color: #5A6B77;
     box-shadow: 0 2px 5px 0 rgba(0,0,0,.16),0 2px 10px 0 rgba(0,0,0,.12);
+    font-size: 25px;
+    text-align: center;
+    line-height: 53px;
 
 }
 .sidebar-toggle.in{
     right: 325px;
+}
 
+.sidebar-toggle .mdi-menu{
+    display:block;
+}
+.sidebar-toggle .mdi-chevron-right{
+    display:none;
+}
+
+.sidebar-toggle.in .mdi-menu{
+    display:none;
+}
+.sidebar-toggle.in .mdi-chevron-right{
+    display:block;
 }
 
 
