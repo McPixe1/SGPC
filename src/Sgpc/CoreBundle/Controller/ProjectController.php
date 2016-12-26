@@ -3,6 +3,7 @@
 namespace Sgpc\CoreBundle\Controller;
 
 use Sgpc\CoreBundle\Entity\Project;
+use Sgpc\CoreBundle\Entity\Listing;
 use Sgpc\CoreBundle\Form\ProjectType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
@@ -44,9 +45,34 @@ class ProjectController extends Controller {
 
             $em = $this->getDoctrine()->getManager();
 
+            $storedList = new Listing();
+            $storedList->setName('Archivadas');
+            $storedList->setProject($project);
+            $em->persist($storedList);
+
+            $model = $form->get('model')->getData();
+
+            if ($model == 'scrum') {
+                $todoList = new Listing();
+                $todoList->setName('To Do');
+                $todoList->setProject($project);
+                $em->persist($todoList);
+
+                $doingList = new Listing();
+                $doingList->setName('Doing');
+                $doingList->setProject($project);
+                $em->persist($doingList);
+
+                $doneList = new Listing();
+                $doneList->setName('Done');
+                $doneList->setProject($project);
+                $em->persist($doneList);
+            }
+
             $currentUser = $this->get('security.context')->getToken()->getUser();
             $project->addUser($currentUser);
             $project->setOwner($currentUser);
+
             $em->persist($project);
             $em->flush();
 
@@ -216,6 +242,6 @@ class ProjectController extends Controller {
         $form = $this->createEditForm($task);
 
         return $this->render('SgpcCoreBundle:Task:edit.html.twig', array('task' => $task, 'form' => $form->createView()));
-    }   
+    }
 
 }

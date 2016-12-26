@@ -63,6 +63,15 @@ class Project
      */
     private $description;
     
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="model", type="string")
+     */
+    private $model;
+    
+    
     public function __toString()
     {
         return $this->getName();
@@ -265,5 +274,29 @@ class Project
     public function getTasks()
     {
         return $this->tasks;
+    }
+
+    /**
+     * Set model
+     *
+     * @param integer $model
+     *
+     * @return Project
+     */
+    public function setModel($model)
+    {
+        $this->model = $model;
+
+        return $this;
+    }
+
+    /**
+     * Get model
+     *
+     * @return integer
+     */
+    public function getModel()
+    {
+        return $this->model;
     }
 }

@@ -1,0 +1,23 @@
+{% set tasks = list.tasks%}
+{% set storedCount = 0 %}
+
+{% for task in tasks if not task.isActive%}
+    {% set storedCount = storedCount + 1 %}
+{% endfor %}
+
+<div class="list-wrapper" data-id="{{ list.id }}">
+    <div class="list">
+        <div class="list-header">
+            {{ list.name }} {% if storedCount > 0 %}({{ storedCount }}){% endif %}
+        </div>
+        <div class="list-body">   
+            <!--TAREAS-->
+            {# DE MOMENTO DEJAMOS EL ISACTIVE DE PRUEBA#}
+            {% for task in tasks if not task.isActive%}
+                {{ include('SgpcCoreBundle:Task:partials/taskItem.html.twig') }}
+            {% endfor %}          
+
+        </div>                           
+
+    </div>
+</div>

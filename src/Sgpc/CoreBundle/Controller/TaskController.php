@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sgpc\CoreBundle\Entity\Task;
+use Sgpc\CoreBundle\Entity\Listing;
 use Sgpc\CoreBundle\Form\TaskType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
@@ -177,7 +178,18 @@ class TaskController extends Controller {
                 throw $this->createNotFoundException('No se ha encontrado la entidad tarea.');
             }
 
+            $idProject = $task->getProject()->getId();
+
+            $query = $em->createQuery('SELECT DISTINCT l FROM SgpcCoreBundle:Listing l JOIN l.project p WHERE p.id = :idProject AND l.name = :storedName');
+            $query->setParameters(array(
+                'storedName' => 'Archivadas',
+                'idProject' => $idProject,
+            ));
+            $result = $query->getResult();
+            $storedList = $result[0];
+
             $task->setIsActive(false);
+            $task->setListing($storedList);
             $em->persist($task);
             $em->flush();
 

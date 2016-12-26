@@ -13,19 +13,26 @@
 
                 <!--LISTADOS-->
                 {% for list in lists %}
-                    {{ include('SgpcCoreBundle:Listing:partials/listItem.html.twig') }}
+                    {% if list.name != 'Archivadas' %}
+                        {{ include('SgpcCoreBundle:Listing:partials/listItem.html.twig') }}
+                    {% else %}
+                        {{ include('SgpcCoreBundle:Listing:partials/storedListItem.html.twig') }}
+                    {% endif %}
+
                 {% endfor %}
 
-                <div class="list-wrapper">                  
-                    <div class="list">    
-                        <div class="list-header">
-                            <a class="js-toggle-list-form" href="javascript:void(0);">Nueva categoría</a>
-                        </div>                        
-                        <div class="list-body">
-                            {{ render(controller('SgpcCoreBundle:Listing:add', {'id': project.id})) }}
-                        </div>                                
-                    </div>                            
-                </div>
+                {% if project.model == 'kanban' %}
+                    <div class="list-wrapper in">                  
+                        <div class="list">    
+                            <div class="list-header">
+                                <a class="js-toggle-list-form" href="javascript:void(0);">Nueva categoría</a>
+                            </div>                        
+                            <div class="list-body">
+                                {{ render(controller('SgpcCoreBundle:Listing:add', {'id': project.id})) }}
+                            </div>                                
+                        </div>                            
+                    </div>
+                {% endif %}
 
             </div>
         </div>
@@ -64,6 +71,17 @@
                 $('.project-sidebar').toggleClass('in');
             });
 
+
+            $('.toggle-task-status').click(function () {
+                $('.list-wrapper').toggleClass('in');
+                var text = $(this).text();
+                if (text === "Ver tareas archivadas") {
+                    $(this).html('Ver tareas activas');
+                } else {
+                    $(this).html('Ver tareas archivadas');
+                }
+
+            });
 
             $('.datepicker').datepicker();
         });
