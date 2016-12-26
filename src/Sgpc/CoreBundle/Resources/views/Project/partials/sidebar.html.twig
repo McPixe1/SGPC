@@ -18,7 +18,7 @@
 
     <h4>Resumen de tareas</h4>
 
-
+    {# --------RESUMEN LISTADO--------------- #}
     <p class="underlined-stats">Tareas activas: <span class="badge firstlist">{{activeTasks|length}} </span> </p>  
 
     {% if lists|length > 0 %}
@@ -44,10 +44,10 @@
         <p class="underlined-stats"> Otras: <span class="badge">{{ others }} </span></p>
     {%endif%}
 
-
+    {# --------RESUMEN GRAFICO--------------- #}
     {% if lists|length > 0 %}
         <div class="progress">       
-            {% for list in lists|slice(0,3) %}
+            {% for list in lists|slice(1,3) %}
                 {% set tasks = list.tasks %}
                 {% set actives = '0' %}
                 {% for task in tasks if task.isActive%}
@@ -59,12 +59,25 @@
                     </div>
                 {% endif %}
             {% endfor %}
+
+            {% for list in lists|slice(4, lists|length) %}
+                {% set tasks = list.tasks %}
+                {% set actives = '0' %}
+                {% for task in tasks if task.isActive%}
+                    {% set actives = actives + 1 %}                   
+                {% endfor %}
+                <div class="progress-bar" role="progressbar" style="width:{{ actives  * 100 / (activeTasks|length) }}%">
+                    Otras
+                </div>
+            {% endfor %}
+
+
         </div>
     {% endif %}
 
 
-    <div>
 
+    <div>
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Muro de actividad</a></li>
@@ -79,7 +92,7 @@
                     <h4>Editar proyecto</h4>
                     {{form(delete_form)}}
                 {% endif %}
-                
+
                 <a href="javascript:void(0);" class="toggle-task-status">Ver tareas archivadas</a>
             </div>
         </div>
