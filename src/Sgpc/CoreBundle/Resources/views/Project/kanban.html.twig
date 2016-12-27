@@ -1,0 +1,87 @@
+{%  extends 'base.html.twig' %}
+
+{% set owner = project.getOwner %}
+{% set members = project.getUsers %}
+{% set lists = project.listings %}
+{% block body %}
+    {{ parent() }}
+
+    <div class="project-wrapper">
+        <div class="project-main-content">
+            <div class="project-canvas">
+                <h2><a class="back-button" href="/"><i class="mdi mdi-arrow-left"></i></a>{{project.name}}</h2>
+
+                <!--LISTADOS-->
+                {% for list in lists %}
+                    {% if list.name != 'Archivadas' %}
+                        {{ include('SgpcCoreBundle:Listing:partials/listItem.html.twig') }}
+                    {% else %}
+                        {{ include('SgpcCoreBundle:Listing:partials/storedListItem.html.twig') }}
+                    {% endif %}
+
+                {% endfor %}
+
+                    <div class="list-wrapper in">                  
+                        <div class="list">    
+                            <div class="list-header">
+                                <a class="js-toggle-list-form" href="javascript:void(0);">Nueva categoría</a>
+                            </div>                        
+                            <div class="list-body">
+                                {{ render(controller('SgpcCoreBundle:Listing:add', {'id': project.id})) }}
+                            </div>                                
+                        </div>                            
+                    </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="sidebar-toggle">
+        <i class="mdi mdi-menu"></i>
+        <i class="mdi mdi-chevron-right"></i>
+    </div>
+
+
+    <!--SIDEBAR-->
+    {{ include('SgpcCoreBundle:Project:partials/sidebar.html.twig') }}
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $('document').ready(function () {
+            $('.js-toggle-task-form').click(function () {
+                $(this).parent('.list-body').find('.task-form').slideToggle();
+                $(this).toggleClass('in');
+            });
+            $('.js-toggle-list-form').click(function () {
+                $(this).parents('.list').find('.list-form').toggle();
+            });
+            $('.js-toggle-addmember-form').click(function () {
+                $(this).parent().find('.project-members-form').toggle();
+            });
+
+            $('.sidebar-toggle').click(function () {
+                $(this).toggleClass('in');
+                $('.project-sidebar').toggleClass('in');
+            });
+
+
+            $('.toggle-task-status').click(function () {
+                $('.list-wrapper').toggleClass('in');
+                var text = $(this).text();
+                if (text === "Ver tareas archivadas") {
+                    $(this).html('Ver tareas activas');
+                } else {
+                    $(this).html('Ver tareas archivadas');
+                }
+
+            });
+
+            $('.datepicker').datepicker();
+        });
+    </script>
+
+{% endblock %}

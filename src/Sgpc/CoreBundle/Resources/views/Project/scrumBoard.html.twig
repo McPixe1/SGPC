@@ -9,7 +9,7 @@
     <div class="project-wrapper">
         <div class="project-main-content">
             <div class="project-canvas">
-                <h2><a class="back-button" href="/"><i class="mdi mdi-arrow-left"></i></a>{{project.name}}</h2>
+                <h2><a class="back-button" href="/"><i class="mdi mdi-arrow-left"></i></a>{{project.name}}. Sprint actual</h2>
 
                 <!--LISTADOS-->
                 {% for list in lists %}
@@ -21,34 +21,11 @@
 
                 {% endfor %}
 
-                {% if project.model == 'kanban' %}
-                    <div class="list-wrapper in">                  
-                        <div class="list">    
-                            <div class="list-header">
-                                <a class="js-toggle-list-form" href="javascript:void(0);">Nueva categoría</a>
-                            </div>                        
-                            <div class="list-body">
-                                {{ render(controller('SgpcCoreBundle:Listing:add', {'id': project.id})) }}
-                            </div>                                
-                        </div>                            
-                    </div>
-                {% endif %}
-
             </div>
         </div>
     </div>
 
-    <div class="sidebar-toggle">
-        <i class="mdi mdi-menu"></i>
-        <i class="mdi mdi-chevron-right"></i>
-    </div>
 
-
-    <!--SIDEBAR-->
-    {{ include('SgpcCoreBundle:Project:partials/sidebar.html.twig') }}
-
-
-    {{ include('SgpcCoreBundle:Task:modals/taskModal.html.twig') }}
 {% endblock %}
 
 {% block javascripts %}

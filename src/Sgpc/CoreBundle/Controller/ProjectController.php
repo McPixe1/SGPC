@@ -76,9 +76,15 @@ class ProjectController extends Controller {
             $em->persist($project);
             $em->flush();
 
-            return $this->redirectToRoute('sgpc_project_view', array(
-                        'id' => $project->getId()
-            ));
+            if ($model == 'kanban') {
+                return $this->redirectToRoute('sgpc_project_kanban', array(
+                            'id' => $project->getId()
+                ));
+            } else {
+                return $this->redirectToRoute('sgpc_project_scrum', array(
+                            'id' => $project->getId()
+                ));
+            }
         }
 
         return $this->render('SgpcCoreBundle:Project:add.html.twig', array(
@@ -116,9 +122,9 @@ class ProjectController extends Controller {
     }
 
     /**
-     * Muestra una entidad proyecto
+     * Muestra una entidad proyecto tipo kanban
      */
-    public function viewAction(Request $request, $id) {
+    public function kanbanAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();
         $project = $em->getRepository('SgpcCoreBundle:Project')->find($id);
 
@@ -134,7 +140,35 @@ class ProjectController extends Controller {
             throw $this->createNotFoundException('No se ha encontrado la entidad proyecto.');
         }
 
-        return $this->render('SgpcCoreBundle:Project:view.html.twig', array(
+        return $this->render('SgpcCoreBundle:Project:kanban.html.twig', array(
+                    'lists' => $lists,
+                    'activeTasks' => $activeTasks,
+                    'project' => $project,
+                    'delete_form' => $deleteForm->createView(),
+                    'addmember_form' => $addmemberForm->createView(),
+        ));
+    }
+
+    /**
+     * Muestra una entidad proyecto tipo kanban
+     */
+    public function scrumAction(Request $request, $id) {
+        $em = $this->getDoctrine()->getManager();
+        $project = $em->getRepository('SgpcCoreBundle:Project')->find($id);
+
+        $lists = $project->getListings();
+
+        $activeTasks = $em->getRepository('SgpcCoreBundle:Task')
+                ->getActiveTasksForProject($id);
+
+        $deleteForm = $this->createDeleteForm($id);
+        $addmemberForm = $this->createAddMemberForm($id);
+
+        if (!$project) {
+            throw $this->createNotFoundException('No se ha encontrado la entidad proyecto.');
+        }
+
+        return $this->render('SgpcCoreBundle:Project:scrum.html.twig', array(
                     'lists' => $lists,
                     'activeTasks' => $activeTasks,
                     'project' => $project,
@@ -221,7 +255,15 @@ class ProjectController extends Controller {
             $em->persist($user);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('sgpc_project_view', array('id' => $project->getId())));
+            if ($project->getModel() == 'kanban') {
+                return $this->redirectToRoute('sgpc_project_kanban', array(
+                            'id' => $project->getId()
+                ));
+            } else {
+                return $this->redirectToRoute('sgpc_project_scrum', array(
+                            'id' => $project->getId()
+                ));
+            }
         }
 
         return $this->render('SgpcCoreBundle:Project:addmember.html.twig', array(

@@ -1,0 +1,111 @@
+{%  extends 'base.html.twig' %}
+
+{% set tasks = project.tasks %}
+{% set owner = project.getOwner %}
+{% set members = project.getUsers %}
+{% set lists = project.listings %}
+
+{% block body %}
+    {{ parent() }}
+
+    <div class="project-wrapper">
+        <div class="project-main-content">
+            <div class="project-canvas">
+                <h2><a class="back-button" href="/"><i class="mdi mdi-arrow-left"></i></a>{{project.name}}. Trabajo pendiente</h2>
+                <div class="container">
+                    <h4 style="color:white;">Sprint actual</h4>
+                    <a class="js-toggle-sprint-form" href="javascript:void(0);"><i class="mdi mdi-plus"></i></a>
+
+                </div>
+                <div class="container">
+                    <h4 style="color:white;">Tareas pendientes</h4>
+                    <table class="table" style="color:white;">
+                        <thead>
+                            <tr>
+                                <th>Tarea</th>
+                                <th>Estado</th>
+                                <th>Prioridad</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for task in tasks %}
+                                {% if task.listing and task.listing.name != 'Done' %}
+                                    <tr>
+                                        <td>{{task.name}}</td>
+                                        <td>{{task.listing}}</td>
+                                        <td>{{task.priority}}</td>
+                                    </tr>   
+                                {% elseif not task.listing %}
+                                    <tr>
+                                        <td>{{task.name}}</td>
+                                        <td>Por hacer</td>
+                                        <td>{{task.priority}}</td>
+                                    </tr>  
+                                {% endif %}
+                            {% endfor %}
+
+                        </tbody>
+                    </table>
+                    <a class="js-toggle-task-form" href="javascript:void(0);"><i class="mdi mdi-plus"></i></a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="sidebar-toggle">
+        <i class="mdi mdi-menu"></i>
+        <i class="mdi mdi-chevron-right"></i>
+    </div>
+
+
+    <!--SIDEBAR-->
+    {{ include('SgpcCoreBundle:Project:partials/scrumSidebar.html.twig') }}
+
+
+    <!--MODALS-->
+    {{ include('SgpcCoreBundle:Task:modals/taskModal.html.twig') }}
+    {{ include('SgpcCoreBundle:Sprint:modals/sprintModal.html.twig') }}
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $('document').ready(function () {
+            $('.js-toggle-task-form').click(function () {
+                $('.task-form').show();
+                $('#taskModal').modal('show');
+            });
+
+            $('.js-toggle-sprint-form').click(function () {
+                $('#sprintModal').modal('show');
+            });
+
+            $('.js-toggle-addmember-form').click(function () {
+                $(this).parent().find('.project-members-form').toggle();
+            });
+
+            $('.sidebar-toggle').click(function () {
+                $(this).toggleClass('in');
+                $('.project-sidebar').toggleClass('in');
+            });
+
+
+            $('.toggle-task-status').click(function () {
+                $('.list-wrapper').toggleClass('in');
+                var text = $(this).text();
+                if (text === "Ver tareas archivadas") {
+                    $(this).html('Ver tareas activas');
+                } else {
+                    $(this).html('Ver tareas archivadas');
+                }
+
+            });
+
+            $('.datepicker').datepicker();
+        });
+    </script>
+
+{% endblock %}

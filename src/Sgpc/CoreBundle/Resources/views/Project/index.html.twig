@@ -21,7 +21,11 @@
                                 <p>{{ project.description}}</p>
                             </div>
                             <div class="panel-footer">
-                                <a href="{{ path('sgpc_project_view', { 'id': project.id }) }}" class="btn btn-sm btn-success">Ver</a>
+                                {% if project.model == 'kanban' %}
+                                    <a href="{{ path('sgpc_project_kanban', { 'id': project.id }) }}" class="btn btn-sm btn-success">Ver</a>
+                                {% else %}
+                                    <a href="{{ path('sgpc_project_scrum', { 'id': project.id }) }}" class="btn btn-sm btn-success">Ver</a>
+                                {% endif %}
                             </div>
                         </div>
                     </div>

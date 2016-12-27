@@ -18,9 +18,13 @@ sgpc_project_delete:
     defaults: { _controller: SgpcCoreBundle:Project:delete }
     methods: [POST, DELETE]
     
-sgpc_project_view:
-    path:   /project/{id}/view
-    defaults: { _controller: SgpcCoreBundle:Project:view }
+sgpc_project_kanban:
+    path:   /project/{id}/kanban
+    defaults: { _controller: SgpcCoreBundle:Project:kanban }
+    
+sgpc_project_scrum:
+    path:   /project/{id}/scrum
+    defaults: { _controller: SgpcCoreBundle:Project:scrum }
 
 sgpc_project_addmember:
     path:     /project/{id}/addMember/
@@ -47,6 +51,22 @@ sgpc_listing_create:
     methods:  POST
     
     
+#SPRINTS
+
+sgpc_sprint_view:
+    path:     /sprint/{id}/view
+    defaults: { _controller: "SgpcCoreBundle:Sprint:view" }
+
+sgpc_sprint_add:
+    path:     /sprint/add
+    defaults: { _controller: "SgpcCoreBundle:Sprint:add" }
+
+sgpc_sprint_create:
+    path:     /sprint/create/{id}
+    defaults: { _controller: "SgpcCoreBundle:Sprint:create" }
+    methods:  POST
+    
+    
 #TAREAS    
     
 sgpc_task:
@@ -62,7 +82,7 @@ sgpc_task_add:
     defaults: { _controller: "SgpcCoreBundle:Task:add" }
 
 sgpc_task_create:
-    path:     /task/create/{id}
+    path:     /task/create/{id}/{idproj}
     defaults: { _controller: "SgpcCoreBundle:Task:create" }
     methods:  POST
     

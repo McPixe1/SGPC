@@ -41,6 +41,19 @@ class Task {
      *
      * @ORM\Column(name="name", type="string", length=255)
      */
+    
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="Sprint", inversedBy="tasks")
+     * @ORM\JoinColumn(name="sprint_id", referencedColumnName="id")
+     */
+    protected $sprint;
+    
+     /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255)
+     */
     private $name;
 
     /**
@@ -372,5 +385,29 @@ class Task {
     public function getIsActive()
     {
         return $this->isActive;
+    }
+
+    /**
+     * Set sprint
+     *
+     * @param \Sgpc\CoreBundle\Entity\Sprint $sprint
+     *
+     * @return Task
+     */
+    public function setSprint(\Sgpc\CoreBundle\Entity\Sprint $sprint = null)
+    {
+        $this->sprint = $sprint;
+
+        return $this;
+    }
+
+    /**
+     * Get sprint
+     *
+     * @return \Sgpc\CoreBundle\Entity\Sprint
+     */
+    public function getSprint()
+    {
+        return $this->sprint;
     }
 }

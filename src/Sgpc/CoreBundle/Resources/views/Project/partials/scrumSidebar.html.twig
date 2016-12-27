@@ -1,0 +1,43 @@
+<div class="project-sidebar">
+    <h4>Miembros del proyecto</h4>
+    <ul class="icon-member-list">
+        {% for member in members %}
+            {% if owner == member %}
+                <li data-toggle="tooltip" data-placement="top" title="{{ member.username}}"><strong>{{member.username|first|upper}}</strong></li>
+                    {% else %}
+                <li data-toggle="tooltip" data-placement="top" title="{{ member.username}}">{{ member.username|first|upper}}</li>
+                {% endif %}
+            {% endfor %}
+
+        {% if app.user == owner %}
+            <a class="js-toggle-addmember-form" href="javascript:void(0);">+</a>
+            {{ render(controller('SgpcCoreBundle:Project:addmember', {'id': project.id})) }}
+        {% endif %}
+
+    </ul>
+
+
+    <div>
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Muro de actividad</a></li>
+            <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Opciones</a></li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="home">ToDo</div>
+            <div role="tabpanel" class="tab-pane" id="profile">
+                {% if app.user == owner %}        
+                    <h4>Editar proyecto</h4>
+                    {{form(delete_form)}}
+                {% endif %}
+
+                <a href="javascript:void(0);" class="toggle-task-status">Ver tareas archivadas</a>
+            </div>
+        </div>
+
+    </div>
+
+
+</div>

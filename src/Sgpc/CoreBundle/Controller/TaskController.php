@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sgpc\CoreBundle\Entity\Task;
 use Sgpc\CoreBundle\Entity\Listing;
+use Sgpc\CoreBundle\Entity\Project;
 use Sgpc\CoreBundle\Form\TaskType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
@@ -15,19 +16,23 @@ class TaskController extends Controller {
     /**
      * Crea una nueva entidad Task
      */
-    public function createAction(Request $request, $id) {
+    public function createAction(Request $request, $id, $idproj) {
         $entity = new Task();
-        $parent = $this->getDoctrine()->getRepository('SgpcCoreBundle:Listing')->findOneById($id);
-        $project = $parent->getProject();
+        $project = $this->getDoctrine()->getRepository('SgpcCoreBundle:Project')->findOneById($idproj);
+
         $form = $this->createForm(new TaskType(), $entity);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $entity->setListing($parent);
+            if ($project->getModel() == 'kanban') {
+                $parent = $this->getDoctrine()->getRepository('SgpcCoreBundle:Listing')->findOneById($id);
+                $entity->setListing($parent);
+            }
             $entity->setProject($project);
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
+
             return $this->redirect($this->generateUrl('sgpc_task_view', array('id' => $entity->getId())));
         }
 
@@ -40,11 +45,11 @@ class TaskController extends Controller {
     /**
      * Display del form para crear una nueva entidad Task
      */
-    public function addAction($id) {
+    public function addAction($id, $idproj) {
         $entity = new Task();
 
         $form = $this->createForm(new TaskType(), $entity, array(
-            'action' => $this->generateUrl('sgpc_task_create', array('id' => $id)),
+            'action' => $this->generateUrl('sgpc_task_create', array('id' => $id, 'idproj' => $idproj)),
         ));
 
         return $this->render('SgpcCoreBundle:Task:add.html.twig', array(
@@ -102,7 +107,7 @@ class TaskController extends Controller {
         $em = $this->getDoctrine()->getManager();
         $task = $em->getRepository('SgpcCoreBundle:Task')->find($id);
         $list = $task->getListing();
-        $project = $list->getProject()->getId();
+        $project = $task->getProject()->getId();
 
         $query = $em->createQuery('SELECT u FROM SgpcCoreBundle:User u JOIN u.projects p WHERE  p.id = :idProject AND u.id NOT IN(SELECT u2 FROM SgpcCoreBundle:User u2 JOIN u2.tasks t WHERE t.id= :idTask)');
         $query->setParameters(array(

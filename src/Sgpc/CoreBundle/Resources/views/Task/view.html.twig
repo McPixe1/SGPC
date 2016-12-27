@@ -1,7 +1,7 @@
 {%  extends 'base.html.twig' %}
 
 {% set list = task.listing %}
-{% set project = list.project %}
+{% set project = task.project %}
 {% set members = task.getUsers %}
 {% set duration =  date(task.createdAt|date("Y-m-d")).diff(date(task.dueDate|date("Y-m-d"))) %}
 {% set duration_days = duration|date('%r%a') %}
@@ -9,8 +9,11 @@
 {% block body %}
     {{ parent() }}    
     <div class="container-fluid">
-        <h3 class="dashboard-title"><a class="back-button" href="{{ path('sgpc_project_view', { 'id': project.id })  }}"><i class="mdi mdi-arrow-left"></i></a>Tarea {{task.name}}</h3>
-
+        {% if project.model == 'kanban' %}
+            <h3 class="dashboard-title"><a class="back-button" href="{{ path('sgpc_project_kanban', { 'id': project.id })  }}"><i class="mdi mdi-arrow-left"></i></a>Tarea {{task.name}}</h3>
+                {% else %}
+            <h3 class="dashboard-title"><a class="back-button" href="{{ path('sgpc_project_scrum', { 'id': project.id })  }}"><i class="mdi mdi-arrow-left"></i></a>Tarea {{task.name}}</h3>
+        {% endif %}
 
         <!--DATOS-->
 

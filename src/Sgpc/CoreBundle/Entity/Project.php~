@@ -34,6 +34,11 @@ class Project
     protected $tasks;
     
     /**
+     * @ORM\OneToMany(targetEntity="Sprint", mappedBy="project",  cascade={"remove"})
+     */
+    protected $sprints;
+    
+    /**
      * @ORM\ManyToMany(targetEntity="User", inversedBy="projects", cascade={"persist"})
      * @ORM\JoinTable(name="project_user",
      *     joinColumns={@ORM\JoinColumn(name="project_id", referencedColumnName="id")},

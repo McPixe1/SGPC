@@ -3,6 +3,8 @@
 
 {% for task in tasks if task.isActive%}
     {% set activeCount = activeCount + 1 %}
+    {% set project = task.project %}
+
 {% endfor %}
 
 <div class="list-wrapper in" data-id="{{ list.id }}">
@@ -13,7 +15,7 @@
         <div class="list-body">
             <a class="js-toggle-task-form" href="javascript:void(0);"><i class="mdi mdi-plus"></i></a>
 
-            {{ render(controller('SgpcCoreBundle:Task:add', {'id': list.id})) }}
+            {{ render(controller('SgpcCoreBundle:Task:add', {'id': list.id, 'idproj': project.id })) }}
             <!--TAREAS-->
             {# DE MOMENTO DEJAMOS EL ISACTIVE DE PRUEBA#}
             {% for task in tasks if task.isActive%}

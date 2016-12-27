@@ -34,6 +34,11 @@ class Project
     protected $tasks;
     
     /**
+     * @ORM\OneToMany(targetEntity="Sprint", mappedBy="project",  cascade={"remove"})
+     */
+    protected $sprints;
+    
+    /**
      * @ORM\ManyToMany(targetEntity="User", inversedBy="projects", cascade={"persist"})
      * @ORM\JoinTable(name="project_user",
      *     joinColumns={@ORM\JoinColumn(name="project_id", referencedColumnName="id")},
@@ -298,5 +303,39 @@ class Project
     public function getModel()
     {
         return $this->model;
+    }
+
+    /**
+     * Add sprint
+     *
+     * @param \Sgpc\CoreBundle\Entity\Sprint $sprint
+     *
+     * @return Project
+     */
+    public function addSprint(\Sgpc\CoreBundle\Entity\Sprint $sprint)
+    {
+        $this->sprints[] = $sprint;
+
+        return $this;
+    }
+
+    /**
+     * Remove sprint
+     *
+     * @param \Sgpc\CoreBundle\Entity\Sprint $sprint
+     */
+    public function removeSprint(\Sgpc\CoreBundle\Entity\Sprint $sprint)
+    {
+        $this->sprints->removeElement($sprint);
+    }
+
+    /**
+     * Get sprints
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getSprints()
+    {
+        return $this->sprints;
     }
 }
