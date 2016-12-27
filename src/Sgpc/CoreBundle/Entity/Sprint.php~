@@ -37,6 +37,11 @@ class Sprint
     protected $project;
     
     
+    /**
+     * @ORM\OneToMany(targetEntity="Listing", mappedBy="sprint",  cascade={"remove"})
+     */
+    protected $listings;
+    
      /**
      * @ORM\OneToMany(targetEntity="Task", mappedBy="sprint", cascade={"remove"})
      */

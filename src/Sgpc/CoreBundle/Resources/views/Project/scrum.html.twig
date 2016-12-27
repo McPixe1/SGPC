@@ -1,10 +1,9 @@
 {%  extends 'base.html.twig' %}
 
-{% set tasks = project.tasks %}
 {% set owner = project.getOwner %}
 {% set members = project.getUsers %}
-{% set lists = project.listings %}
-
+{% set sprints = project.sprints %}
+{% set projectTasks = project.tasks %}
 {% block body %}
     {{ parent() }}
 
@@ -15,7 +14,15 @@
                 <div class="container">
                     <h4 style="color:white;">Sprint actual</h4>
                     <a class="js-toggle-sprint-form" href="javascript:void(0);"><i class="mdi mdi-plus"></i></a>
-
+                        {% if sprints %}
+                            {% for sprint in sprints %}
+                            {{sprint.name}} <br>
+                            {% set tasks = sprint.tasks %}
+                            {% for task in tasks %}
+                                {{task.name}}
+                            {% endfor %}
+                        {% endfor %}
+                    {% endif %}
                 </div>
                 <div class="container">
                     <h4 style="color:white;">Tareas pendientes</h4>
@@ -28,18 +35,18 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for task in tasks %}
-                                {% if task.listing and task.listing.name != 'Done' %}
+                            {% for projectTask in projectTasks %}
+                                {% if projectTask.listing and projectTask.listing.name != 'Done' %}
                                     <tr>
-                                        <td>{{task.name}}</td>
-                                        <td>{{task.listing}}</td>
-                                        <td>{{task.priority}}</td>
+                                        <td>{{projectTask.name}}</td>
+                                        <td>{{projectTask.listing}}</td>
+                                        <td>{{projectTask.priority}}</td>
                                     </tr>   
-                                {% elseif not task.listing %}
+                                {% elseif not projectTask.listing %}
                                     <tr>
-                                        <td>{{task.name}}</td>
+                                        <td>{{projectTask.name}}</td>
                                         <td>Por hacer</td>
-                                        <td>{{task.priority}}</td>
+                                        <td>{{projectTask.priority}}</td>
                                     </tr>  
                                 {% endif %}
                             {% endfor %}
@@ -93,17 +100,7 @@
             });
 
 
-            $('.toggle-task-status').click(function () {
-                $('.list-wrapper').toggleClass('in');
-                var text = $(this).text();
-                if (text === "Ver tareas archivadas") {
-                    $(this).html('Ver tareas activas');
-                } else {
-                    $(this).html('Ver tareas archivadas');
-                }
-
-            });
-
+     
             $('.datepicker').datepicker();
         });
     </script>

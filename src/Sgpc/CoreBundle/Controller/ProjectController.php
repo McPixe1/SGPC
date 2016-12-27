@@ -154,10 +154,7 @@ class ProjectController extends Controller {
      */
     public function scrumAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();
-        $project = $em->getRepository('SgpcCoreBundle:Project')->find($id);
-
-        $lists = $project->getListings();
-
+        $project = $em->getRepository('SgpcCoreBundle:Project')->findOneById($id);
         $activeTasks = $em->getRepository('SgpcCoreBundle:Task')
                 ->getActiveTasksForProject($id);
 
@@ -169,7 +166,6 @@ class ProjectController extends Controller {
         }
 
         return $this->render('SgpcCoreBundle:Project:scrum.html.twig', array(
-                    'lists' => $lists,
                     'activeTasks' => $activeTasks,
                     'project' => $project,
                     'delete_form' => $deleteForm->createView(),

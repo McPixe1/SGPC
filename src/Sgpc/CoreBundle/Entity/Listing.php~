@@ -148,28 +148,4 @@ class Listing
     {
         return $this->tasks;
     }
-
-    /**
-     * Set sprint
-     *
-     * @param \Sgpc\CoreBundle\Entity\Sprint $sprint
-     *
-     * @return Listing
-     */
-    public function setSprint(\Sgpc\CoreBundle\Entity\Sprint $sprint = null)
-    {
-        $this->sprint = $sprint;
-
-        return $this;
-    }
-
-    /**
-     * Get sprint
-     *
-     * @return \Sgpc\CoreBundle\Entity\Sprint
-     */
-    public function getSprint()
-    {
-        return $this->sprint;
-    }
 }

@@ -37,6 +37,11 @@ class Sprint
     protected $project;
     
     
+    /**
+     * @ORM\OneToMany(targetEntity="Listing", mappedBy="sprint",  cascade={"remove"})
+     */
+    protected $listings;
+    
      /**
      * @ORM\OneToMany(targetEntity="Task", mappedBy="sprint", cascade={"remove"})
      */
@@ -234,5 +239,39 @@ class Sprint
     public function getTasks()
     {
         return $this->tasks;
+    }
+
+    /**
+     * Add listing
+     *
+     * @param \Sgpc\CoreBundle\Entity\Listing $listing
+     *
+     * @return Sprint
+     */
+    public function addListing(\Sgpc\CoreBundle\Entity\Listing $listing)
+    {
+        $this->listings[] = $listing;
+
+        return $this;
+    }
+
+    /**
+     * Remove listing
+     *
+     * @param \Sgpc\CoreBundle\Entity\Listing $listing
+     */
+    public function removeListing(\Sgpc\CoreBundle\Entity\Listing $listing)
+    {
+        $this->listings->removeElement($listing);
+    }
+
+    /**
+     * Get listings
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getListings()
+    {
+        return $this->listings;
     }
 }

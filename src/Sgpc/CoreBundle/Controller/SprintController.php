@@ -18,9 +18,14 @@ class SprintController extends Controller {
      * Crea una nueva entidad Sprint
      */
     public function createAction(Request $request, $id) {
+
+        $em = $this->getDoctrine()->getManager();
+
         $entity = new Sprint();
         $project = $this->getDoctrine()->getRepository('SgpcCoreBundle:Project')->findOneById($id);
-
+        if (!$project) {
+            throw $this->createNotFoundException('No se ha encontrado la entidad proyecto.');
+        }
         $form = $this->createCreateForm($id);
 
         $form->handleRequest($request);
@@ -29,11 +34,18 @@ class SprintController extends Controller {
             $entity->setProject($project);
             $entity->setName('Primer sprint');
             $entity->setStatus('inactivo');
+
+            $formTasks = $form->get('tasks')->getData();
+            foreach ($formTasks as $formTask) {
+                $task = $em->getRepository('SgpcCoreBundle:Task')->findOneBy(array('id' => $formTask));
+                $task->setSprint($entity);
+            }
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('sgpc_project_scrum', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('sgpc_project_scrum', array('id' => $project->getId())));
         }
 
         return $this->render('SgpcCoreBundle:Sprint:new.html.twig', array(
@@ -57,9 +69,15 @@ class SprintController extends Controller {
     }
 
     private function createCreateForm($id) {
+
         return $this->createFormBuilder()
                         ->setAction($this->generateUrl('sgpc_sprint_create', array('id' => $id)))
                         ->setMethod('POST')
+                        ->add('tasks', 'choice', array(
+                            'placeholder' => 'Selecciona las tareas de este sprint',
+                            'choices' => $this->tasksToChoices($id),
+                            'multiple' => true
+                        ))
                         ->add('submit', 'submit', array(
                             'label' => 'Crear',
                             'attr' => array(
@@ -67,6 +85,19 @@ class SprintController extends Controller {
                     )))
                         ->getForm()
         ;
+    }
+
+    protected function tasksToChoices($id) {
+
+        $em = $this->getDoctrine()->getManager();
+        $tasks = $em->getRepository('SgpcCoreBundle:Task')->getActiveTasksForProject($id);
+
+        $choices = array();
+        foreach ($tasks as $task) {
+            $choices[$task->getId()] = $task->getName();
+        }
+//        dump($choices);
+        return $choices;
     }
 
     /**
