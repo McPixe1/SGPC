@@ -38,8 +38,7 @@ class TaskController extends Controller {
             if ($project->getModel() == 'kanban') {
                 $parent = $this->getDoctrine()->getRepository('SgpcCoreBundle:Listing')->findOneById($id);
                 $entity->setListing($parent);
-            }
-            else{
+            } else {
                 $entity->setIsActive(false);
             }
             $entity->setProject($project);
@@ -242,18 +241,36 @@ class TaskController extends Controller {
     }
 
     private function createEditForm(Task $entity) {
-        $form = $this->createForm(new TaskType(), $entity, array(
-            'action' => $this->generateUrl('sgpc_task_update', array('id' => $entity->getId())),
-            'method' => 'PUT'
-        ));
-        $form
-                ->add('listing', 'choice', array(
-                    'choices' => $this->listingToChoices($entity->getId()),
-                    'choices_as_values' => true,
-                ))
-                ->add('submit', 'submit', array('label' => 'Actualizar tarea', 'attr' => ['class' => 'btn btn-success btn-sm']));
 
-        return $form;
+        $project = $entity->getProject();
+
+        if ($project->getModel() == 'kanban') {
+            $form = $this->createForm(new KanbanTaskType(), $entity, array(
+                'action' => $this->generateUrl('sgpc_task_update', array('id' => $entity->getId())),
+                'method' => 'PUT'
+            ));
+            $form
+                    ->add('listing', 'choice', array(
+                        'choices' => $this->listingToChoices($entity->getId()),
+                        'choices_as_values' => true,
+                    ))
+                    ->add('submit', 'submit', array('label' => 'Actualizar tarea', 'attr' => ['class' => 'btn btn-success btn-sm']));
+
+            return $form;
+        } else {
+            $form = $this->createForm(new ScrumTaskType(), $entity, array(
+                'action' => $this->generateUrl('sgpc_task_update', array('id' => $entity->getId())),
+                'method' => 'PUT'
+            ));
+            $form
+                    ->add('listing', 'choice', array(
+                        'choices' => $this->listingToChoices($entity->getId()),
+                        'choices_as_values' => true,
+                    ))
+                    ->add('submit', 'submit', array('label' => 'Actualizar tarea', 'attr' => ['class' => 'btn btn-success btn-sm']));
+
+            return $form;
+        }
     }
 
     public function updateAction($id, Request $request) {
@@ -287,7 +304,19 @@ class TaskController extends Controller {
         $task = $em->getRepository('SgpcCoreBundle:Task')->find($id);
 
         $project = $task->getProject();
-        $listings = $project->getListings();
+
+        if ($project->getModel() == 'kanban') {
+            $listings = $project->getListings();
+        } else {
+
+            $query = $em->createQuery('SELECT s FROM SgpcCoreBundle:Sprint s JOIN s.project p WHERE p.id = :idProject AND s.isActive = true');
+            $query->setParameters(array(
+                'idProject' => $project->getId(),
+            ));
+            $sprint = $query->getResult();
+            $listings = $sprint[0]->getListings();
+        }
+
 
         $choices = array();
         foreach ($listings as $availableList) {

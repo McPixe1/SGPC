@@ -79,7 +79,11 @@
     </div>
 
     <!--SIDEBAR-->
-    {{ include('SgpcCoreBundle:Task:partials/sidebar.html.twig') }}
+    {% if project.model == 'kanban' %}
+        {{ include('SgpcCoreBundle:Task:partials/sidebar.html.twig') }}
+    {% else %}
+        {{ include('SgpcCoreBundle:Task:partials/scrumSidebar.html.twig') }}
+    {% endif %}
 
 
 

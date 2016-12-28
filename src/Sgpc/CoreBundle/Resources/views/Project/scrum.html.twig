@@ -12,6 +12,7 @@
             <div class="project-canvas">
                 <h2><a class="back-button" href="/"><i class="mdi mdi-arrow-left"></i></a>{{project.name}}. Trabajo pendiente</h2>
                 <div class="container">
+
                     <h4 style="color:white;">Sprint actual</h4>
 
                     {% if sprints %}
@@ -39,11 +40,11 @@
                         </thead>
                         <tbody>
                             {% for task in tasks %}
-                                {% if not task.isActive %}
+                                {% if not task.isActive and task.lastListing != 'Done' %}
                                     <tr>
                                         <td>{{task.name}}</td>
                                         {% if task.lastListing %}
-                                            <td>{{task.listing}}</td>
+                                            <td>{{task.lastListing}}</td>
                                         {% else %}
                                             <td>To Do</td>
                                         {% endif %}
@@ -56,6 +57,33 @@
                         </tbody>
                     </table>
                     <a class="js-toggle-task-form" href="javascript:void(0);"><i class="mdi mdi-plus"></i></a>
+
+                </div>
+
+                <div class="container">
+                    <h4 style="color:white;">Tareas completadas</h4>
+                    <table class="table" style="color:white;">
+                        <thead>
+                            <tr>
+                                <th>Tarea</th>
+                                <th>Estado</th>
+                                <th>Prioridad</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for task in tasks %}
+                                {% if not task.isActive and task.lastListing == 'Done' %}
+                                    <tr>
+                                        <td>{{task.name}}</td>
+                                        <td>{{task.lastListing}}</td>                                     
+                                        <td>{{task.priority}}</td>
+                                    </tr>  
+
+                                {% endif %}
+                            {% endfor %}
+
+                        </tbody>
+                    </table>
 
                 </div>
             </div>

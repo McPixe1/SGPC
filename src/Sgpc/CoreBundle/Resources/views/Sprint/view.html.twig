@@ -9,6 +9,8 @@
             <div class="project-canvas">
                 <h2><a class="back-button" href="{{ path('sgpc_project_scrum', {'id': project.id})}}"><i class="mdi mdi-arrow-left"></i></a>{{sprint.name}}</h2>
 
+                    {{form(store_form)}}
+
                 {% for list in lists %}
                     {{ include('SgpcCoreBundle:Listing:partials/scrumListItem.html.twig') }}             
                 {% endfor %}

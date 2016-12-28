@@ -7,7 +7,7 @@ use Sgpc\CoreBundle\Form\TaskType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class KanbanTaskType extends TaskType {
+class KanbanTaskType extends AbstractType {
 
     /**
      * {@inheritdoc}
@@ -16,6 +16,17 @@ class KanbanTaskType extends TaskType {
         parent::buildForm($builder, $options);
 
         $builder
+                ->add('name')
+                ->add('description')
+                ->add('priority', 'choice', array(
+                    'label' => 'Prioridad',
+                    'choices' => array(
+                        3 => 'Baja',
+                        2 => 'Media',
+                        1 => 'Alta',
+                    ),
+                        )
+                )
                 ->add('dueDate', 'date', [
                     'widget' => 'single_text',
                     'format' => 'dd-MM-yyyy',
@@ -25,7 +36,11 @@ class KanbanTaskType extends TaskType {
                         'data-date-format' => 'dd-mm-yyyy',
                     ]
                 ])
-              ;
+                ->add('listing', null, array('attr' => array('style' => 'display:none;'), 'label' => false))
+                ->add('submit', 'submit', array(
+                    'label' => 'Crear tarea',
+                    'attr' => array('class' => 'btn btn-sm btn-success')
+        ));
     }
 
     /**

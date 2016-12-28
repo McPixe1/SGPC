@@ -66,6 +66,10 @@ sgpc_sprint_create:
     defaults: { _controller: "SgpcCoreBundle:Sprint:create" }
     methods:  POST
     
+sgpc_sprint_store:
+    path:     /sprint/{id}/store/
+    defaults: { _controller: SgpcCoreBundle:Sprint:store }
+    
     
 #TAREAS    
     
