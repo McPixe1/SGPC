@@ -3,7 +3,7 @@
 {% set owner = project.getOwner %}
 {% set members = project.getUsers %}
 {% set sprints = project.sprints %}
-{% set projectTasks = project.tasks %}
+{% set tasks = project.tasks %}
 {% block body %}
     {{ parent() }}
 
@@ -17,7 +17,7 @@
                     {% if sprints %}
                         {% for sprint in sprints if sprint.isActive %}
                             <a href="{{ path('sgpc_sprint_view', {'id':sprint.id})}}">{{sprint.name}} <br>Del {{sprint.start|date("d/m/Y")}} al {{sprint.end|date("d/m/Y")}} </a> <br> 
-                                {% for task in projectTasks if task.sprint %}
+                                {% for task in tasks if task.sprint %}
                                     {{task.name}}
                                 {% endfor %}
                             {% else %}
@@ -38,21 +38,18 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for projectTask in projectTasks %}
-                                {% if not projectTask.isActive %}
-                                    {% if projectTask.listing and projectTask.listing.name != 'Done' %}
-                                        <tr>
-                                            <td>{{projectTask.name}}</td>
-                                            <td>{{projectTask.listing}}</td>
-                                            <td>{{projectTask.priority}}</td>
-                                        </tr>   
-                                    {% elseif not projectTask.listing %}
-                                        <tr>
-                                            <td>{{projectTask.name}}</td>
-                                            <td>Por hacer</td>
-                                            <td>{{projectTask.priority}}</td>
-                                        </tr>  
-                                    {% endif %}
+                            {% for task in tasks %}
+                                {% if not task.isActive %}
+                                    <tr>
+                                        <td>{{task.name}}</td>
+                                        {% if task.lastListing %}
+                                            <td>{{task.listing}}</td>
+                                        {% else %}
+                                            <td>To Do</td>
+                                        {% endif %}
+                                        <td>{{task.priority}}</td>
+                                    </tr>  
+
                                 {% endif %}
                             {% endfor %}
 
