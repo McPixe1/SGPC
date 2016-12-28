@@ -30,16 +30,17 @@
                     {{form(store_form)}}
                 {% endif %}
                 <br>
-
-                {% if app.user == project.owner%}
-                    <a href="{{ path('sgpc_task_edit', {id: task.id}) }}" class="btn btn-primary">Editar tarea</a>
-                {% else %}
-                    {% for member in members %}
-                        {% if app.user == member %}
-                            <a href="{{ path('sgpc_task_edit', {id: task.id}) }}" class="btn btn-primary">Editar tarea</a>
-                        {% endif %}
-                    {% endfor %}
-                {%endif%}
+                {% if task.isActive %}
+                    {% if app.user == project.owner%}
+                        <a href="{{ path('sgpc_task_edit', {id: task.id}) }}" class="btn btn-primary">Editar tarea</a>
+                    {% else %}
+                        {% for member in members %}
+                            {% if app.user == member %}
+                                <a href="{{ path('sgpc_task_edit', {id: task.id}) }}" class="btn btn-primary">Editar tarea</a>
+                            {% endif %}
+                        {% endfor %}
+                    {%endif%}
+                {% endif %}
 
             </div>
         </div>

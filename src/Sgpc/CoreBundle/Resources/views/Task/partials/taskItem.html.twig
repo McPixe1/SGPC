@@ -1,11 +1,12 @@
 <div class="task">
     <!--dropdown de la tarea-->
-    <div class="dropdown">
-        <a href="{{ path('sgpc_task_edit', {id: task.id}) }}">            
-            <span class="mdi mdi-pencil"></span>
-        </a>
-
-    </div> 
+    {% if task.isActive %}
+        <div class="dropdown">
+            <a href="{{ path('sgpc_task_edit', {id: task.id}) }}">            
+                <span class="mdi mdi-pencil"></span>
+            </a>
+        </div>
+    {% endif %}
     <a href="{{ path('sgpc_task_view', { 'id': task.id }) }}">
 
         <div class="priority-label" data-priority="{{task.priority}}"></div>

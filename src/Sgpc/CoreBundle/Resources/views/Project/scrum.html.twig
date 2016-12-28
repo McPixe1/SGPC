@@ -48,15 +48,21 @@
                                     {% for task in tasks %}
                                         {% if not task.isActive and task.lastListing != 'Done' %}
                                             <tr>
-                                                <td>{{task.name}}</td>
+                                                <td>                                        
+                                                    <a href="{{ path('sgpc_task_view', { 'id': task.id }) }}">
+                                                        {{task.name}}
+                                                    </a>
+                                                </td>
                                                 {% if task.lastListing %}
-                                                    <td>{{task.lastListing}}</td>
+                                                    <td>
+                                                        {{task.lastListing}}
+                                                    </td>
                                                 {% else %}
                                                     <td>To Do</td>
                                                 {% endif %}
                                                 <td>{{task.priority}}</td>
-                                            </tr>  
 
+                                            </tr>  
                                         {% endif %}
                                     {% endfor %}
 

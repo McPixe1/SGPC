@@ -306,7 +306,12 @@ class TaskController extends Controller {
         $project = $task->getProject();
 
         if ($project->getModel() == 'kanban') {
-            $listings = $project->getListings();
+            $query = $em->createQuery('SELECT l FROM SgpcCoreBundle:Listing l JOIN l.project p WHERE p.id = :idProject AND l.name != :listName');
+            $query->setParameters(array(
+                'idProject' => $project->getId(),
+                'listName' => 'Archivadas'
+            ));
+            $listings = $query->getResult();
         } else {
 
             $query = $em->createQuery('SELECT s FROM SgpcCoreBundle:Sprint s JOIN s.project p WHERE p.id = :idProject AND s.isActive = true');

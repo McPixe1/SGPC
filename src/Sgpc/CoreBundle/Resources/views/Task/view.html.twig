@@ -3,91 +3,146 @@
 {% set list = task.listing %}
 {% set project = task.project %}
 {% set members = task.getUsers %}
-{# % if task.type == 'kanbantask' %}
-    {% set duration =  date(task.createdAt|date("Y-m-d")).diff(date(task.dueDate|date("Y-m-d"))) %}
-{% endif % #}
-{# % set duration_days = duration|date('%r%a') % #}
+
+
 
 {% block body %}
-    {{ parent() }}    
-    <div class="container-fluid">
-        {% if project.model == 'kanban' %}
-            <h3 class="dashboard-title"><a class="back-button" href="{{ path('sgpc_project_kanban', { 'id': project.id })  }}"><i class="mdi mdi-arrow-left"></i></a>Tarea {{task.name}}</h3>
-                {% else %}
-            <h3 class="dashboard-title"><a class="back-button" href="{{ path('sgpc_project_scrum', { 'id': project.id })  }}"><i class="mdi mdi-arrow-left"></i></a>Tarea {{task.name}}</h3>
+    {{ parent() }} 
+
+    {% if project.model == 'kanban' %}
+
+        {% set duration =  date(task.createdAt|date("Y-m-d")).diff(date(task.dueDate|date("Y-m-d"))) %}
+        {% set duration_days = duration|date('%r%a') %}
+
+        <div class="container-fluid">
+            {% if project.model == 'kanban' %}
+                <h3 class="dashboard-title"><a class="back-button" href="{{ path('sgpc_project_kanban', { 'id': project.id })  }}"><i class="mdi mdi-arrow-left"></i></a>Tarea {{task.name}}</h3>
+                    {% else %}
+                <h3 class="dashboard-title"><a class="back-button" href="{{ path('sgpc_project_scrum', { 'id': project.id })  }}"><i class="mdi mdi-arrow-left"></i></a>Tarea {{task.name}}</h3>
+                    {% endif %}
+
+            <!--DATOS-->
+
+            <div class="task-content">
+
+                Descripción: {{task.description}} 
+                <br>
+
+                Categoría: {{task.listing}}
+                <br>
+
+                Estado: {% if task.isActive %} Activa {% else %} Archivada {% endif %}
+                <br>
+                Fecha de inicio:
+                {{task.createdAt|date("d/m/Y") }}
+
+                <br>
+                {% if duration %}
+                    Fecha estimada de finalización
+                    {{task.dueDate|date("d/m/Y") }}
                 {% endif %}
 
-        <!--DATOS-->
-
-        <div class="task-content">
-
-            Descripción: {{task.description}} 
-            <br>
-
-            Categoría: {{task.listing}}
-            <br>
-
-            Estado: {% if task.isActive %} Activa {% else %} Archivada {% endif %}
-            <br>
-            Fecha de inicio:
-            {{task.createdAt|date("d/m/Y") }}
-
-            <br>
-            {# % if duration %}
-                Fecha estimada de finalización
-                {{task.dueDate|date("d/m/Y") }}
-            {% endif % #}
-
-            <br>
-            {# % if duration %}
-
-                {%if duration_days == 1 %}
-                    Duración: {{duration_days}} dia
-                {%else%}
-                    Duración: {{duration_days}} dias 
-                {%endif%}
-            {% endif % #}
+                <br>
+                {% if duration %}    
+                    {%if duration_days == 1 %}
+                        Duración: {{duration_days}} dia
+                    {%else%}
+                        Duración: {{duration_days}} dias 
+                    {%endif%}
+                {% endif %}
 
 
 
-            <!--COMENTARIOS-->
-            <section class="comments" id="comments">
-                <section class="previous-comments">
-                    <h3>Comentarios</h3>
-                    {% include 'SgpcCoreBundle:Comment:view.html.twig' with { 'comments': comments } %}
+                <!--COMENTARIOS-->
+                <section class="comments" id="comments">
+                    <section class="previous-comments">
+                        <h3>Comentarios</h3>
+                        {% include 'SgpcCoreBundle:Comment:view.html.twig' with { 'comments': comments } %}
+                    </section>
                 </section>
-            </section>
-            <div class="new-comment">
-                {% if app.user == project.owner %}                
-                    {{ render(controller('SgpcCoreBundle:Comment:add', {'id': task.id})) }}
-                {% else %}
-                    {% for member in members %}
-                        {% if app.user == member%}
-                            {{ render(controller('SgpcCoreBundle:Comment:add', {'id': task.id})) }}
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
+                <div class="new-comment">
+                    {% if app.user == project.owner %}                
+                        {{ render(controller('SgpcCoreBundle:Comment:add', {'id': task.id})) }}
+                    {% else %}
+                        {% for member in members %}
+                            {% if app.user == member%}
+                                {{ render(controller('SgpcCoreBundle:Comment:add', {'id': task.id})) }}
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
             </div>
 
         </div>
 
-    </div>
+        <div class="sidebar-toggle">
+            <i class="mdi mdi-menu"></i>
+            <i class="mdi mdi-chevron-right"></i>
+        </div>
 
-    <div class="sidebar-toggle">
-        <i class="mdi mdi-menu"></i>
-        <i class="mdi mdi-chevron-right"></i>
-    </div>
-
-    <!--SIDEBAR-->
-    {% if project.model == 'kanban' %}
+        <!--SIDEBAR-->
         {{ include('SgpcCoreBundle:Task:partials/sidebar.html.twig') }}
+
+        {#
+        ********************************************************************************
+        ********************************************************************************
+        ********************************************************************************
+        ********************************************************************************
+        ********************************************************************************
+        #}
+
     {% else %}
+        <div class="container-fluid">
+
+            <h3 class="dashboard-title"><a class="back-button" href="{{ path('sgpc_project_scrum', { 'id': project.id })  }}"><i class="mdi mdi-arrow-left"></i></a>Tarea {{task.name}}</h3>
+
+            <!--DATOS-->
+
+            <div class="task-content">
+
+                Descripción: {{task.description}} 
+                <br>
+                Estado: {{task.lastListing}}
+                <br>
+                Horas estimadas:
+                {{task.hours}}
+
+
+                <!--COMENTARIOS-->
+                <section class="comments" id="comments">
+                    <section class="previous-comments">
+                        <h3>Comentarios</h3>
+                        {% include 'SgpcCoreBundle:Comment:view.html.twig' with { 'comments': comments } %}
+                    </section>
+                </section>
+                <div class="new-comment">
+                    {% if app.user == project.owner %}                
+                        {{ render(controller('SgpcCoreBundle:Comment:add', {'id': task.id})) }}
+                    {% else %}
+                        {% for member in members %}
+                            {% if app.user == member%}
+                                {{ render(controller('SgpcCoreBundle:Comment:add', {'id': task.id})) }}
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="sidebar-toggle">
+            <i class="mdi mdi-menu"></i>
+            <i class="mdi mdi-chevron-right"></i>
+        </div>
+
+        <!--SIDEBAR-->
         {{ include('SgpcCoreBundle:Task:partials/scrumSidebar.html.twig') }}
     {% endif %}
-
-
-
 {% endblock %}
+
+
 
 {% block javascripts %}
     {{ parent() }}
