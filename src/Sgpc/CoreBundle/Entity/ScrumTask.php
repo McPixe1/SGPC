@@ -11,7 +11,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ScrumTask extends Task {
 
-
     /**
      * @ORM\ManyToOne(targetEntity="Sprint", inversedBy="tasks")
      * @ORM\JoinColumn(name="sprint_id", referencedColumnName="id")
@@ -24,15 +23,26 @@ class ScrumTask extends Task {
      * @ORM\Column(name="hours", type="integer")
      */
     protected $hours;
-    
-     /**
+
+    /**
      * @var string
      *
      * @ORM\Column(name="lastlisting", type="string", length=100, nullable=true)
      */
     protected $lastListing;
 
-  
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="finished", type="boolean")
+     */
+    protected $finished;
+
+    public function __construct() {
+        parent::__construct();
+
+        $this->finished = false;
+    }
 
     /**
      * Set hours
@@ -41,8 +51,7 @@ class ScrumTask extends Task {
      *
      * @return ScrumTask
      */
-    public function setHours($hours)
-    {
+    public function setHours($hours) {
         $this->hours = $hours;
 
         return $this;
@@ -53,8 +62,7 @@ class ScrumTask extends Task {
      *
      * @return integer
      */
-    public function getHours()
-    {
+    public function getHours() {
         return $this->hours;
     }
 
@@ -65,8 +73,7 @@ class ScrumTask extends Task {
      *
      * @return ScrumTask
      */
-    public function setSprint(\Sgpc\CoreBundle\Entity\Sprint $sprint = null)
-    {
+    public function setSprint(\Sgpc\CoreBundle\Entity\Sprint $sprint = null) {
         $this->sprint = $sprint;
 
         return $this;
@@ -77,8 +84,7 @@ class ScrumTask extends Task {
      *
      * @return \Sgpc\CoreBundle\Entity\Sprint
      */
-    public function getSprint()
-    {
+    public function getSprint() {
         return $this->sprint;
     }
 
@@ -89,8 +95,7 @@ class ScrumTask extends Task {
      *
      * @return ScrumTask
      */
-    public function setLastListing($lastListing)
-    {
+    public function setLastListing($lastListing) {
         $this->lastListing = $lastListing;
 
         return $this;
@@ -101,8 +106,30 @@ class ScrumTask extends Task {
      *
      * @return string
      */
-    public function getLastListing()
-    {
+    public function getLastListing() {
         return $this->lastListing;
     }
+
+    /**
+     * Set finished
+     *
+     * @param boolean $finished
+     *
+     * @return ScrumTask
+     */
+    public function setFinished($finished) {
+        $this->finished = $finished;
+
+        return $this;
+    }
+
+    /**
+     * Get finished
+     *
+     * @return boolean
+     */
+    public function getFinished() {
+        return $this->finished;
+    }
+
 }

@@ -59,19 +59,18 @@ class SprintController extends Controller {
             foreach ($formTasks as $formTask) {
                 $task = $em->getRepository('SgpcCoreBundle:Task')->findOneBy(array('id' => $formTask));
                 $task->setSprint($entity);
-
-                if ($task->getLastListing() == null) {
+                if ($task->getLastListing() == null || $task->getLastListing() == 'To Do') {
                     $task->setListing($todoList);
                     $task->setLastListing($todoList->getName());
-                } else {
-                    $em = $this->getDoctrine()->getManager();
-                    $lastList = $task->getLastListing();
-                    $listing = $em->getRepository('SgpcCoreBundle:Listing')->findOneBy(array('name' => $lastList));
-
-                    $task->setListing($listing);
-                    $task->setLastListing($listing);
+                    
+                } else if($task->getLastListing() == 'Doing'){                    
+                    $task->setListing($doingList);
+                    $task->setLastListing($doingList->getName());
                 }
-
+                else{
+                    $task->setListing($doneList);
+                    $task->setLastListing($doneList->getName());
+                }
                 $task->setIsActive(True);
                 $em->persist($task);
             }
@@ -136,7 +135,14 @@ class SprintController extends Controller {
 
         $project = $this->getDoctrine()->getRepository('SgpcCoreBundle:Project')->findOneById($id);
 
-        $tasks = $project->getTasks();
+        $em = $this->getDoctrine()->getManager();
+
+        $query = $em->createQuery('SELECT t FROM SgpcCoreBundle:ScrumTask t JOIN t.project p WHERE p.id = :idProject AND t.finished = :finished');
+        $query->setParameters(array(
+            'idProject' => $project->getId(),
+            'finished' => false
+        ));
+        $tasks = $query->getResult();
 
         $choices = array();
         foreach ($tasks as $task) {
@@ -197,6 +203,9 @@ class SprintController extends Controller {
 
             foreach ($tasks as $task) {
                 $listing = $task->getListing();
+                if ($listing->getName() == 'Done') {
+                    $task->setFinished(true);
+                }
                 $task->setIsActive(false);
                 $task->setLastListing($listing->getName());
                 $task->setListing(null);

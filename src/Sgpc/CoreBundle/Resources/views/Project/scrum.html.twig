@@ -18,10 +18,7 @@
                     {% if sprints %}
                         {% for sprint in sprints if sprint.isActive %}
                             <a href="{{ path('sgpc_sprint_view', {'id':sprint.id})}}">{{sprint.name}} <br>Del {{sprint.start|date("d/m/Y")}} al {{sprint.end|date("d/m/Y")}} </a> <br> 
-                                {% for task in tasks if task.sprint %}
-                                    {{task.name}}
-                                {% endfor %}
-                            {% else %}
+                        {% else %}
                             <a class="js-toggle-sprint-form" href="javascript:void(0);">
                                 <i class="mdi mdi-plus"></i>
                             </a>
