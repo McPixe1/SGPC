@@ -24,11 +24,11 @@ class Sprint
     private $id;
 
     /**
-     * @var string
+     * @var int
      *
-     * @ORM\Column(name="status", type="string", length=255, nullable=true)
+     * @ORM\Column(name="isactive", type="boolean")
      */
-    private $status;
+    private $isActive;
     
      /**
      * @ORM\ManyToOne(targetEntity="Project", inversedBy="sprints")
@@ -43,7 +43,7 @@ class Sprint
     protected $listings;
     
      /**
-     * @ORM\OneToMany(targetEntity="Task", mappedBy="sprint", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="ScrumTask", mappedBy="sprint", cascade={"remove"})
      */
     protected $tasks;
     
@@ -80,29 +80,6 @@ class Sprint
         return $this->id;
     }
 
-    /**
-     * Set status
-     *
-     * @param string $status
-     *
-     * @return Sprint
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
-    /**
-     * Get status
-     *
-     * @return string
-     */
-    public function getStatus()
-    {
-        return $this->status;
-    }
 
     /**
      * Set name
@@ -149,7 +126,7 @@ class Sprint
      */
     public function getStart()
     {
-        return $this->start;
+        return $this->start = new \DateTime();
     }
 
     /**
@@ -205,8 +182,11 @@ class Sprint
     public function __construct()
     {
         $this->tasks = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->isActive = true;
     }
 
+
+    
     /**
      * Add task
      *
@@ -273,5 +253,29 @@ class Sprint
     public function getListings()
     {
         return $this->listings;
+    }
+
+    /**
+     * Set isActive
+     *
+     * @param boolean $isActive
+     *
+     * @return Sprint
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * Get isActive
+     *
+     * @return boolean
+     */
+    public function getIsActive()
+    {
+        return $this->isActive;
     }
 }

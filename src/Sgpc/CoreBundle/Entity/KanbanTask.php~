@@ -1,0 +1,20 @@
+<?php
+
+namespace Sgpc\CoreBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Task
+ *
+ * @ORM\Entity(repositoryClass="Sgpc\CoreBundle\Repository\TaskRepository")
+ */
+class KanbanTask extends Task {
+
+       /**
+     * @var \DateTime
+     * @ORM\Column(name="due_date", type="datetime")
+     */
+    protected $dueDate;
+    
+}

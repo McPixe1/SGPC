@@ -13,14 +13,17 @@
                 <h2><a class="back-button" href="/"><i class="mdi mdi-arrow-left"></i></a>{{project.name}}. Trabajo pendiente</h2>
                 <div class="container">
                     <h4 style="color:white;">Sprint actual</h4>
-                    <a class="js-toggle-sprint-form" href="javascript:void(0);"><i class="mdi mdi-plus"></i></a>
-                        {% if sprints %}
-                            {% for sprint in sprints %}
-                            {{sprint.name}} <br>
-                            {% set tasks = sprint.tasks %}
-                            {% for task in tasks %}
-                                {{task.name}}
-                            {% endfor %}
+
+                    {% if sprints %}
+                        {% for sprint in sprints if sprint.isActive %}
+                            <a href="{{ path('sgpc_sprint_view', {'id':sprint.id})}}">{{sprint.name}} <br>Del {{sprint.start|date("d/m/Y")}} al {{sprint.end|date("d/m/Y")}} </a> <br> 
+                                {% for task in projectTasks if task.sprint %}
+                                    {{task.name}}
+                                {% endfor %}
+                            {% else %}
+                            <a class="js-toggle-sprint-form" href="javascript:void(0);">
+                                <i class="mdi mdi-plus"></i>
+                            </a>
                         {% endfor %}
                     {% endif %}
                 </div>
@@ -36,18 +39,20 @@
                         </thead>
                         <tbody>
                             {% for projectTask in projectTasks %}
-                                {% if projectTask.listing and projectTask.listing.name != 'Done' %}
-                                    <tr>
-                                        <td>{{projectTask.name}}</td>
-                                        <td>{{projectTask.listing}}</td>
-                                        <td>{{projectTask.priority}}</td>
-                                    </tr>   
-                                {% elseif not projectTask.listing %}
-                                    <tr>
-                                        <td>{{projectTask.name}}</td>
-                                        <td>Por hacer</td>
-                                        <td>{{projectTask.priority}}</td>
-                                    </tr>  
+                                {% if not projectTask.isActive %}
+                                    {% if projectTask.listing and projectTask.listing.name != 'Done' %}
+                                        <tr>
+                                            <td>{{projectTask.name}}</td>
+                                            <td>{{projectTask.listing}}</td>
+                                            <td>{{projectTask.priority}}</td>
+                                        </tr>   
+                                    {% elseif not projectTask.listing %}
+                                        <tr>
+                                            <td>{{projectTask.name}}</td>
+                                            <td>Por hacer</td>
+                                            <td>{{projectTask.priority}}</td>
+                                        </tr>  
+                                    {% endif %}
                                 {% endif %}
                             {% endfor %}
 
@@ -100,7 +105,7 @@
             });
 
 
-     
+
             $('.datepicker').datepicker();
         });
     </script>

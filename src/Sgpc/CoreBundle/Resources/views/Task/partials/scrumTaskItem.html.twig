@@ -1,0 +1,35 @@
+<div class="task">
+    <!--dropdown de la tarea-->
+    <div class="dropdown">
+        <a href="{{ path('sgpc_task_edit', {id: task.id}) }}">            
+            <span class="mdi mdi-pencil"></span>
+        </a>
+    </div> 
+    <a href="{{ path('sgpc_task_view', { 'id': task.id }) }}">
+
+        <div class="priority-label" data-priority="{{task.priority}}"></div>
+        <div class="task-title">
+            {{task.name}}                                 
+        </div>
+
+        <div class="task-body">
+            <ul>
+ 
+                {% set taskmembers = task.getUsers %}
+                {% if taskmembers |length > 0 %}
+                    <li>
+                        <i class="mdi mdi-account"></i><span>{{taskmembers |length }}</span>
+                    </li>
+                {% endif %}
+
+                {% set comments = task.getComments %}
+                {% if comments |length > 0 %}
+                    <li>
+                        <i class="mdi mdi-message-text-outline"></i><span>{{comments |length }}</span>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>  
+    </a>
+
+</div>

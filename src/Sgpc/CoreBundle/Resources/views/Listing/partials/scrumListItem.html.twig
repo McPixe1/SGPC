@@ -1,0 +1,26 @@
+{% set tasks = list.tasks%}
+{% set activeCount = 0 %}
+
+{% for task in tasks if task.isActive%}
+    {% set activeCount = activeCount + 1 %}
+    {% set project = task.project %}
+
+{% endfor %}
+
+<div class="list-wrapper in" data-id="{{ list.id }}" style="margin-left:30px;">
+    <div class="list">
+        <div class="list-header">
+            {{ list.name }} {% if activeCount > 0 %}({{ activeCount }}){% endif %}
+        </div>
+        <div class="list-body">
+
+            <!--TAREAS-->
+            {# DE MOMENTO DEJAMOS EL ISACTIVE DE PRUEBA#}
+            {% for task in tasks if task.isActive%}
+                {{ include('SgpcCoreBundle:Task:partials/scrumTaskItem.html.twig') }}
+            {% endfor %}          
+
+        </div>                           
+
+    </div>
+</div>

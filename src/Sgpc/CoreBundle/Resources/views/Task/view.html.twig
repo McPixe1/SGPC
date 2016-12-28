@@ -3,8 +3,10 @@
 {% set list = task.listing %}
 {% set project = task.project %}
 {% set members = task.getUsers %}
-{% set duration =  date(task.createdAt|date("Y-m-d")).diff(date(task.dueDate|date("Y-m-d"))) %}
-{% set duration_days = duration|date('%r%a') %}
+{# % if task.type == 'kanbantask' %}
+    {% set duration =  date(task.createdAt|date("Y-m-d")).diff(date(task.dueDate|date("Y-m-d"))) %}
+{% endif % #}
+{# % set duration_days = duration|date('%r%a') % #}
 
 {% block body %}
     {{ parent() }}    
@@ -13,7 +15,7 @@
             <h3 class="dashboard-title"><a class="back-button" href="{{ path('sgpc_project_kanban', { 'id': project.id })  }}"><i class="mdi mdi-arrow-left"></i></a>Tarea {{task.name}}</h3>
                 {% else %}
             <h3 class="dashboard-title"><a class="back-button" href="{{ path('sgpc_project_scrum', { 'id': project.id })  }}"><i class="mdi mdi-arrow-left"></i></a>Tarea {{task.name}}</h3>
-        {% endif %}
+                {% endif %}
 
         <!--DATOS-->
 
@@ -31,15 +33,20 @@
             {{task.createdAt|date("d/m/Y") }}
 
             <br>
-            Fecha estimada de finalización
-            {{task.dueDate|date("d/m/Y") }}
+            {# % if duration %}
+                Fecha estimada de finalización
+                {{task.dueDate|date("d/m/Y") }}
+            {% endif % #}
 
             <br>
-            {%if duration_days == 1 %}
-                Duración: {{duration_days}} dia
-            {%else%}
-                Duración: {{duration_days}} dias 
-            {%endif%}
+            {# % if duration %}
+
+                {%if duration_days == 1 %}
+                    Duración: {{duration_days}} dia
+                {%else%}
+                    Duración: {{duration_days}} dias 
+                {%endif%}
+            {% endif % #}
 
 
 

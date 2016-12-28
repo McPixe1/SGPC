@@ -8,7 +8,10 @@ use Doctrine\ORM\Mapping as ORM;
  * Task
  *
  * @ORM\Table(name="task")
- * @ORM\Entity(repositoryClass="Sgpc\CoreBundle\Repository\TaskRepository")
+ * @ORM\Entity
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="type", type="string")
+ * @ORM\DiscriminatorMap( {"task" = "Task", "scrumtask" = "ScrumTask", "kanbantask" = "KanbanTask"} )
  * @ORM\HasLifecycleCallbacks()
  */
 class Task {
@@ -42,12 +45,6 @@ class Task {
      * @ORM\Column(name="name", type="string", length=255)
      */
     
-    
-    /**
-     * @ORM\ManyToOne(targetEntity="Sprint", inversedBy="tasks")
-     * @ORM\JoinColumn(name="sprint_id", referencedColumnName="id")
-     */
-    protected $sprint;
     
      /**
      * @var string
@@ -105,11 +102,6 @@ class Task {
      */
     protected $updatedAt;
 
-    /**
-     * @var \DateTime
-     * @ORM\Column(name="due_date", type="datetime")
-     */
-    protected $dueDate;
 
     /**
      * Get id
@@ -282,27 +274,6 @@ class Task {
         return $this->updatedAt;
     }
 
-    /**
-     * Set dueDate
-     *
-     * @param \DateTime $dueDate
-     *
-     * @return Task
-     */
-    public function setDueDate(\DateTime $dueDate) {
-        $this->dueDate = $dueDate;
-
-        return $this;
-    }
-
-    /**
-     * Get dueDate
-     *
-     * @return \DateTime
-     */
-    public function getDueDate() {
-        return $this->dueDate;
-    }
 
     /**
      * Add comment
@@ -387,27 +358,5 @@ class Task {
         return $this->isActive;
     }
 
-    /**
-     * Set sprint
-     *
-     * @param \Sgpc\CoreBundle\Entity\Sprint $sprint
-     *
-     * @return Task
-     */
-    public function setSprint(\Sgpc\CoreBundle\Entity\Sprint $sprint = null)
-    {
-        $this->sprint = $sprint;
-
-        return $this;
-    }
-
-    /**
-     * Get sprint
-     *
-     * @return \Sgpc\CoreBundle\Entity\Sprint
-     */
-    public function getSprint()
-    {
-        return $this->sprint;
-    }
+ 
 }

@@ -45,28 +45,13 @@ class ProjectController extends Controller {
 
             $em = $this->getDoctrine()->getManager();
 
-            $storedList = new Listing();
-            $storedList->setName('Archivadas');
-            $storedList->setProject($project);
-            $em->persist($storedList);
-
             $model = $form->get('model')->getData();
 
-            if ($model == 'scrum') {
-                $todoList = new Listing();
-                $todoList->setName('To Do');
-                $todoList->setProject($project);
-                $em->persist($todoList);
-
-                $doingList = new Listing();
-                $doingList->setName('Doing');
-                $doingList->setProject($project);
-                $em->persist($doingList);
-
-                $doneList = new Listing();
-                $doneList->setName('Done');
-                $doneList->setProject($project);
-                $em->persist($doneList);
+            if ($model == 'kanban') {
+                $storedList = new Listing();
+                $storedList->setName('Archivadas');
+                $storedList->setProject($project);
+                $em->persist($storedList);
             }
 
             $currentUser = $this->get('security.context')->getToken()->getUser();
@@ -130,8 +115,8 @@ class ProjectController extends Controller {
 
         $lists = $project->getListings();
 
-        $activeTasks = $em->getRepository('SgpcCoreBundle:Task')
-                ->getActiveTasksForProject($id);
+//        $activeTasks = $em->getRepository('SgpcCoreBundle:Task')
+//                ->getActiveTasksForProject($id);
 
         $deleteForm = $this->createDeleteForm($id);
         $addmemberForm = $this->createAddMemberForm($id);
@@ -142,7 +127,7 @@ class ProjectController extends Controller {
 
         return $this->render('SgpcCoreBundle:Project:kanban.html.twig', array(
                     'lists' => $lists,
-                    'activeTasks' => $activeTasks,
+//                    'activeTasks' => $activeTasks,
                     'project' => $project,
                     'delete_form' => $deleteForm->createView(),
                     'addmember_form' => $addmemberForm->createView(),
@@ -155,8 +140,6 @@ class ProjectController extends Controller {
     public function scrumAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();
         $project = $em->getRepository('SgpcCoreBundle:Project')->findOneById($id);
-        $activeTasks = $em->getRepository('SgpcCoreBundle:Task')
-                ->getActiveTasksForProject($id);
 
         $deleteForm = $this->createDeleteForm($id);
         $addmemberForm = $this->createAddMemberForm($id);
@@ -166,7 +149,6 @@ class ProjectController extends Controller {
         }
 
         return $this->render('SgpcCoreBundle:Project:scrum.html.twig', array(
-                    'activeTasks' => $activeTasks,
                     'project' => $project,
                     'delete_form' => $deleteForm->createView(),
                     'addmember_form' => $addmemberForm->createView(),

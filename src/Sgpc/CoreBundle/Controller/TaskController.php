@@ -6,9 +6,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sgpc\CoreBundle\Entity\Task;
+use Sgpc\CoreBundle\Entity\ScrumTask;
+use Sgpc\CoreBundle\Entity\KanbanTask;
 use Sgpc\CoreBundle\Entity\Listing;
 use Sgpc\CoreBundle\Entity\Project;
 use Sgpc\CoreBundle\Form\TaskType;
+use Sgpc\CoreBundle\Form\ScrumTaskType;
+use Sgpc\CoreBundle\Form\KanbanTaskType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class TaskController extends Controller {
@@ -17,16 +21,26 @@ class TaskController extends Controller {
      * Crea una nueva entidad Task
      */
     public function createAction(Request $request, $id, $idproj) {
-        $entity = new Task();
+
         $project = $this->getDoctrine()->getRepository('SgpcCoreBundle:Project')->findOneById($idproj);
 
-        $form = $this->createForm(new TaskType(), $entity);
+        if ($project->getModel() == 'kanban') {
+            $entity = new KanbanTask();
+            $form = $this->createForm(new KanbanTaskType(), $entity);
+        } else {
+            $entity = new ScrumTask();
+            $form = $this->createForm(new ScrumTaskType(), $entity);
+        }
+
         $form->handleRequest($request);
 
         if ($form->isValid()) {
             if ($project->getModel() == 'kanban') {
                 $parent = $this->getDoctrine()->getRepository('SgpcCoreBundle:Listing')->findOneById($id);
                 $entity->setListing($parent);
+            }
+            else{
+                $entity->setIsActive(false);
             }
             $entity->setProject($project);
             $em = $this->getDoctrine()->getManager();
@@ -46,11 +60,22 @@ class TaskController extends Controller {
      * Display del form para crear una nueva entidad Task
      */
     public function addAction($id, $idproj) {
-        $entity = new Task();
 
-        $form = $this->createForm(new TaskType(), $entity, array(
-            'action' => $this->generateUrl('sgpc_task_create', array('id' => $id, 'idproj' => $idproj)),
-        ));
+        $project = $this->getDoctrine()->getRepository('SgpcCoreBundle:Project')->findOneById($idproj);
+
+        if ($project->getModel() == 'kanban') {
+
+            $entity = new KanbanTask();
+            $form = $this->createForm(new KanbanTaskType(), $entity, array(
+                'action' => $this->generateUrl('sgpc_task_create', array('id' => $id, 'idproj' => $idproj)),
+            ));
+        } else {
+
+            $entity = new ScrumTask();
+            $form = $this->createForm(new ScrumTaskType(), $entity, array(
+                'action' => $this->generateUrl('sgpc_task_create', array('id' => $id, 'idproj' => $idproj)),
+            ));
+        }
 
         return $this->render('SgpcCoreBundle:Task:add.html.twig', array(
                     'entity' => $entity,

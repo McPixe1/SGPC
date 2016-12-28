@@ -11,6 +11,7 @@ use Sgpc\CoreBundle\Entity\Project;
 use Sgpc\CoreBundle\Entity\Sprint;
 use Sgpc\CoreBundle\Form\SprintType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
 class SprintController extends Controller {
 
@@ -31,18 +32,43 @@ class SprintController extends Controller {
         $form->handleRequest($request);
 
         if ($form->isValid()) {
+            
             $entity->setProject($project);
             $entity->setName('Primer sprint');
-            $entity->setStatus('inactivo');
+            $end = $form->get('end')->getData();
+            $entity->setStart(new \Datetime);
+            $entity->setEnd($end);
 
+            
+            $todoList = new Listing();
+            $todoList->setName('To Do');
+            $todoList->setSprint($entity);
+            $em->persist($todoList);
+
+            $doingList = new Listing();
+            $doingList->setName('Doing');
+            $doingList->setSprint($entity);
+            $em->persist($doingList);
+
+            $doneList = new Listing();
+            $doneList->setName('Done');
+            $doneList->setSprint($entity);
+            $em->persist($doneList);
+            
+            
             $formTasks = $form->get('tasks')->getData();
             foreach ($formTasks as $formTask) {
                 $task = $em->getRepository('SgpcCoreBundle:Task')->findOneBy(array('id' => $formTask));
                 $task->setSprint($entity);
+                $task->setListing($todoList);
+                $task->setLastListing($todoList->getName());
+                $task->setIsActive(True);
+                $em->persist($task);
             }
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
+
             $em->flush();
 
             return $this->redirect($this->generateUrl('sgpc_project_scrum', array('id' => $project->getId())));
@@ -78,6 +104,15 @@ class SprintController extends Controller {
                             'choices' => $this->tasksToChoices($id),
                             'multiple' => true
                         ))
+                        ->add('end', 'date', [
+                            'widget' => 'single_text',
+                            'format' => 'dd-MM-yyyy',
+                            'attr' => [
+                                'class' => 'form-control input-inline datepicker',
+                                'data-provide' => 'datepicker',
+                                'data-date-format' => 'dd-mm-yyyy',
+                            ]
+                        ])
                         ->add('submit', 'submit', array(
                             'label' => 'Crear',
                             'attr' => array(
@@ -89,14 +124,14 @@ class SprintController extends Controller {
 
     protected function tasksToChoices($id) {
 
-        $em = $this->getDoctrine()->getManager();
-        $tasks = $em->getRepository('SgpcCoreBundle:Task')->getActiveTasksForProject($id);
+        $project = $this->getDoctrine()->getRepository('SgpcCoreBundle:Project')->findOneById($id);
+
+        $tasks = $project->getTasks();
 
         $choices = array();
         foreach ($tasks as $task) {
             $choices[$task->getId()] = $task->getName();
         }
-//        dump($choices);
         return $choices;
     }
 
@@ -106,13 +141,15 @@ class SprintController extends Controller {
     public function viewAction($id) {
         $em = $this->getDoctrine()->getManager();
         $sprint = $em->getRepository('SgpcCoreBundle:Sprint')->find($id);
+        $project = $sprint->getProject();
 
         if (!$sprint) {
             throw $this->createNotFoundException('Unable to find Sprint entity.');
         }
 
-        return $this->render('SgpcCoreBundle:Task:view.html.twig', array(
+        return $this->render('SgpcCoreBundle:Sprint:view.html.twig', array(
                     'sprint' => $sprint,
+                    'project' => $project
         ));
     }
 

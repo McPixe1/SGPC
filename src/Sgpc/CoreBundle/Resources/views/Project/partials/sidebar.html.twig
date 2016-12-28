@@ -19,7 +19,7 @@
     <h4>Resumen de tareas</h4>
 
     {# --------RESUMEN LISTADO--------------- #}
-    <p class="underlined-stats">Tareas activas: <span class="badge firstlist">{{activeTasks|length}} </span> </p>  
+    {# <p class="underlined-stats">Tareas activas: <span class="badge firstlist">{{activeTasks|length}} </span> </p>  #}
 
     {% if lists|length > 0 %}
         {% for list in lists|slice(1,3) %}
@@ -53,11 +53,11 @@
                 {% for task in tasks if task.isActive%}
                     {% set actives = actives + 1 %}
                 {% endfor %}
-                {% if activeTasks|length > 0 %}
-                    <div class="progress-bar" role="progressbar" style="width:{{ actives  * 100 / (activeTasks|length) }}%">
+                {# % if activeTasks|length > 0 %}
+                     <div class="progress-bar" role="progressbar" style="width:{{ actives  * 100 / (activeTasks|length) }}%">
                         {{ list.name }}
-                    </div>
-                {% endif %}
+                    </div> 
+                {% endif % #}
             {% endfor %}
 
             {% for list in lists|slice(4, lists|length) %}
@@ -66,9 +66,9 @@
                 {% for task in tasks if task.isActive%}
                     {% set actives = actives + 1 %}                   
                 {% endfor %}
-                <div class="progress-bar" role="progressbar" style="width:{{ actives  * 100 / (activeTasks|length) }}%">
+                {# <div class="progress-bar" role="progressbar" style="width:{{ actives  * 100 / (activeTasks|length) }}%">
                     Otras
-                </div>
+                </div> #}
             {% endfor %}
 
 
