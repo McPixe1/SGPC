@@ -18,7 +18,7 @@
                     {% if sprints %}
                         {% for sprint in sprints if sprint.isActive %}
                             <a href="{{ path('sgpc_sprint_view', {'id':sprint.id})}}">{{sprint.name}} <br>Del {{sprint.start|date("d/m/Y")}} al {{sprint.end|date("d/m/Y")}} </a> <br> 
-                        {% else %}
+                            {% else %}
                             <a class="js-toggle-sprint-form" href="javascript:void(0);">
                                 <i class="mdi mdi-plus"></i>
                             </a>
@@ -26,63 +26,72 @@
                     {% endif %}
                 </div>
                 <div class="container">
-                    <h4 style="color:white;">Tareas pendientes</h4>
-                    <table class="table" style="color:white;">
-                        <thead>
-                            <tr>
-                                <th>Tarea</th>
-                                <th>Estado</th>
-                                <th>Prioridad</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for task in tasks %}
-                                {% if not task.isActive and task.lastListing != 'Done' %}
+
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#undone-tasks" aria-controls="undone-tasks" role="tab" data-toggle="tab">Tareas pendientes</a></li>
+                        <li role="presentation"><a href="#done-tasks" aria-controls="done-tasks" role="tab" data-toggle="tab">Tareas finalizadas</a></li>
+                    </ul>
+
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="undone-tasks">
+                            <table class="table" style="color:white;">
+                                <thead>
                                     <tr>
-                                        <td>{{task.name}}</td>
-                                        {% if task.lastListing %}
-                                            <td>{{task.lastListing}}</td>
-                                        {% else %}
-                                            <td>To Do</td>
+                                        <th>Tarea</th>
+                                        <th>Estado</th>
+                                        <th>Prioridad</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for task in tasks %}
+                                        {% if not task.isActive and task.lastListing != 'Done' %}
+                                            <tr>
+                                                <td>{{task.name}}</td>
+                                                {% if task.lastListing %}
+                                                    <td>{{task.lastListing}}</td>
+                                                {% else %}
+                                                    <td>To Do</td>
+                                                {% endif %}
+                                                <td>{{task.priority}}</td>
+                                            </tr>  
+
                                         {% endif %}
-                                        <td>{{task.priority}}</td>
-                                    </tr>  
+                                    {% endfor %}
 
-                                {% endif %}
-                            {% endfor %}
-
-                        </tbody>
-                    </table>
-                    <a class="js-toggle-task-form" href="javascript:void(0);"><i class="mdi mdi-plus"></i></a>
-
-                </div>
-
-                <div class="container">
-                    <h4 style="color:white;">Tareas completadas</h4>
-                    <table class="table" style="color:white;">
-                        <thead>
-                            <tr>
-                                <th>Tarea</th>
-                                <th>Estado</th>
-                                <th>Prioridad</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for task in tasks %}
-                                {% if not task.isActive and task.lastListing == 'Done' %}
+                                </tbody>
+                            </table>
+                            <a class="js-toggle-task-form" href="javascript:void(0);"><i class="mdi mdi-plus"></i></a>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="done-tasks">
+                            <table class="table" style="color:white;">
+                                <thead>
                                     <tr>
-                                        <td>{{task.name}}</td>
-                                        <td>{{task.lastListing}}</td>                                     
-                                        <td>{{task.priority}}</td>
-                                    </tr>  
+                                        <th>Tarea</th>
+                                        <th>Estado</th>
+                                        <th>Prioridad</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for task in tasks %}
+                                        {% if not task.isActive and task.lastListing == 'Done' %}
+                                            <tr>
+                                                <td>{{task.name}}</td>
+                                                <td>{{task.lastListing}}</td>                                     
+                                                <td>{{task.priority}}</td>
+                                            </tr>  
 
-                                {% endif %}
-                            {% endfor %}
+                                        {% endif %}
+                                    {% endfor %}
 
-                        </tbody>
-                    </table>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
 
                 </div>
+
             </div>
         </div>
     </div>
