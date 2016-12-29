@@ -103,7 +103,11 @@
 
                 Descripción: {{task.description}} 
                 <br>
-                Estado: {{task.lastListing}}
+                {%if task.isActive%}
+                    Estado: {{task.listing}}
+                {%else%}
+                    Estado: {{task.lastListing}}
+                {%endif%}
                 <br>
                 Horas estimadas:
                 {{task.hours}}
