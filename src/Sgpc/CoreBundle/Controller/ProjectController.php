@@ -115,8 +115,12 @@ class ProjectController extends Controller {
 
         $lists = $project->getListings();
 
-//        $activeTasks = $em->getRepository('SgpcCoreBundle:Task')
-//                ->getActiveTasksForProject($id);
+        $query = $em->createQuery('SELECT t FROM SgpcCoreBundle:Task t JOIN t.project p WHERE  p.id = :idProject AND t.isActive = :active');
+        $query->setParameters(array(
+            'active' => true,
+            'idProject' => $project->getId(),
+        ));
+        $activeTasks = $query->getResult();        
 
         $deleteForm = $this->createDeleteForm($id);
         $addmemberForm = $this->createAddMemberForm($id);
@@ -127,7 +131,7 @@ class ProjectController extends Controller {
 
         return $this->render('SgpcCoreBundle:Project:kanban.html.twig', array(
                     'lists' => $lists,
-//                    'activeTasks' => $activeTasks,
+                    'activeTasks' => $activeTasks,
                     'project' => $project,
                     'delete_form' => $deleteForm->createView(),
                     'addmember_form' => $addmemberForm->createView(),
