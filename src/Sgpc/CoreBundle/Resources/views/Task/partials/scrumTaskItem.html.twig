@@ -1,10 +1,12 @@
 <div class="task">
     <!--dropdown de la tarea-->
-    <div class="dropdown">
-        <a href="{{ path('sgpc_task_edit', {id: task.id}) }}">            
-            <span class="mdi mdi-pencil"></span>
-        </a>
-    </div> 
+    {% if date('now') < date(sprint.end) %}
+        <div class="dropdown">
+            <a href="{{ path('sgpc_task_edit', {id: task.id}) }}">            
+                <span class="mdi mdi-pencil"></span>
+            </a>
+        </div> 
+    {% endif %}
     <a href="{{ path('sgpc_task_view', { 'id': task.id }) }}">
 
         <div class="priority-label" data-priority="{{task.priority}}"></div>
@@ -14,7 +16,7 @@
 
         <div class="task-body">
             <ul>
- 
+
                 {% set taskmembers = task.getUsers %}
                 {% if taskmembers |length > 0 %}
                     <li>

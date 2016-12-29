@@ -1,15 +1,32 @@
 {%  extends 'base.html.twig' %}
 
 {% set lists = sprint.listings %}
+{% set remaining = date(sprint.end).diff(date('now')) %}
 {% block body %}
     {{ parent() }}
 
     <div class="project-wrapper">
         <div class="project-main-content">
             <div class="project-canvas">
-                <h2><a class="back-button" href="{{ path('sgpc_project_scrum', {'id': project.id})}}"><i class="mdi mdi-arrow-left"></i></a>{{sprint.name}}</h2>
+                <h2>
+                    <a class="back-button" href="{{ path('sgpc_project_scrum', {'id': project.id})}}">
+                        <i class="mdi mdi-arrow-left"></i>
+                    </a>
+                    {{sprint.name}}
 
-                    {{form(store_form)}}
+                    <span style="float:right;">
+                        {{form(store_form)}}
+                    </span>
+
+                    <span style="float:right;font-size:16px;margin-right: 40px;padding-top: 7px;">
+                        {% if date('now') > date(sprint.end) %}
+                            Sprint finalizado
+                        {% else %}
+                            <i class="mdi mdi-clock" style="margin-right:5px;"></i>Quedan {{remaining|date('%d días')}}
+                        {% endif %}
+                    </span>
+                </h2>
+
 
                 {% for list in lists %}
                     {{ include('SgpcCoreBundle:Listing:partials/scrumListItem.html.twig') }}             
