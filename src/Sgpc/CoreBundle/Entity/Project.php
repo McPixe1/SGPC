@@ -53,6 +53,11 @@ class Project
      * @ORM\ManyToOne(targetEntity="User")
      */
     protected $owner;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="User")
+     */
+    protected $manager;
 
     /**
      * @var string
@@ -337,5 +342,29 @@ class Project
     public function getSprints()
     {
         return $this->sprints;
+    }
+
+    /**
+     * Set manager
+     *
+     * @param \Sgpc\CoreBundle\Entity\User $manager
+     *
+     * @return Project
+     */
+    public function setManager(\Sgpc\CoreBundle\Entity\User $manager = null)
+    {
+        $this->manager = $manager;
+
+        return $this;
+    }
+
+    /**
+     * Get manager
+     *
+     * @return \Sgpc\CoreBundle\Entity\User
+     */
+    public function getManager()
+    {
+        return $this->manager;
     }
 }
