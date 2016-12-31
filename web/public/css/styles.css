@@ -18,6 +18,16 @@ body{
     padding-right:30px;
 }
 
+/* LOGIN/REGISTRO */
+
+.login-card{
+    padding: 30px;
+    background: white;
+    border-radius:3px;
+    box-shadow: -2px 2px 4px 0 rgba(0,0,0,.1), -2px 2px 4px 0 rgba(0,0,0,.1);
+    width:400px;
+}
+
 /* DASHBOARD*/
 
 .dashboard-title{

@@ -1,0 +1,19 @@
+{% extends "FOSUserBundle::layout.html.twig" %}
+{% block stylesheets %}
+    {{ parent() }}
+
+    <style>
+        html{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100%;
+            background: rgb(3, 89, 143);
+        }
+    </style>
+{% endblock%}
+{% block body %}
+    {% block fos_user_content %}
+        {% include "FOSUserBundle:Registration:register_content.html.twig" %}
+    {% endblock fos_user_content %}
+{% endblock %}
