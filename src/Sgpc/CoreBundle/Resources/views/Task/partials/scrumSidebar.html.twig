@@ -1,13 +1,17 @@
 <div class="task-sidebar">
-    <h4>Miembros de la tarea</h4>
+    <h4>Responsable de la tarea</h4>
     <ul class="icon-member-list">
         {% for member in members %}
-            <li data-toggle="tooltip" data-placement="top" title="{{ member.username}}">{{ member.username|first|upper}}</li>
+            {% if member == project.owner %}
+                <li style="margin-right:3px;" data-toggle="tooltip" data-placement="top" title="{{ member.username}}">{{member.username|first|upper}}<i class="mdi mdi-seal"></i></li>
+                {% else %}
+                <li data-toggle="tooltip" data-placement="top" title="{{ member.username}}">{{ member.username|first|upper}}</li>
+                {% endif %}
             {% endfor %}
-
-        <a class="js-toggle-addmember-form" href="javascript:void(0);">+</a>
-        {{ render(controller('SgpcCoreBundle:Task:addmember', {'id': task.id})) }}
-
+            {% if members |length < 1 %}
+            <a class="js-toggle-addmember-form" href="javascript:void(0);">Añadir responsable +</a>
+            {{ render(controller('SgpcCoreBundle:Task:addmember', {'id': task.id})) }}
+        {% endif %}
     </ul>
 
     <h4>Prioridad</h4>

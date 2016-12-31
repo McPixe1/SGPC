@@ -3,7 +3,11 @@
         <p>{{ comment.comment }}</p>
         <header>
             <ul class="icon-member-list">
-                <li data-toggle="tooltip" data-placement="top" title="{{ comment.user }}">{{ comment.user |first|upper}}</li>
+                {% if comment.user == project.owner %}
+                    <li style="margin-right:3px;" data-toggle="tooltip" data-placement="top" title="{{ comment.user}}">{{comment.user|first|upper}}<i class="mdi mdi-seal"></i></li>
+                    {% else %}
+                    <li data-toggle="tooltip" data-placement="top" title="{{ comment.user }}">{{ comment.user |first|upper}}</li>
+                    {% endif %}
             </ul>
             <time datetime="{{ comment.createdAt|date('c') }}">{{ comment.createdAt|date('d/m/Y') }}</time>
         </header>

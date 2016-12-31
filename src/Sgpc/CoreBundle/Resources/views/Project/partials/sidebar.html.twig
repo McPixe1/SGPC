@@ -3,7 +3,7 @@
     <ul class="icon-member-list">
         {% for member in members %}
             {% if owner == member %}
-                <li data-toggle="tooltip" data-placement="top" title="{{ member.username}}"><strong>{{member.username|first|upper}}</strong></li>
+                <li style="margin-right:3px;" data-toggle="tooltip" data-placement="top" title="{{ member.username}}">{{member.username|first|upper}}<i class="mdi mdi-seal"></i></li>
                     {% else %}
                 <li data-toggle="tooltip" data-placement="top" title="{{ member.username}}">{{ member.username|first|upper}}</li>
                 {% endif %}
