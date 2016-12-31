@@ -258,16 +258,21 @@ class TaskController extends Controller {
 
             return $form;
         } else {
+
             $form = $this->createForm(new ScrumTaskType(), $entity, array(
                 'action' => $this->generateUrl('sgpc_task_update', array('id' => $entity->getId())),
                 'method' => 'PUT'
             ));
-            $form
-                    ->add('listing', 'choice', array(
-                        'choices' => $this->listingToChoices($entity->getId()),
-                        'choices_as_values' => true,
-                    ))
-                    ->add('submit', 'submit', array('label' => 'Actualizar tarea', 'attr' => ['class' => 'btn btn-success btn-sm']));
+
+            if ($entity->getIsActive() == true) {
+                $form
+                ->add('listing', 'choice', array(
+                'choices' => $this->listingToChoices($entity->getId()),
+                'choices_as_values' => true,
+                ));
+            }
+
+            $form->add('submit', 'submit', array('label' => 'Actualizar tarea', 'attr' => ['class' => 'btn btn-success btn-sm']));
 
             return $form;
         }

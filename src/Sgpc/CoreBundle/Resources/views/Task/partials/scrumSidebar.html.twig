@@ -28,12 +28,15 @@
             <div role="tabpanel" class="tab-pane" id="task-options">
 
                 <br>
-
-                {% for member in members %}
-                    {% if app.user == member %}
-                        <a href="{{ path('sgpc_task_edit', {id: task.id}) }}" class="btn btn-primary">Editar tarea</a>
-                    {% endif %}
-                {% endfor %}
+                {% if app.user == project.owner %}
+                    <a href="{{ path('sgpc_task_edit', {id: task.id}) }}" class="btn btn-primary">Editar tarea</a>
+                {% else %}
+                    {% for member in members %}
+                        {% if app.user == member %}
+                            <a href="{{ path('sgpc_task_edit', {id: task.id}) }}" class="btn btn-primary">Editar tarea</a>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
 
             </div>
         </div>
