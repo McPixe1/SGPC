@@ -47,6 +47,10 @@ class Sprint
      */
     protected $tasks;
     
+     /**
+     * @ORM\OneToMany(targetEntity="Story", mappedBy="sprint")
+     */
+    private $stories;
 
     /**
      * @var string
@@ -277,5 +281,39 @@ class Sprint
     public function getIsActive()
     {
         return $this->isActive;
+    }
+
+    /**
+     * Add story
+     *
+     * @param \Sgpc\CoreBundle\Entity\Story $story
+     *
+     * @return Sprint
+     */
+    public function addStory(\Sgpc\CoreBundle\Entity\Story $story)
+    {
+        $this->stories[] = $story;
+
+        return $this;
+    }
+
+    /**
+     * Remove story
+     *
+     * @param \Sgpc\CoreBundle\Entity\Story $story
+     */
+    public function removeStory(\Sgpc\CoreBundle\Entity\Story $story)
+    {
+        $this->stories->removeElement($story);
+    }
+
+    /**
+     * Get stories
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getStories()
+    {
+        return $this->stories;
     }
 }

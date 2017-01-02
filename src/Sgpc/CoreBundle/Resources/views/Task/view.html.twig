@@ -93,6 +93,9 @@
         #}
 
     {% else %}
+        
+        {% set worklog = task.worklog %}
+        
         <div class="container-fluid">
 
             <h3 class="dashboard-title"><a class="back-button" href="{{ path('sgpc_project_scrum', { 'id': project.id })  }}"><i class="mdi mdi-arrow-left"></i></a>Tarea {{task.name}}</h3>
@@ -106,11 +109,17 @@
                 {%if task.isActive%}
                     Estado: {{task.listing}}
                 {%else%}
-                    Estado: {{task.lastListing}}
+                    {% if task.lastListing %}
+                        Estado: {{task.lastListing}}
+                    {% else %}
+                        Estado: To Do 
+                    {% endif %}
                 {%endif%}
                 <br>
                 Horas estimadas:
                 {{task.hours}}
+                
+                <br>
 
 
                 <!--COMENTARIOS-->

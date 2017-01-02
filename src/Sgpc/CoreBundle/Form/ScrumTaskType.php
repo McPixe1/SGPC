@@ -31,7 +31,7 @@ class ScrumTaskType extends AbstractType
                     'label' => 'Crear tarea',
                     'attr' => array('class' => 'btn btn-sm btn-success')
         ));
-        ;
+        
     }
     
     /**

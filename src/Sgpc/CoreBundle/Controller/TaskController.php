@@ -10,6 +10,7 @@ use Sgpc\CoreBundle\Entity\ScrumTask;
 use Sgpc\CoreBundle\Entity\KanbanTask;
 use Sgpc\CoreBundle\Entity\Listing;
 use Sgpc\CoreBundle\Entity\Project;
+use Sgpc\CoreBundle\Entity\Worklog;
 use Sgpc\CoreBundle\Form\TaskType;
 use Sgpc\CoreBundle\Form\ScrumTaskType;
 use Sgpc\CoreBundle\Form\KanbanTaskType;
@@ -49,7 +50,7 @@ class TaskController extends Controller {
             return $this->redirect($this->generateUrl('sgpc_task_view', array('id' => $entity->getId())));
         }
 
-        return $this->render('SgpcCoreBundle:Task:new.html.twig', array(
+        return $this->render('SgpcCoreBundle:Task:add.html.twig', array(
                     'entity' => $entity,
                     'form' => $form->createView(),
         ));
@@ -266,10 +267,12 @@ class TaskController extends Controller {
 
             if ($entity->getIsActive() == true) {
                 $form
-                ->add('listing', 'choice', array(
-                'choices' => $this->listingToChoices($entity->getId()),
-                'choices_as_values' => true,
-                ));
+                        ->add('listing', 'choice', array(
+                            'choices' => $this->listingToChoices($entity->getId()),
+                            'choices_as_values' => true,
+                        ))
+                        ->add('workedHours')
+                        ->remove('hours');
             }
 
             $form->add('submit', 'submit', array('label' => 'Actualizar tarea', 'attr' => ['class' => 'btn btn-success btn-sm']));
@@ -282,6 +285,7 @@ class TaskController extends Controller {
         $em = $this->getDoctrine()->getManager();
 
         $task = $em->getRepository('SgpcCoreBundle:Task')->find($id);
+        $project = $task->getProject();
 
         if (!$task) {
             throw $this->createNotFoundException('task not found');
@@ -291,7 +295,25 @@ class TaskController extends Controller {
         $form->handleRequest($request);
 
         if ($form->isSubmitted() and $form->isValid()) {
-            $em->flush();
+            if ($project->getModel() == 'scrum') {
+                $formHours = $form->get('workedHours')->getData();
+                $workedHours = $task->getWorkedHours();
+
+                if ($workedHours != null) {
+                    $workedHours = $workedHours + $formHours;
+                } else {
+                    $workedHours = $formHours;
+                }
+                $worklog = new Worklog();
+                $worklog->setWorkedHours($formHours)
+                        ->setDate(new \DateTime)
+                        ->setTask($task);
+
+                $task->setWorkedHours(null);
+                $em->persist($worklog);
+                $em->flush($worklog);
+            }
+            $em->flush($task);
 
             return $this->redirectToRoute('sgpc_task_view', array('id' => $task->getId()));
         }

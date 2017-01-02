@@ -11,22 +11,40 @@
         <div class="project-main-content">
             <div class="project-canvas">
                 <h2><a class="back-button" href="/"><i class="mdi mdi-arrow-left"></i></a>{{project.name}}. Trabajo pendiente</h2>
-                
+
                 <div class="container">
 
-                    <h4 style="color:white;">Sprint actual</h4>
-                    <div class="sprint">
-                        {% if sprints %}
-                            {% for sprint in sprints if sprint.isActive %}
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#undone-sprints" aria-controls="undone-sprints" role="tab" data-toggle="tab">Sprint actual</a></li>
+                        <li role="presentation"><a href="#done-sprints" aria-controls="done-sprints" role="tab" data-toggle="tab">Sprints finalizados</a></li>
+                    </ul>
+
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="undone-sprints">
+                            <div class="sprint">
+                                {% if sprints %}
+                                    {% for sprint in sprints if sprint.isActive %}
+                                        <a href="{{ path('sgpc_sprint_view', {'id':sprint.id})}}">{{sprint.name}} <br>Del {{sprint.start|date("d/m/Y")}} al {{sprint.end|date("d/m/Y")}} </a> <br> 
+                                        {% else %}
+                                        <a class="js-toggle-sprint-form" href="javascript:void(0);">
+                                            Actualmente no hay ningún sprint. Crea uno aquí y selecciona las tareas que quieres que formen parte del mismo <i class="mdi mdi-plus"></i>
+                                        </a>
+                                    {% endfor %}
+                                {% endif %}
+
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="done-sprints">
+                            {% for sprint in sprints if not sprint.isActive %}
                                 <a href="{{ path('sgpc_sprint_view', {'id':sprint.id})}}">{{sprint.name}} <br>Del {{sprint.start|date("d/m/Y")}} al {{sprint.end|date("d/m/Y")}} </a> <br> 
-                                {% else %}
-                                <a class="js-toggle-sprint-form" href="javascript:void(0);">
-                                   Actualmente no hay ningún sprint. Crea uno aquí y selecciona las tareas que quieres que formen parte del mismo <i class="mdi mdi-plus"></i>
-                                </a>
                             {% endfor %}
-                        {% endif %}
+                        </div>
                     </div>
                 </div>
+                        
+                        
                 <div class="container">
 
                     <!-- Nav tabs -->

@@ -62,12 +62,10 @@ class SprintController extends Controller {
                 if ($task->getLastListing() == null || $task->getLastListing() == 'To Do') {
                     $task->setListing($todoList);
                     $task->setLastListing($todoList->getName());
-                    
-                } else if($task->getLastListing() == 'Doing'){                    
+                } else if ($task->getLastListing() == 'Doing') {
                     $task->setListing($doingList);
                     $task->setLastListing($doingList->getName());
-                }
-                else{
+                } else {
                     $task->setListing($doneList);
                     $task->setLastListing($doneList->getName());
                 }
@@ -137,13 +135,12 @@ class SprintController extends Controller {
 
         $em = $this->getDoctrine()->getManager();
 
-        $query = $em->createQuery('SELECT t FROM SgpcCoreBundle:ScrumTask t JOIN t.project p WHERE p.id = :idProject AND t.finished = :finished');
+        $query = $em->createQuery('SELECT t FROM SgpcCoreBundle:ScrumTask t JOIN t.project p WHERE p.id = :idProject AND t.isActive = false AND t.finished = false');
+
         $query->setParameters(array(
             'idProject' => $project->getId(),
-            'finished' => false
         ));
         $tasks = $query->getResult();
-
         $choices = array();
         foreach ($tasks as $task) {
             $choices[$task->getId()] = $task->getName();
@@ -202,6 +199,10 @@ class SprintController extends Controller {
             $tasks = $sprint->getTasks();
 
             foreach ($tasks as $task) {
+
+                $newTask = clone $task;
+                $em->persist($newTask);
+
                 $listing = $task->getListing();
                 if ($listing->getName() == 'Done') {
                     $task->setFinished(true);
