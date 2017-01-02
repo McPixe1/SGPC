@@ -192,6 +192,7 @@ class SprintController extends Controller {
 
             $em = $this->getDoctrine()->getManager();
             $sprint = $em->getRepository('SgpcCoreBundle:Sprint')->find($id);
+            $sprint->setEnd(new \Datetime);
             if (!$sprint) {
                 throw $this->createNotFoundException('No se ha encontrado la entidad sprint.');
             }
@@ -219,6 +220,27 @@ class SprintController extends Controller {
 
             return $this->redirect($this->generateUrl('sgpc_project_scrum', array('id' => $projectId)));
         }
+    }
+    
+     /**
+     * Muestra el reporte del  Sprint
+     */
+    public function reportAction($id) {
+        $em = $this->getDoctrine()->getManager();
+        $sprint = $em->getRepository('SgpcCoreBundle:Sprint')->find($id);
+        $project = $sprint->getProject();
+
+        if (!$sprint) {
+            throw $this->createNotFoundException('Unable to find Sprint entity.');
+        }
+
+        $storeForm = $this->createStoreForm($id);
+
+        return $this->render('SgpcCoreBundle:Sprint:report.html.twig', array(
+                    'sprint' => $sprint,
+                    'project' => $project,
+                    'store_form' => $storeForm->createView()
+        ));
     }
 
 }

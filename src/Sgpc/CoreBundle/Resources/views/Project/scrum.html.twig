@@ -38,7 +38,7 @@
                         </div>
                         <div role="tabpanel" class="tab-pane" id="done-sprints">
                             {% for sprint in sprints if not sprint.isActive %}
-                                <a href="{{ path('sgpc_sprint_view', {'id':sprint.id})}}">{{sprint.name}} <br>Del {{sprint.start|date("d/m/Y")}} al {{sprint.end|date("d/m/Y")}} </a> <br> 
+                                <a href="{{ path('sgpc_sprint_report', {'id':sprint.id})}}">{{sprint.name}} <br>Del {{sprint.start|date("d/m/Y")}} al {{sprint.end|date("d/m/Y")}} </a> <br> 
                             {% endfor %}
                         </div>
                     </div>

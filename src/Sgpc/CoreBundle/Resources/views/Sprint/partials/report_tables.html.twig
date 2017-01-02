@@ -1,0 +1,61 @@
+<!-- TAREAS COMPLETADAS DURANTE EL SPRINT -->
+
+<h4 style="color:white;">Tareas terminadas durante el sprint</h4>
+<table class="table" style="color:white;">
+    <thead>
+        <tr>
+            <th>Tarea</th>
+            <th>Estado</th>
+            <th>Prioridad</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for task in tasks %}
+            {% if task.isActive and task.listing == 'Done' %}
+                <tr>
+                    <td>                                        
+                        {{task.name}}
+                    </td>
+                    <td>
+                        {{task.listing}}
+                    </td>
+                    <td>
+                        {{task.priority}}
+                    </td>
+                </tr>  
+            {% endif %}
+        {% endfor %}
+
+    </tbody>
+</table>
+
+<!-- TAREAS POR COMPLETAR DURANTE EL SPRINT -->
+
+<h4 style="color:white;">Tareas sin completar</h4>
+<table class="table" style="color:white;">
+    <thead>
+        <tr>
+            <th>Tarea</th>
+            <th>Estado</th>
+            <th>Prioridad</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for task in tasks %}
+            {% if task.isActive and task.listing != 'Done' %}
+                <tr>
+                    <td>                                        
+                        {{task.name}}
+                    </td>
+                    <td>
+                        {{task.listing}}
+                    </td>
+                    <td>
+                        {{task.priority}}
+                    </td>
+                </tr>  
+            {% endif %}
+        {% endfor %}
+
+    </tbody>
+</table>
