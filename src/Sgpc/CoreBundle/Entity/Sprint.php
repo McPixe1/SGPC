@@ -48,7 +48,7 @@ class Sprint
     protected $tasks;
     
      /**
-     * @ORM\OneToMany(targetEntity="Story", mappedBy="sprint")
+     * @ORM\OneToMany(targetEntity="Story", mappedBy="sprint", cascade={"remove"})
      */
     private $stories;
 
@@ -314,6 +314,6 @@ class Sprint
      */
     public function getStories()
     {
-        return $this->stories;
+        return $this->stories[0];
     }
 }

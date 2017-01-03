@@ -31,6 +31,14 @@ class Story
      * @ORM\OneToMany(targetEntity="ScrumTask", mappedBy="story", cascade={"remove"})
      */
     private $tasks;
+    
+    
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="end", type="datetime", nullable=true)
+     */
+    private $end;
 
     /**
      * Get id

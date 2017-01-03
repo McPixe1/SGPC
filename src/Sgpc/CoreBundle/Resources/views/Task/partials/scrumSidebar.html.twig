@@ -32,14 +32,16 @@
             <div role="tabpanel" class="tab-pane" id="task-options">
 
                 <br>
-                {% if app.user == project.owner and task.sprint.isActive %}
-                    <a href="{{ path('sgpc_task_edit', {id: task.id}) }}" class="btn btn-primary">Editar tarea</a>
-                {% else %}
-                    {% for member in members %}
-                        {% if app.user == member and task.sprint.isActive %}
-                            <a href="{{ path('sgpc_task_edit', {id: task.id}) }}" class="btn btn-primary">Editar tarea</a>
-                        {% endif %}
-                    {% endfor %}
+                {% if task.sprint %}
+                    {% if app.user == project.owner and task.sprint.isActive %}
+                        <a href="{{ path('sgpc_task_edit', {id: task.id}) }}" class="btn btn-primary">Editar tarea</a>
+                    {% else %}
+                        {% for member in members %}
+                            {% if app.user == member and task.sprint.isActive %}
+                                <a href="{{ path('sgpc_task_edit', {id: task.id}) }}" class="btn btn-primary">Editar tarea</a>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
                 {% endif %}
 
             </div>

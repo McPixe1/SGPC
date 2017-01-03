@@ -7,120 +7,121 @@
 {% block body %}
     {{ parent() }}
 
-    <div class="project-wrapper">
-        <div class="project-main-content">
-            <div class="project-canvas">
-                <h2><a class="back-button" href="/"><i class="mdi mdi-arrow-left"></i></a>{{project.name}}. Trabajo pendiente</h2>
+    <div class="conatiner-fluid">
 
-                <div class="container">
+        <h3 class="dashboard-title">
+            <a class="back-button" href="/"><i class="mdi mdi-arrow-left"></i>
+            </a>{{project.name}}. Trabajo pendiente
+        </h3>
 
-                    <!-- Nav tabs -->
-                    <ul class="nav nav-tabs" role="tablist">
-                        <li role="presentation" class="active"><a href="#undone-sprints" aria-controls="undone-sprints" role="tab" data-toggle="tab">Sprint actual</a></li>
-                        <li role="presentation"><a href="#done-sprints" aria-controls="done-sprints" role="tab" data-toggle="tab">Sprints finalizados</a></li>
-                    </ul>
+        <div class="container">
 
-                    <!-- Tab panes -->
-                    <div class="tab-content">
-                        <div role="tabpanel" class="tab-pane active" id="undone-sprints">
-                            <div class="sprint">
-                                {% if sprints %}
-                                    {% for sprint in sprints if sprint.isActive %}
-                                        <a href="{{ path('sgpc_sprint_view', {'id':sprint.id})}}">{{sprint.name}} <br>Del {{sprint.start|date("d/m/Y")}} al {{sprint.end|date("d/m/Y")}} </a> <br> 
-                                        {% else %}
-                                        <a class="js-toggle-sprint-form" href="javascript:void(0);">
-                                            Actualmente no hay ningún sprint. Crea uno aquí y selecciona las tareas que quieres que formen parte del mismo <i class="mdi mdi-plus"></i>
-                                        </a>
-                                    {% endfor %}
-                                {% endif %}
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#undone-sprints" aria-controls="undone-sprints" role="tab" data-toggle="tab">Sprint actual</a></li>
+                <li role="presentation"><a href="#done-sprints" aria-controls="done-sprints" role="tab" data-toggle="tab">Sprints finalizados</a></li>
+            </ul>
 
-                            </div>
-                        </div>
-                        <div role="tabpanel" class="tab-pane" id="done-sprints">
-                            {% for sprint in sprints if not sprint.isActive %}
-                                <a href="{{ path('sgpc_sprint_report', {'id':sprint.id})}}">{{sprint.name}} <br>Del {{sprint.start|date("d/m/Y")}} al {{sprint.end|date("d/m/Y")}} </a> <br> 
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="undone-sprints">
+                    <div class="sprint">
+                        {% if sprints %}
+                            {% for sprint in sprints if sprint.isActive %}
+                                <a href="{{ path('sgpc_sprint_view', {'id':sprint.id})}}">{{sprint.name}} <br>Del {{sprint.start|date("d/m/Y")}} al {{sprint.end|date("d/m/Y")}} </a> <br> 
+                                {% else %}
+                                <a class="js-toggle-sprint-form" href="javascript:void(0);">
+                                    Actualmente no hay ningún sprint. Crea uno aquí y selecciona las tareas que quieres que formen parte del mismo <i class="mdi mdi-plus"></i>
+                                </a>
                             {% endfor %}
-                        </div>
+                        {% endif %}
+
                     </div>
                 </div>
-                        
-                        
-                <div class="container">
-
-                    <!-- Nav tabs -->
-                    <ul class="nav nav-tabs" role="tablist">
-                        <li role="presentation" class="active"><a href="#undone-tasks" aria-controls="undone-tasks" role="tab" data-toggle="tab">Tareas pendientes</a></li>
-                        <li role="presentation"><a href="#done-tasks" aria-controls="done-tasks" role="tab" data-toggle="tab">Tareas finalizadas</a></li>
-                    </ul>
-
-                    <!-- Tab panes -->
-                    <div class="tab-content">
-                        <div role="tabpanel" class="tab-pane active" id="undone-tasks">
-                            <table class="table" style="color:white;">
-                                <thead>
-                                    <tr>
-                                        <th>Tarea</th>
-                                        <th>Estado</th>
-                                        <th>Prioridad</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for task in tasks %}
-                                        {% if not task.isActive and task.lastListing != 'Done' %}
-                                            <tr>
-                                                <td>                                        
-                                                    <a href="{{ path('sgpc_task_view', { 'id': task.id }) }}">
-                                                        {{task.name}}
-                                                    </a>
-                                                </td>
-                                                {% if task.lastListing %}
-                                                    <td>
-                                                        {{task.lastListing}}
-                                                    </td>
-                                                {% else %}
-                                                    <td>To Do</td>
-                                                {% endif %}
-                                                <td>{{task.priority}}</td>
-
-                                            </tr>  
-                                        {% endif %}
-                                    {% endfor %}
-
-                                </tbody>
-                            </table>
-                            <a class="js-toggle-task-form" href="javascript:void(0);"><i class="mdi mdi-plus"></i></a>
-                        </div>
-                        <div role="tabpanel" class="tab-pane" id="done-tasks">
-                            <table class="table" style="color:white;">
-                                <thead>
-                                    <tr>
-                                        <th>Tarea</th>
-                                        <th>Estado</th>
-                                        <th>Prioridad</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for task in tasks %}
-                                        {% if not task.isActive and task.lastListing == 'Done' %}
-                                            <tr>
-                                                <td>{{task.name}}</td>
-                                                <td>{{task.lastListing}}</td>                                     
-                                                <td>{{task.priority}}</td>
-                                            </tr>  
-
-                                        {% endif %}
-                                    {% endfor %}
-
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
+                <div role="tabpanel" class="tab-pane" id="done-sprints">
+                    {% for sprint in sprints if not sprint.isActive %}
+                        <a href="{{ path('sgpc_sprint_report', {'id':sprint.id})}}">{{sprint.name}} <br>Del {{sprint.start|date("d/m/Y")}} al {{sprint.end|date("d/m/Y")}} </a> <br> 
+                        {% endfor %}
                 </div>
-
             </div>
         </div>
+
+
+        <div class="container">
+
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#undone-tasks" aria-controls="undone-tasks" role="tab" data-toggle="tab">Tareas pendientes</a></li>
+                <li role="presentation"><a href="#done-tasks" aria-controls="done-tasks" role="tab" data-toggle="tab">Tareas finalizadas</a></li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="undone-tasks">
+                    <table class="table" style="color:white;">
+                        <thead>
+                            <tr>
+                                <th>Tarea</th>
+                                <th>Estado</th>
+                                <th>Prioridad</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for task in tasks %}
+                                {% if not task.isActive and task.lastListing != 'Done' %}
+                                    <tr>
+                                        <td>                                        
+                                            <a href="{{ path('sgpc_task_view', { 'id': task.id }) }}">
+                                                {{task.name}}
+                                            </a>
+                                        </td>
+                                        {% if task.lastListing %}
+                                            <td>
+                                                {{task.lastListing}}
+                                            </td>
+                                        {% else %}
+                                            <td>To Do</td>
+                                        {% endif %}
+                                        <td>{{task.priority}}</td>
+
+                                    </tr>  
+                                {% endif %}
+                            {% endfor %}
+
+                        </tbody>
+                    </table>
+                    <a class="js-toggle-task-form" href="javascript:void(0);"><i class="mdi mdi-plus"></i></a>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="done-tasks">
+                    <table class="table" style="color:white;">
+                        <thead>
+                            <tr>
+                                <th>Tarea</th>
+                                <th>Estado</th>
+                                <th>Prioridad</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for task in tasks %}
+                                {% if not task.isActive and task.lastListing == 'Done' %}
+                                    <tr>
+                                        <td>{{task.name}}</td>
+                                        <td>{{task.lastListing}}</td>                                     
+                                        <td>{{task.priority}}</td>
+                                    </tr>  
+
+                                {% endif %}
+                            {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
     </div>
+
 
     <div class="sidebar-toggle">
         <i class="mdi mdi-menu"></i>

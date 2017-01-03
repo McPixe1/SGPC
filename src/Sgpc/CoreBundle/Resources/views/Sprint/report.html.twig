@@ -2,10 +2,9 @@
 
 {% set lists = sprint.listings %}
 {% set remaining = date(sprint.end).diff(date('now')) %}
-{% set tasks = sprint.tasks %}
+
 {% block body %}
     {{ parent() }}
-
 
     <div class="container-fluid">
         <h3 class="dashboard-title">
@@ -14,7 +13,7 @@
 
             {% if date('now') > date(sprint.end) or sprint.isActive == false %}
                 <span style="float:right;font-size:16px;margin-right: 40px;padding-top: 7px;">
-                    Sprint finalizado. {{date(sprint.start)|date('d/m/Y')}} - {{date(sprint.end)|date('d/m/Y')}}
+                    Sprint finalizado. {{date(sprint.start)|date('d/m/Y')}} - {{date(story.end)|date('d/m/Y')}}
                 </span>
             {% else %}
                 <span style="float:right;">
@@ -27,13 +26,17 @@
         </h3>
 
         <div class="container">
-
+            
             <div id="chart-container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 
             {{ include('SgpcCoreBundle:Sprint:partials/report_tables.html.twig') }}
 
         </div>
+
     </div>
+
+    {# DATOS PARA EL GRAFICO#}
+
 
 {% endblock %}
 
@@ -42,48 +45,51 @@
     <script>
         $('document').ready(function () {
 
-            $(function () {
-                Highcharts.chart('chart-container', {
-                    title: {
-                        text: 'Gráfica Burndown',
-                        x: -20 //center
-                    },
-                    subtitle: {
-                        text: 'Sprint',
-                        x: -20
-                    },
-                    xAxis: {
-                        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-                            'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-                    },
-                    yAxis: {
-                        title: {
-                            text: 'Trabajo (h)'
-                        },
-                        plotLines: [{
-                                value: 0,
-                                width: 1,
-                                color: '#808080'
-                            }]
-                    },
-                    tooltip: {
-                        valueSuffix: 'h'
-                    },
-                    legend: {
-                        layout: 'vertical',
+        $(function () {
+        Highcharts.chart('chart-container', {
+        title: {
+        text: 'Gráfica Burndown',
+                x: - 20 //center
+        },
+                subtitle: {
+                text: 'Sprint',
+                        x: - 20
+                },
+                xAxis: {
+                title: {
+                text: 'Duración (Días)'
+                },
+                        categories:{{ xAxis|json_encode()|raw }},
+                        max:{{interval - 1}}
+                },
+                yAxis: {
+                title: {
+                text: 'Trabajo (h)'
+                },
+                        type: 'linear',
+                        max:{{ idealHours|json_encode()|raw }},
+                        min:0,
+                        tickInterval :5
+
+                },
+                tooltip: {
+                valueSuffix: 'h'
+                },
+                legend: {
+                layout: 'vertical',
                         align: 'right',
                         verticalAlign: 'middle',
                         borderWidth: 0
-                    },
-                    series: [{
-                            name: 'Esfuerzo ideal',
-                            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
-                        }, {
-                            name: 'Esfuerzo real',
-                            data: [-0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5]
-                        }]
-                });
-            });
+                },
+                series: [{
+                name: 'Esfuerzo ideal',
+                        data:{{ idealArray|json_encode()|raw }}
+                }, {
+                name: 'Esfuerzo real',
+                        data: [ - 0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5]
+                }]
+        });
+        });
         });
     </script>
 {% endblock %}

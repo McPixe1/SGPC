@@ -9,6 +9,7 @@ use Sgpc\CoreBundle\Entity\Task;
 use Sgpc\CoreBundle\Entity\Listing;
 use Sgpc\CoreBundle\Entity\Project;
 use Sgpc\CoreBundle\Entity\Sprint;
+use Sgpc\CoreBundle\Entity\Story;
 use Sgpc\CoreBundle\Form\SprintType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -192,17 +193,25 @@ class SprintController extends Controller {
 
             $em = $this->getDoctrine()->getManager();
             $sprint = $em->getRepository('SgpcCoreBundle:Sprint')->find($id);
-            $sprint->setEnd(new \Datetime);
             if (!$sprint) {
                 throw $this->createNotFoundException('No se ha encontrado la entidad sprint.');
             }
             $projectId = $sprint->getProject()->getId();
             $tasks = $sprint->getTasks();
 
+            $story = new Story();
+
             foreach ($tasks as $task) {
 
                 $newTask = clone $task;
+                $newTask->setSprint($sprint);
+                $newTask->setStory($story);
+
+                $story->setEnd(new \Datetime);
+                $story->setSprint($sprint);
+
                 $em->persist($newTask);
+                $em->persist($story);
 
                 $listing = $task->getListing();
                 if ($listing->getName() == 'Done') {
@@ -211,6 +220,7 @@ class SprintController extends Controller {
                 $task->setIsActive(false);
                 $task->setLastListing($listing->getName());
                 $task->setListing(null);
+                $task->setSprint(null);
                 $em->persist($task);
             }
 
@@ -221,25 +231,82 @@ class SprintController extends Controller {
             return $this->redirect($this->generateUrl('sgpc_project_scrum', array('id' => $projectId)));
         }
     }
-    
-     /**
+
+    /**
      * Muestra el reporte del  Sprint
      */
     public function reportAction($id) {
         $em = $this->getDoctrine()->getManager();
         $sprint = $em->getRepository('SgpcCoreBundle:Sprint')->find($id);
         $project = $sprint->getProject();
+        $story = $sprint->getStories();
+        $storyId = $sprint->getStories()->getId();
 
         if (!$sprint) {
             throw $this->createNotFoundException('Unable to find Sprint entity.');
         }
 
-        $storeForm = $this->createStoreForm($id);
+        $query = $em->createQuery('SELECT t FROM SgpcCoreBundle:ScrumTask t JOIN t.story s WHERE s.id = :idStory');
+        $query->setParameters(array(
+            'idStory' => $storyId
+        ));
+        $tasks = $query->getResult();
+
+        
+        $query2 = $em->createQuery('SELECT SUM(t.hours) as estimatedHours FROM SgpcCoreBundle:ScrumTask t JOIN t.sprint s WHERE s.id = :idSprint');
+        $query2->setParameters(array(
+            'idSprint' => $id
+        ));
+        $idealHours = $query2->getSingleScalarResult();
+
+
+        $startDate = $sprint->getStart();
+        $endDate = $sprint->getEnd();
+        
+        //Calculamos la duracion contando el inicio y el fin, por eso +2
+        $interval = $endDate->diff($startDate)->format('%a');
+        $interval = $interval + 2;
+        
+        //Calculamos el valor del eje de las X
+        $xAxis = array();
+        for ($i = 0; $i < $interval; $i++) {
+            $xAxis[] = 'Dia ' . ($i + 1);
+        }
+        
+        //Calculamos el valor de la linea de esfuerzo ideal
+        $idealInterval = $idealHours / ($interval - 1);               
+        $idealArray = array();
+        $hours = $idealHours;
+        $copyInterval = 0;
+        for ($i=0; $i < $interval; $i++){
+            $idealArray[] = $hours - $copyInterval; 
+            $hours = $hours - $copyInterval;         
+            $copyInterval = $idealInterval;           
+        }
+        
+//        //Calculamos el valor de la linea de esfuerzo real
+        $tasksIds = array();
+        foreach($tasks as $task){
+            $taskIds[] = $task->getId();
+        }
+        dump($taskIds);
+        $query3 = $em->createQuery('SELECT w FROM SgpcCoreBundle:Worklog w ');
+//        $query3->setParameters(array(
+//            'story' => $story
+//        ));
+        $realHours = $query3->getResult();
+        
+        dump($realHours);
 
         return $this->render('SgpcCoreBundle:Sprint:report.html.twig', array(
                     'sprint' => $sprint,
+                    'story' => $story,
+                    'tasks' => $tasks,
                     'project' => $project,
-                    'store_form' => $storeForm->createView()
+                    'idealHours' => $idealHours,
+                    'idealArray' => $idealArray,
+                    'xAxis' => $xAxis,
+                    'interval' => $interval
         ));
     }
 
