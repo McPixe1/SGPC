@@ -204,24 +204,24 @@ class SprintController extends Controller {
             foreach ($tasks as $task) {
 
                 $newTask = clone $task;
-                $newTask->setSprint($sprint);
-                $newTask->setStory($story);
+                $task->setSprint($sprint);
+                $task->setStory($story);
 
                 $story->setEnd(new \Datetime);
                 $story->setSprint($sprint);
 
-                $em->persist($newTask);
-                $em->persist($story);
-
                 $listing = $task->getListing();
                 if ($listing->getName() == 'Done') {
-                    $task->setFinished(true);
+                    $newTask->setFinished(true);
                 }
-                $task->setIsActive(false);
-                $task->setLastListing($listing->getName());
-                $task->setListing(null);
-                $task->setSprint(null);
+                $newTask->setIsActive(false);
+                $newTask->setLastListing($listing->getName());
+                $newTask->setListing(null);
+                $newTask->setSprint(null);
+                
                 $em->persist($task);
+                $em->persist($newTask);
+                $em->persist($story);
             }
 
             $sprint->setIsActive(false);
@@ -252,7 +252,7 @@ class SprintController extends Controller {
         ));
         $tasks = $query->getResult();
 
-        
+
         $query2 = $em->createQuery('SELECT SUM(t.hours) as estimatedHours FROM SgpcCoreBundle:ScrumTask t JOIN t.sprint s WHERE s.id = :idSprint');
         $query2->setParameters(array(
             'idSprint' => $id
@@ -262,40 +262,40 @@ class SprintController extends Controller {
 
         $startDate = $sprint->getStart();
         $endDate = $sprint->getEnd();
-        
+
         //Calculamos la duracion contando el inicio y el fin, por eso +2
         $interval = $endDate->diff($startDate)->format('%a');
         $interval = $interval + 2;
-        
+
         //Calculamos el valor del eje de las X
         $xAxis = array();
         for ($i = 0; $i < $interval; $i++) {
             $xAxis[] = 'Dia ' . ($i + 1);
         }
-        
+
         //Calculamos el valor de la linea de esfuerzo ideal
-        $idealInterval = $idealHours / ($interval - 1);               
+        $idealInterval = $idealHours / ($interval - 1);
         $idealArray = array();
         $hours = $idealHours;
         $copyInterval = 0;
-        for ($i=0; $i < $interval; $i++){
-            $idealArray[] = $hours - $copyInterval; 
-            $hours = $hours - $copyInterval;         
-            $copyInterval = $idealInterval;           
+        for ($i = 0; $i < $interval; $i++) {
+            $idealArray[] = $hours - $copyInterval;
+            $hours = $hours - $copyInterval;
+            $copyInterval = $idealInterval;
         }
-        
+
 //        //Calculamos el valor de la linea de esfuerzo real
         $tasksIds = array();
-        foreach($tasks as $task){
+        foreach ($tasks as $task) {
             $taskIds[] = $task->getId();
         }
         dump($taskIds);
-        $query3 = $em->createQuery('SELECT w FROM SgpcCoreBundle:Worklog w ');
-//        $query3->setParameters(array(
-//            'story' => $story
-//        ));
+        $query3 = $em->createQuery('SELECT w FROM SgpcCoreBundle:Worklog w JOIN w.task t WHERE t.story = :story');
+        $query3->setParameters(array(
+            'story' => $storyId
+        ));
         $realHours = $query3->getResult();
-        
+
         dump($realHours);
 
         return $this->render('SgpcCoreBundle:Sprint:report.html.twig', array(
