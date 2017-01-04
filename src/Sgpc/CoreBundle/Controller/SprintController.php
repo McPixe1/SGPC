@@ -13,6 +13,8 @@ use Sgpc\CoreBundle\Entity\Story;
 use Sgpc\CoreBundle\Form\SprintType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use DateInterval;
+use DatePeriod;
 
 class SprintController extends Controller {
 
@@ -218,7 +220,7 @@ class SprintController extends Controller {
                 $newTask->setLastListing($listing->getName());
                 $newTask->setListing(null);
                 $newTask->setSprint(null);
-                
+
                 $em->persist($task);
                 $em->persist($newTask);
                 $em->persist($story);
@@ -284,19 +286,41 @@ class SprintController extends Controller {
             $copyInterval = $idealInterval;
         }
 
-//        //Calculamos el valor de la linea de esfuerzo real
+        //Sacamos el total de horas trabajadas reales agrupadas por fecha
         $tasksIds = array();
         foreach ($tasks as $task) {
             $taskIds[] = $task->getId();
         }
-        dump($taskIds);
-        $query3 = $em->createQuery('SELECT w FROM SgpcCoreBundle:Worklog w JOIN w.task t WHERE t.story = :story');
+        $query3 = $em->createQuery('SELECT DATE(w.date) as day, SUM(w.workedHours) as value FROM SgpcCoreBundle:Worklog w JOIN w.task t WHERE t.story = :story GROUP BY day');
         $query3->setParameters(array(
             'story' => $storyId
         ));
-        $realHours = $query3->getResult();
+        $realHours = $query3->getScalarResult();
 
-        dump($realHours);
+        //creamos un intervalo de fechas entre el inicio y fin de sprint
+        $dateInterval = new DateInterval('P1D'); // 1 Day
+        $startDate->format('Y-m-d');
+        $endDate->modify('+1 day')->format('Y-m-d');
+        $dateRange = new DatePeriod($startDate, $dateInterval, $endDate);
+
+        $ranges = array();
+        foreach($dateRange as $drange){
+            $ranges[] = array(($drange->format('Y-m-d')) => "0");
+        }
+        $queryranges = array();
+//        $i = 0;
+//        foreach ($realHours as $realHour) {
+//            $queryranges[] = array(($realHours[$i]['day']) => ($realHours[$i]['value']));
+//            $i++;
+//        }        
+//        $resultado = array_replace_recursive($ranges, $queryranges);
+
+        
+        dump($ranges);
+        dump($queryranges);
+        
+//        dump($resultado);
+
 
         return $this->render('SgpcCoreBundle:Sprint:report.html.twig', array(
                     'sprint' => $sprint,
@@ -306,7 +330,8 @@ class SprintController extends Controller {
                     'idealHours' => $idealHours,
                     'idealArray' => $idealArray,
                     'xAxis' => $xAxis,
-                    'interval' => $interval
+                    'interval' => $interval,
+//                    'realArray' => $realArray
         ));
     }
 
