@@ -39,7 +39,7 @@ class SprintController extends Controller {
             $entity->setProject($project);
             $entity->setName('Sprint');
             $end = $form->get('end')->getData();
-            $entity->setStart(new \Datetime);
+            // $entity->setStart(new \Datetime());
             $entity->setEnd($end);
 
             $todoList = new Listing();
@@ -263,10 +263,12 @@ class SprintController extends Controller {
 
 
         $startDate = $sprint->getStart();
+        $newStartDate = clone $startDate;
+
         $endDate = $sprint->getEnd();
 
         //Calculamos la duracion contando el inicio y el fin, por eso +2
-        $interval = $endDate->diff($startDate)->format('%a');
+        $interval = $endDate->diff($newStartDate)->format('%a');
         $interval = $interval + 2;
 
         //Calculamos el valor del eje de las X
@@ -299,28 +301,35 @@ class SprintController extends Controller {
 
         //creamos un intervalo de fechas entre el inicio y fin de sprint
         $dateInterval = new DateInterval('P1D'); // 1 Day
-        $startDate->format('Y-m-d');
+        $newStartDate->format('Y-m-d');
         $endDate->modify('+1 day')->format('Y-m-d');
-        $dateRange = new DatePeriod($startDate, $dateInterval, $endDate);
+        $dateRange = new DatePeriod($newStartDate, $dateInterval, $endDate);
 
-        $ranges = array();
-        foreach($dateRange as $drange){
-            $ranges[] = array(($drange->format('Y-m-d')) => "0");
-        }
+        //sacamos los rangos y su valor como array unidimensional
         $queryranges = array();
-//        $i = 0;
-//        foreach ($realHours as $realHour) {
-//            $queryranges[] = array(($realHours[$i]['day']) => ($realHours[$i]['value']));
-//            $i++;
-//        }        
-//        $resultado = array_replace_recursive($ranges, $queryranges);
+        $i = 0;
+        foreach ($realHours as $realHour) {
+            $queryranges[($realHours[$i]['day'])] = ($realHours[$i]['value']);
+            $i++;
+        }
 
-        
-        dump($ranges);
-        dump($queryranges);
-        
-//        dump($resultado);
+        //metemos las fechas que faltan y le añadimos el valor 0
+        foreach ($dateRange as $date) {
+            $newDate = clone $date;
+            $formated = $newDate->format('Y-m-d');
+            if (!isset($queryranges[$formated])) {
+                $queryranges[$newDate->format('Y-m-d')] = 0;
+            }
+        }
+        //ordenamos el array por fecha
+        ksort($queryranges);
 
+        $realArray = array();
+        $copyIdealHours = $idealHours;
+        foreach($queryranges as $grange){
+            $realArray[] =  $copyIdealHours - $grange;
+            $copyIdealHours = $copyIdealHours - $grange;
+        }
 
         return $this->render('SgpcCoreBundle:Sprint:report.html.twig', array(
                     'sprint' => $sprint,
@@ -331,7 +340,7 @@ class SprintController extends Controller {
                     'idealArray' => $idealArray,
                     'xAxis' => $xAxis,
                     'interval' => $interval,
-//                    'realArray' => $realArray
+                    'realArray' => $realArray
         ));
     }
 

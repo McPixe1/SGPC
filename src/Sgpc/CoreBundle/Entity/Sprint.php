@@ -187,6 +187,7 @@ class Sprint
     {
         $this->tasks = new \Doctrine\Common\Collections\ArrayCollection();
         $this->isActive = true;
+        $this->start = new \DateTime();
     }
 
 

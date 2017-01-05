@@ -15,6 +15,9 @@
                     {{sprint.name}}
                    
                     {% if date('now') > date(sprint.end) or sprint.isActive == false %}
+                         <span style="float:right;">
+                            {{form(store_form)}}
+                        </span>
                         <span style="float:right;font-size:16px;margin-right: 40px;padding-top: 7px;">
                             Sprint finalizado
                         </span>
