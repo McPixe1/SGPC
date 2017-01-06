@@ -3,6 +3,7 @@
 namespace Sgpc\CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Listing
@@ -10,8 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="listing")
  * @ORM\Entity(repositoryClass="Sgpc\CoreBundle\Repository\ListingRepository")
  */
-class Listing
-{
+class Listing {
+
     /**
      * @var int
      *
@@ -26,14 +27,13 @@ class Listing
      * @ORM\JoinColumn(name="project_id", referencedColumnName="id")
      */
     protected $project;
-    
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="Sprint", inversedBy="listings")
      * @ORM\JoinColumn(name="sprint_id", referencedColumnName="id")
      */
     protected $sprint;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="Task", mappedBy="listing",  cascade={"remove"})
      */
@@ -41,25 +41,21 @@ class Listing
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank()
      * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
-    
-    
-    public function __toString()
-    {
+
+    public function __toString() {
         return $this->getName();
     }
-
 
     /**
      * Get id
      *
      * @return integer 
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -69,8 +65,7 @@ class Listing
      * @param string $project
      * @return Listing
      */
-    public function setProject(\Sgpc\CoreBundle\Entity\Project $project = null)
-    {
+    public function setProject(\Sgpc\CoreBundle\Entity\Project $project = null) {
         $this->project = $project;
 
         return $this;
@@ -81,8 +76,7 @@ class Listing
      *
      * @return string 
      */
-    public function getProject()
-    {
+    public function getProject() {
         return $this->project;
     }
 
@@ -92,8 +86,7 @@ class Listing
      * @param string $name
      * @return Listing
      */
-    public function setName($name)
-    {
+    public function setName($name) {
         $this->name = $name;
 
         return $this;
@@ -104,15 +97,14 @@ class Listing
      *
      * @return string 
      */
-    public function getName()
-    {
+    public function getName() {
         return $this->name;
     }
+
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->tasks = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -122,8 +114,7 @@ class Listing
      * @param \Sgpc\CoreBundle\Entity\Task $tasks
      * @return Listing
      */
-    public function addTask(\Sgpc\CoreBundle\Entity\Task $tasks)
-    {
+    public function addTask(\Sgpc\CoreBundle\Entity\Task $tasks) {
         $this->tasks[] = $tasks;
 
         return $this;
@@ -134,8 +125,7 @@ class Listing
      *
      * @param \Sgpc\CoreBundle\Entity\Task $tasks
      */
-    public function removeTask(\Sgpc\CoreBundle\Entity\Task $tasks)
-    {
+    public function removeTask(\Sgpc\CoreBundle\Entity\Task $tasks) {
         $this->tasks->removeElement($tasks);
     }
 
@@ -144,8 +134,7 @@ class Listing
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getTasks()
-    {
+    public function getTasks() {
         return $this->tasks;
     }
 
@@ -156,8 +145,7 @@ class Listing
      *
      * @return Listing
      */
-    public function setSprint(\Sgpc\CoreBundle\Entity\Sprint $sprint = null)
-    {
+    public function setSprint(\Sgpc\CoreBundle\Entity\Sprint $sprint = null) {
         $this->sprint = $sprint;
 
         return $this;
@@ -168,8 +156,8 @@ class Listing
      *
      * @return \Sgpc\CoreBundle\Entity\Sprint
      */
-    public function getSprint()
-    {
+    public function getSprint() {
         return $this->sprint;
     }
+
 }

@@ -62,14 +62,16 @@ class Project
     /**
      * @var string
      *
+     * @Assert\NotBlank()
      * @ORM\Column(name="name", type="string", length=100)
      */
     private $name;
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank()
      * @ORM\Column(name="description", type="text", nullable=true)
+     * 
      */
     private $description;
     

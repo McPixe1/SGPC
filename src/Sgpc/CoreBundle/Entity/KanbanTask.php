@@ -3,6 +3,8 @@
 namespace Sgpc\CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * Task
@@ -13,6 +15,8 @@ class KanbanTask extends Task {
 
        /**
      * @var \DateTime
+     * @Assert\NotBlank()
+     * @Assert\Type("\DateTime")
      * @ORM\Column(name="due_date", type="datetime")
      */
     protected $dueDate;
