@@ -33,13 +33,18 @@ class SprintController extends Controller {
         $form = $this->createCreateForm($id);
 
         $form->handleRequest($request);
-
+        
+        $sprints = $this->getDoctrine()->getRepository('SgpcCoreBundle:Sprint')->findBy(array("project" => $id));
+        $sprintCount = count($sprints);
+        
+        dump($sprints);
         if ($form->isValid()) {
 
+            if ($sprintCount >= 0){
+                $entity->setName('Sprint ' .($sprintCount + 1));
+            }
             $entity->setProject($project);
-            $entity->setName('Sprint');
             $end = $form->get('end')->getData();
-            // $entity->setStart(new \Datetime());
             $entity->setEnd($end);
 
             $todoList = new Listing();
@@ -84,7 +89,7 @@ class SprintController extends Controller {
             return $this->redirect($this->generateUrl('sgpc_project_scrum', array('id' => $project->getId())));
         }
 
-        return $this->render('SgpcCoreBundle:Sprint:new.html.twig', array(
+        return $this->render('SgpcCoreBundle:Sprint:add.html.twig', array(
                     'entity' => $entity,
                     'form' => $form->createView(),
         ));
@@ -240,14 +245,10 @@ class SprintController extends Controller {
     public function reportAction($id) {
         $em = $this->getDoctrine()->getManager();
         $sprint = $em->getRepository('SgpcCoreBundle:Sprint')->find($id);
-        dump($sprint);
         $project = $sprint->getProject();
         $story = $sprint->getStories();
         $storyId = $sprint->getStories()->getId();
         
-        $startDate = $sprint->getStart();
-        dump($startDate);
-
         if (!$sprint) {
             throw $this->createNotFoundException('Unable to find Sprint entity.');
         }
@@ -265,9 +266,7 @@ class SprintController extends Controller {
         ));
         $idealHours = $query2->getSingleScalarResult();
 
-
-     
-
+        $startDate = $sprint->getStart();
         $endDate = $sprint->getEnd();
 
         //Calculamos la duracion contando el inicio y el fin, por eso +2
@@ -304,7 +303,7 @@ class SprintController extends Controller {
 
         //creamos un intervalo de fechas entre el inicio y fin de sprint
         $dateInterval = new DateInterval('P1D'); // 1 Day
-//        $startDate->format('Y-m-d');
+        $startDate->format('Y-m-d');
         $endDate->modify('+1 day')->format('Y-m-d');
         $dateRange = new DatePeriod($startDate, $dateInterval, $endDate);
 
