@@ -130,7 +130,7 @@ class Sprint
      */
     public function getStart()
     {
-        return $this->start = new \DateTime();
+        return $this->start;
     }
 
     /**

@@ -209,7 +209,7 @@ class SprintController extends Controller {
                 $task->setSprint($sprint);
                 $task->setStory($story);
 
-                $story->setEnd(new \Datetime);
+                $story->setEnd(new \Datetime());
                 $story->setSprint($sprint);
 
                 $listing = $task->getListing();
@@ -240,9 +240,13 @@ class SprintController extends Controller {
     public function reportAction($id) {
         $em = $this->getDoctrine()->getManager();
         $sprint = $em->getRepository('SgpcCoreBundle:Sprint')->find($id);
+        dump($sprint);
         $project = $sprint->getProject();
         $story = $sprint->getStories();
         $storyId = $sprint->getStories()->getId();
+        
+        $startDate = $sprint->getStart();
+        dump($startDate);
 
         if (!$sprint) {
             throw $this->createNotFoundException('Unable to find Sprint entity.');
@@ -262,13 +266,12 @@ class SprintController extends Controller {
         $idealHours = $query2->getSingleScalarResult();
 
 
-        $startDate = $sprint->getStart();
-        $newStartDate = clone $startDate;
+     
 
         $endDate = $sprint->getEnd();
 
         //Calculamos la duracion contando el inicio y el fin, por eso +2
-        $interval = $endDate->diff($newStartDate)->format('%a');
+        $interval = $endDate->diff($startDate)->format('%a');
         $interval = $interval + 2;
 
         //Calculamos el valor del eje de las X
@@ -301,9 +304,9 @@ class SprintController extends Controller {
 
         //creamos un intervalo de fechas entre el inicio y fin de sprint
         $dateInterval = new DateInterval('P1D'); // 1 Day
-        $newStartDate->format('Y-m-d');
+//        $startDate->format('Y-m-d');
         $endDate->modify('+1 day')->format('Y-m-d');
-        $dateRange = new DatePeriod($newStartDate, $dateInterval, $endDate);
+        $dateRange = new DatePeriod($startDate, $dateInterval, $endDate);
 
         //sacamos los rangos y su valor como array unidimensional
         $queryranges = array();
