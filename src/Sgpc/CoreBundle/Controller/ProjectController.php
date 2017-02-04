@@ -120,10 +120,11 @@ class ProjectController extends Controller {
             'active' => true,
             'idProject' => $project->getId(),
         ));
-        $activeTasks = $query->getResult();        
+        $activeTasks = $query->getResult();
 
         $deleteForm = $this->createDeleteForm($id);
         $addmemberForm = $this->createAddMemberForm($id);
+        $deletememberForm = $this->createDeleteMemberForm($id);
 
         if (!$project) {
             throw $this->createNotFoundException('No se ha encontrado la entidad proyecto.');
@@ -135,6 +136,7 @@ class ProjectController extends Controller {
                     'project' => $project,
                     'delete_form' => $deleteForm->createView(),
                     'addmember_form' => $addmemberForm->createView(),
+                    'deletemember_form' => $deletememberForm->createView()
         ));
     }
 
@@ -147,6 +149,8 @@ class ProjectController extends Controller {
 
         $deleteForm = $this->createDeleteForm($id);
         $addmemberForm = $this->createAddMemberForm($id);
+        $deletememberForm = $this->createDeleteMemberForm($id);
+
 
         if (!$project) {
             throw $this->createNotFoundException('No se ha encontrado la entidad proyecto.');
@@ -156,6 +160,7 @@ class ProjectController extends Controller {
                     'project' => $project,
                     'delete_form' => $deleteForm->createView(),
                     'addmember_form' => $addmemberForm->createView(),
+                    'deletemember_form' => $deletememberForm->createView()
         ));
     }
 
@@ -212,8 +217,26 @@ class ProjectController extends Controller {
                         ->getForm();
     }
 
+    /*
+     * Crea el formulario para eliminar un miembro del proyecto
+     */
+
+    private function createDeleteMemberForm($id) {
+        return $this->createFormBuilder()
+                        ->setAction($this->generateUrl('sgpc_project_deletemember', array('id' => $id)))
+                        ->setMethod('POST')
+                        ->add('member', null, array('attr' => array('style' => 'display:none;')))
+//                        ->add('submit', 'submit', array(
+//                            'label' => 'Expulsar miembro',
+//                            'attr' => array(
+//                                'onclick' => 'return confirm("Estás seguro que quieres expulsar al miembro?")'
+//                    )))
+                        ->getForm()
+        ;
+    }
+
     /**
-     * Add member to project.
+     * Añadir miembro al proyecto
      */
     public function addMemberAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();
@@ -252,6 +275,49 @@ class ProjectController extends Controller {
                     'project' => $project,
                     'addmember_form' => $form->createView(),
         ));
+    }
+
+    /**
+     * Expulsar miembro del proyecto
+     */
+    public function deleteMemberAction(Request $request, $id) {
+        $em = $this->getDoctrine()->getManager();
+        $form = $this->createDeleteMemberForm($id);
+        $form->handleRequest($request);
+
+        $project = $em->getRepository('SgpcCoreBundle:Project')->findOneById($id);
+
+
+        //--------------------------------------------
+        //IMPORTANTISIMO
+        //FALTA COMPROBAR QUE SEA VALIDO, NO SE POR QUE NO LO ES !!!
+        //--------------------------------------------
+        if ($form->isSubmitted()) {
+
+            $em = $this->getDoctrine()->getManager();
+
+            $formuser = $form->getData('member');
+            $user = $em->getRepository('SgpcCoreBundle:User')->findOneBy(array('username' => $formuser));
+            $tasks = $project->getTasks();
+
+            foreach ($tasks as $task) {
+                $task->removeUser($user);
+            }
+            $project->removeUser($user);
+            $em->persist($project);
+            $em->persist($user);
+            $em->flush();
+
+            if ($project->getModel() == 'kanban') {
+                return $this->redirectToRoute('sgpc_project_kanban', array(
+                            'id' => $project->getId()
+                ));
+            } else {
+                return $this->redirectToRoute('sgpc_project_scrum', array(
+                            'id' => $project->getId()
+                ));
+            }
+        }
     }
 
     public function editAction($id) {

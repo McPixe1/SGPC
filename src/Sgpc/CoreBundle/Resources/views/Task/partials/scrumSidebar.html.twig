@@ -2,15 +2,43 @@
     <h4>Responsable de la tarea</h4>
     <ul class="icon-member-list">
         {% for member in members %}
+            {% set name = member.username %}
+
             {% if member == project.owner %}
-                <li style="margin-right:3px;" data-toggle="tooltip" data-placement="top" title="{{ member.username}}">{{member.username|first|upper}}<i class="mdi mdi-seal"></i></li>
-                {% else %}
-                <li data-toggle="tooltip" data-placement="top" title="{{ member.username}}">{{ member.username|first|upper}}</li>
-                {% endif %}
-            {% endfor %}
-            {% if members |length < 1 %}
-            <a class="js-toggle-addmember-form" href="javascript:void(0);">Añadir responsable +</a>
-            {{ render(controller('SgpcCoreBundle:Task:addmember', {'id': task.id})) }}
+                <li class="dropdown" data-toggle="tooltip" data-placement="top" title="{{ member.username}}">
+                    <a data-toggle="dropdown" aria-expanded="false">{{member.username|first|upper}}<i class="mdi mdi-seal"></i></a>
+                        {% if app.user == project.owner %}
+                        <ul class="dropdown-menu">
+                            <li>
+                                <form action="{{ path('sgpc_task_deletetaskmember', { 'id' : task.id } ) }}" method="post" {{ form_enctype(deletetaskmember_form) }}>
+                                    {{form_widget(deletetaskmember_form.member,{'value': name }) }}
+                                    <input type="submit" value="Abandonar tarea" >
+                                </form>
+                            </li>
+                        </ul>
+                    {% endif %}
+                </li>                 
+            {% else %}
+                <li class="dropdown" data-toggle="tooltip" data-placement="top" title="{{ member.username}}">
+                    <a data-toggle="dropdown" aria-expanded="false">{{member.username|first|upper}}</a>
+                    {% if app.user == project.owner %}
+                        <ul class="dropdown-menu">
+                            <li>
+                                <form action="{{ path('sgpc_task_deletetaskmember', { 'id' : task.id } ) }}" method="post" {{ form_enctype(deletetaskmember_form) }}>
+                                    {{form_widget(deletetaskmember_form.member,{'value': name }) }}
+                                    <input type="submit" value="Expulsar miembro" >
+                                </form>
+                            </li>
+                        </ul>
+                    {% endif %}
+                </li>                 
+            {% endif %}
+        {% endfor %}
+        {% if members |length < 1 %}
+            {% if app.user == project.owner %}
+                <a class="js-toggle-addmember-form" href="javascript:void(0);">Añadir responsable +</a>
+                {{ render(controller('SgpcCoreBundle:Task:addmember', {'id': task.id})) }}
+            {% endif %}
         {% endif %}
     </ul>
 

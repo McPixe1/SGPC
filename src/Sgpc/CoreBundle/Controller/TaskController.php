@@ -98,12 +98,14 @@ class TaskController extends Controller {
                 ->getCommentsForTask($task->getId());
 
         $storeForm = $this->createStoreForm($id);
+        $deletetaskmemberForm = $this->createDeleteTaskMemberForm($id);
 
 
         return $this->render('SgpcCoreBundle:Task:view.html.twig', array(
                     'task' => $task,
                     'comments' => $comments,
-                    'store_form' => $storeForm->createView()
+                    'store_form' => $storeForm->createView(),
+                    'deletetaskmember_form' => $deletetaskmemberForm->createView()
         ));
     }
 
@@ -180,6 +182,45 @@ class TaskController extends Controller {
                     'task' => $task,
                     'addmember_form' => $form->createView(),
         ));
+    }
+
+    /* Crea el formulario de eliminar miembro de tarea */
+
+    private function createDeleteTaskMemberForm($id) {
+        return $this->createFormBuilder()
+                        ->setAction($this->generateUrl('sgpc_task_deletetaskmember', array('id' => $id)))
+                        ->setMethod('POST')
+                        ->add('member', null, array('attr' => array('style' => 'display:none;')))
+                        ->getForm()
+        ;
+    }
+
+    public function deleteTaskMemberAction(Request $request, $id) {
+        $em = $this->getDoctrine()->getManager();
+        $form = $this->createDeleteTaskMemberForm($id);
+        $form->handleRequest($request);
+
+        $task = $em->getRepository('SgpcCoreBundle:Task')->findOneById($id);
+
+        if ($form->isSubmitted()) {
+
+            $em = $this->getDoctrine()->getManager();
+
+            $formuser = $form->getData('member');
+            $user = $em->getRepository('SgpcCoreBundle:User')->findOneBy(array('username' => $formuser));
+            if (!$user) {
+                throw $this->createNotFoundException('No se ha encontrado el usuario.');
+            }
+
+            $task->removeUser($user);
+            $em->persist($task);
+            $em->persist($user);
+            $em->flush();
+
+              return $this->redirectToRoute('sgpc_task_view', array(
+                            'id' => $task->getId()
+                ));
+        }
     }
 
     /* crea el formulario para archivar una tarea desde el desplegable */

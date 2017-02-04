@@ -2,12 +2,28 @@
     <h4>Miembros del proyecto</h4>
     <ul class="icon-member-list">
         {% for member in members %}
+            {% set name = member.username %}
+
             {% if owner == member %}
-                <li style="margin-right:3px;" data-toggle="tooltip" data-placement="top" title="{{ member.username}}">{{member.username|first|upper}}<i class="mdi mdi-seal"></i></li>
-                    {% else %}
-                <li data-toggle="tooltip" data-placement="top" title="{{ member.username}}">{{ member.username|first|upper}}</li>
-                {% endif %}
-            {% endfor %}
+                <li style="margin-right:3px;" data-toggle="tooltip" data-placement="top" title="{{ member.username}}">
+                    <a data-toggle="dropdown" aria-expanded="false">{{member.username|first|upper}}<i class="mdi mdi-seal"></i></a>
+                </li>
+            {% else %}
+                <li class="dropdown" data-toggle="tooltip" data-placement="top" title="{{ member.username}}">
+                    <a data-toggle="dropdown" aria-expanded="false">{{member.username|first|upper}}</a>
+                    {% if app.user == owner %}
+                        <ul class="dropdown-menu">
+                            <li>
+                                <form action="{{ path('sgpc_project_deletemember', { 'id' : project.id } ) }}" method="post" {{ form_enctype(deletemember_form) }}>
+                                    {{form_widget(deletemember_form.member,{'value': name }) }}
+                                    <input type="submit" value="Expulsar miembro" >
+                                </form>
+                            </li>
+                        </ul>
+                    {% endif %}
+                </li>
+            {% endif %}
+        {% endfor %}
 
         {% if app.user == owner %}
             <a class="js-toggle-addmember-form" href="javascript:void(0);">+</a>
@@ -54,7 +70,7 @@
                     {% set actives = actives + 1 %}
                 {% endfor %}
                 {% if activeTasks|length > 0 %}
-                     <div class="progress-bar" role="progressbar" style="width:{{ actives  * 100 / (activeTasks|length) }}%">
+                    <div class="progress-bar" role="progressbar" style="width:{{ actives  * 100 / (activeTasks|length) }}%">
                         {{ list.name }}
                     </div> 
                 {% endif %}

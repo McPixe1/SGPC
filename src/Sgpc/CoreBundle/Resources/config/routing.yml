@@ -29,6 +29,10 @@ sgpc_project_scrum:
 sgpc_project_addmember:
     path:     /project/{id}/addMember/
     defaults: { _controller: SgpcCoreBundle:Project:addmember }
+    
+sgpc_project_deletemember:
+    path:     /project/{id}/deleteMember/
+    defaults: { _controller: SgpcCoreBundle:Project:deletemember }
 
 
 #LISTADOS
@@ -97,6 +101,10 @@ sgpc_task_create:
 sgpc_task_addmember:
     path:     /task/{id}/addmember/
     defaults: { _controller: SgpcCoreBundle:Task:addmember }
+    
+sgpc_task_deletetaskmember:
+    path:     /task/{id}/deletetaskmember/
+    defaults: { _controller: SgpcCoreBundle:Task:deletetaskmember }
     
 sgpc_task_store:
     path:     /task/{id}/store/
