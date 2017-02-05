@@ -25,29 +25,23 @@
 
             <div class="task-content">
 
-                Descripción: {{task.description}} 
-                <br>
+                <p class="desc"><span>Descripción:</span> {{task.description}}</p>
 
-                Categoría: {{task.listing}}
-                <br>
+                <p class="desc"><span>Categoría:</span> {{task.listing}}</p>
 
-                Estado: {% if task.isActive %} Activa {% else %} Archivada {% endif %}
-                <br>
-                Fecha de inicio:
-                {{task.createdAt|date("d/m/Y") }}
+                <p class="desc"><span>Estado:</span> {% if task.isActive %} Activa {% else %} Archivada {% endif %}</p>
 
-                <br>
+                <p class="desc"><span>Fecha de inicio:</span>{{task.createdAt|date("d/m/Y") }}</p>
+
                 {% if duration %}
-                    Fecha estimada de finalización
-                    {{task.dueDate|date("d/m/Y") }}
+                    <p class="desc"><span>Fecha estimada de finalización:</span>{{task.dueDate|date("d/m/Y") }}</p>
                 {% endif %}
 
-                <br>
                 {% if duration %}    
                     {%if duration_days == 1 %}
-                        Duración: {{duration_days}} dia
+                        <p class="desc"><span>Duración:</span> {{duration_days}} dia</p>
                     {%else%}
-                        Duración: {{duration_days}} dias 
+                        <p class="desc"><span>Duración:</span> {{duration_days}} dias </p>
                     {%endif%}
                 {% endif %}
 
@@ -93,9 +87,9 @@
         #}
 
     {% else %}
-        
+
         {% set worklog = task.worklog %}
-        
+
         <div class="container-fluid">
 
             <h3 class="dashboard-title"><a class="back-button" href="{{ path('sgpc_project_scrum', { 'id': project.id })  }}"><i class="mdi mdi-arrow-left"></i></a>Tarea {{task.name}}</h3>
@@ -104,22 +98,19 @@
 
             <div class="task-content">
 
-                Descripción: {{task.description}} 
-                <br>
+                <p class="desc"><span>Descripción:</span> {{task.description}}</p>
+
                 {%if task.isActive%}
-                    Estado: {{task.listing}}
+                    <p class="desc"><span>Estado:</span> {{task.listing}}</p>
                 {%else%}
                     {% if task.lastListing %}
-                        Estado: {{task.lastListing}}
+                        <p class="desc"><span>Estado:</span> {{task.lastListing}}</p>
                     {% else %}
-                        Estado: To Do 
+                        <p class="desc"><span>Estado:</span>To Do</p>
                     {% endif %}
                 {%endif%}
-                <br>
-                Horas estimadas:
-                {{task.hours}}
-                
-                <br>
+                <p class="desc"><span>Horas estimadas:</span> {{task.hours}}</p>
+
 
 
                 <!--COMENTARIOS-->

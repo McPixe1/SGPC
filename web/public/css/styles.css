@@ -579,7 +579,11 @@ form label{
     margin: -50px auto 30px;
     max-width:900px;
 }
-
+.task-content .desc span{
+    color: #576671;
+    font-weight:bold;
+    margin-right: 5px;
+}
 .comments { 
     clear: both; 
 }
