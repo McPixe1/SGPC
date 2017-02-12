@@ -1,9 +1,11 @@
 {% extends "FOSUserBundle::layout.html.twig" %}
 
 {% block fos_user_content %}
-    <p>{{ 'registration.confirmed'|trans({'%username%': user.username}, 'FOSUserBundle') }}</p>
+    <div class="login-card" style="margin: 200px auto;">
+    <p>Tu cuenta ha sido creada con éxito. Crea tu primer proyecto <a href="{{ path('sgpc_core_homepage') }}">aquí</a></p>
     {% if app.session is not empty %}
         {% set targetUrl = app.session.get('_security.' ~ app.security.token.providerKey ~ '.target_path') %}
         {% if targetUrl is not empty %}<p><a href="{{ targetUrl }}">{{ 'registration.back'|trans({}, 'FOSUserBundle') }}</a></p>{% endif %}
     {% endif %}
+    </div>
 {% endblock fos_user_content %}
