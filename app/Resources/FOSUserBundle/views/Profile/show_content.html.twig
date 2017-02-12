@@ -1,4 +1,91 @@
 <div class="fos_user_user_show">
-    <p>{{ 'profile.show.username'|trans({}, 'FOSUserBundle') }}: {{ user.username }}</p>
-    <p>{{ 'profile.show.email'|trans({}, 'FOSUserBundle') }}: {{ user.email }}</p>
-</div>
+
+    <div class="task-content" style="min-height: 500px;">
+
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#data" aria-controls="data" role="tab" data-toggle="tab">Mis datos</a></li>
+            <li role="presentation"><a href="#projects" aria-controls="projects" role="tab" data-toggle="tab">Mis proyectos</a></li>
+            <li role="presentation"><a href="#tasks" aria-controls="tasks" role="tab" data-toggle="tab">Mis tareas</a></li>
+
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content" style="margin-top: 30px;">
+            <div role="tabpanel" class="tab-pane active" id="data">
+                <p>{{ 'profile.show.username'|trans({}, 'FOSUserBundle') }}: {{ user.username }}</p>
+                <p>{{ 'profile.show.email'|trans({}, 'FOSUserBundle') }}: {{ user.email }}</p>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="projects">
+                {% set projects = user.projects %}
+
+                <table class="table backlog">
+                    <thead>
+                        <tr>
+                            <th>Proyecto</th>
+                            <th>Jefe de proyecto</th>
+                            <th>Metodologia</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for project in projects %}
+                            <tr>
+                                <td>                
+                                    {% if project.model == "kanban"%}
+                                        <a href="{{ path('sgpc_project_kanban', { 'id': project.id }) }}">
+                                            {{project.name}}
+                                        </a>
+                                    {%else%}
+                                        <a href="{{ path('sgpc_project_scrum', { 'id': project.id }) }}">
+                                            {{project.name}}
+                                        </a>
+                                    {%endif%}
+                                </td>
+                                <td>
+                                    {{project.owner}}
+                                </td>
+                                <td>
+                                    {{project.model}}
+                                </td>
+                            </tr>  
+                        {%endfor%}
+
+                    </tbody>
+                </table>
+
+            </div>
+            <div role="tabpanel" class="tab-pane" id="tasks">
+                <table class="table backlog">
+                    <thead>
+                        <tr>
+                            <th>Tarea</th>
+                            <th>Proyecto</th>
+                            <th>Prioridad</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% set tasks = user.tasks%}
+                        {% for task in tasks %}
+                            <tr>
+                                <td>                
+                                    <a href="{{ path('sgpc_task_view', { 'id': task.id }) }}">
+                                        {{task.name}}
+                                    </a>
+                                </td>
+                                <td>
+                                    {{task.project.name}}
+                                </td>
+                                <td>
+                                    {{task.priority}}
+                                </td>
+                            </tr>  
+                        {%endfor%}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+
